@@ -1,5 +1,5 @@
 # TorQ-Finance-Starter-Pack
-An example production ready market data capture system, based on randomly generated financial data.  This is installed on top of the base TorQ package.
+An example production ready market data capture system, using randomly generated financial data.  This is installed on top of the base TorQ package, and includes a version of [kdb+tick](http://code.kx.com/wsvn/code/kx/kdb+tick).
 
 ## Set Up 
 
