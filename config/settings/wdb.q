@@ -3,7 +3,7 @@
 ignorelist:`heartbeat`logmsg		// list of tables to ignore
 hdbtypes:`hdb				// list of hdb types to look for and call in hdb reload
 rdbtypes:`rdb				// list of rdb types to look for and call in rdb reload
-gatewaytypes:`gateway                   // list of gateway types to inform at reload
+gatewaytypes:`gateway			// list of gateway types to inform at reload
 tickerplanttypes:`tickerplant		// list of tickerplant types to try and make a connection to
 subtabs:`				// list of tables to subscribe for (` for all)
 subsyms:`				// list of syms to subscribe for (` for all)
@@ -38,9 +38,6 @@ sortcsv:`:config/sort.csv		// location of csv file
 permitreload:1b				// enable reload of hdbs/rdbs
 compression:()				// specify the compress level, empty list if no required
 gc:1b					// garbage collect at appropriate points (after each table save and after sorting data)
-
-\d .proc
-loadprocesscode:1b              	// whether to load the process specific code defined at ${KDBCODE}/{process type}
 
 // Server connection details
 \d .servers
