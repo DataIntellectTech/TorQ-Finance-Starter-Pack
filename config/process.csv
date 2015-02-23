@@ -14,5 +14,3 @@ localhost,30400,housekeeping,housekeeping1
 localhost,30500,reporter,reporter1
 localhost,30600,compression,compression1
 localhost,30700,feed,feed1
-localhost,31105,vwap,vwap1
-localhost,31106,hlcv,hlcv1
