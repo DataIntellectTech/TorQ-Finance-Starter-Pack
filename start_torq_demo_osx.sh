@@ -32,7 +32,7 @@ q torq.q -load code/processes/gateway.q -p 30000 -U config/passwords/accesslist.
 
 # launch the monitor
 echo 'Starting monitor...'
-q torq.q -load code/processes/monitor.q -p 30200 -U config/passwords/accesslist.txt -o 0 </dev/null >$KDBLOG/torqmonitor.txt 2>&1 &
+q torq.q -load code/processes/monitor.q -p 30200 -o 0 </dev/null >$KDBLOG/torqmonitor.txt 2>&1 &
 
 # launch the reporter
 echo 'Starting reporter...'

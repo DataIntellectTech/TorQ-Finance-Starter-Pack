@@ -27,7 +27,7 @@ REM launch the gateway
 start "gateway" q torq.q -load code/processes/gateway.q -p 30000 -.servers.CONNECTIONS hdb rdb -U config/passwords/accesslist.txt -o 0 -g 1 -w 4000 
 
 REM launch the monitor
-start "monitor" q torq.q -load code/processes/monitor.q -p 30200 -U config/passwords/accesslist.txt -o 0 
+start "monitor" q torq.q -load code/processes/monitor.q -p 30200 -o 0 
 
 REM launch the reporter
 start "reporter" q torq.q -load code/processes/reporter.q -p 30500 -U config/passwords/accesslist.txt -o 0 
