@@ -1,6 +1,9 @@
 # Load the environment
 . ./setenv.sh
 
+# sets the base port for a default TorQ installation
+export KDBBASEPORT=5000
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 
 ##### EMAILS #####
