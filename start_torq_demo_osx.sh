@@ -2,8 +2,8 @@
 . ./setenv.sh
 
 # sets the base port for a default TorQ Finance Starter Pack installation
-export KDBBASEPORT=5000
-export KDBSTACKID="-stackid 5000"
+export KDBBASEPORT=6000
+export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m32 
 
 ##### EMAILS #####

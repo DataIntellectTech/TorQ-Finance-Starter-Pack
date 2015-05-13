@@ -2,8 +2,8 @@
 . ./setenv.sh
 
 # sets the base port for a default TorQ installation
-export KDBBASEPORT=5000
-export KDBSTACKID="-stackid 5000"
+export KDBBASEPORT=6000
+export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 
 ##### EMAILS #####
