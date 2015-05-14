@@ -2,7 +2,7 @@
 . ./setenv.sh
 
 # sets the base port for a default TorQ installation
-export KDBBASEPORT=5000
+export KDBBASEPORT=6000
 
 #kill all torq procs
 echo 'Shutting down TorQ...'

@@ -6,7 +6,7 @@ set KDBCONFIG=%cd%\config
 set KDBLOG=%cd%\logs
 set KDBHTML=%cd%\html
 set KDBLIB=%cd%\lib
-set KDBBASEPORT=5000
+set KDBBASEPORT=6000
 
 REM Additional demo specific environment variables
 set DEMOHDB=%cd%/hdb 
