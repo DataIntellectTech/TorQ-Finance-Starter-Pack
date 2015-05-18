@@ -19,7 +19,7 @@ q torq.q -load code/processes/discovery.q ${KDBSTACKID} -proctype discovery -pro
 
 # launch the tickerplant, rdb, hdb
 echo 'Starting tp...'
-q tickerplant.q database hdb ${KDBSTACKID} -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqtp.txt 2>&1 &
+q code/processes/tickerplant.q database ${TORQHOME}/hdb ${KDBSTACKID} -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqtp.txt 2>&1 &
 
 echo 'Starting rdb...'
 q torq.q -load code/processes/rdb.q ${STACKID} -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqrdb.txt 2>&1 &
@@ -59,4 +59,4 @@ q torq.q -load code/processes/compression.q ${STACKID} -proctype compression -pr
 
 # launch feed
 echo 'Starting feed...'
-q torq.q -load tick/feed.q ${STACKID} -proctype feed -procname feed1 -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
+q torq.q -load code/tick/feed.q ${STACKID} -proctype feed -procname feed1 -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &

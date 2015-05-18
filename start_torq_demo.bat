@@ -1,6 +1,7 @@
 REM see README.txt
 REM SET UP ENVIRONMENT VARIABLES 
 
+set TORQHOME=%cd%
 set KDBCODE=%cd%\code
 set KDBCONFIG=%cd%\config
 set KDBLOG=%cd%\logs
@@ -19,7 +20,7 @@ REM launch the discovery service
 start "discovery" q torq.q -load code/processes/discovery.q -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -o 0 -localtime 
 
 REM launch the tickerplant, rdb, hdb
-start "tickerplant" q tickerplant.q database hdb -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime 
+start "tickerplant" q code/processes/tickerplant.q database %TORQHOME%/hdb -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime 
 start "rdb" q torq.q -load code/processes/rdb.q -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30
 start "hdb1" q torq.q -load hdb/database -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
 start "hdb2" q torq.q -load hdb/database -proctype hdb -procname hdb2 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
@@ -45,7 +46,7 @@ REM launch compression
 start "compression" q torq.q -load code/processes/compression.q -proctype compression -procname compression1 -localtime -g 1
 
 REM launch feed
-start "feed" q torq.q -load tick/feed.q -proctype feed -procname feed1 -U config/passwords/accesslist.txt -localtime 
+start "feed" q torq.q -load code/tick/feed.q -proctype feed -procname feed1 -U config/passwords/accesslist.txt -localtime 
 
 REM to kill it, run this:
 REM q torq.q -load code/processes/kill.q -proctype kill -procname killtick -.servers.CONNECTIONS rdb wdb tickerplant hdb gateway housekeeping monitor discovery sort reporter compression feed -localtime 
