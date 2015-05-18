@@ -2,6 +2,7 @@
 . ./setenv.sh
 
 # sets the base port for a default TorQ Finance Starter Pack installation
+export KDBHDB=${TORQHOME}/hdb/database
 export KDBBASEPORT=6000
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m32 
@@ -25,9 +26,9 @@ echo 'Starting rdb...'
 q torq.q -load code/processes/rdb.q ${STACKID} -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqrdb.txt 2>&1 &
 
 echo 'Starting hdb1...'
-q torq.q -load hdb/database ${STACKID} -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb1.txt 2>&1 &
+q torq.q -load ${KDBHDB} ${STACKID} -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb1.txt 2>&1 &
 echo 'Starting hdb2...'
-q torq.q -load hdb/database ${STACKID} -proctype hdb -procname hdb2 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb2.txt 2>&1 &
+q torq.q -load ${KDBHDB} ${STACKID} -proctype hdb -procname hdb2 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb2.txt 2>&1 &
 
 # launch the gateway
 echo 'Starting gw...'

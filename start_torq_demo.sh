@@ -2,6 +2,7 @@
 . ./setenv.sh
 
 # sets the base port for a default TorQ installation
+export KDBHDB=${TORQHOME}/hdb/database
 export KDBBASEPORT=6000
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
@@ -15,7 +16,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 
 # launch the discovery service
 echo 'Starting discovery proc...'
-q torq.q -load code/processes/discovery.q ${KDBSTACKID}  -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime  </dev/null >$KDBLOG/torqdiscovery.txt 2>&1 &
+q torq.q -load code/processes/discovery.q ${KDBSTACKID} -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime  </dev/null >$KDBLOG/torqdiscovery.txt 2>&1 &
 
 # launch the tickerplant, rdb, hdb
 echo 'Starting tp...'
@@ -25,10 +26,10 @@ echo 'Starting rdb...'
 q torq.q -load code/processes/rdb.q ${KDBSTACKID} -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqrdb.txt 2>&1 &
 
 echo 'Starting hdb1...'
-q torq.q -load hdb/database ${KDBSTACKID} -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb1.txt 2>&1 &
+q torq.q -load ${KDBHDB} ${KDBSTACKID} -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb1.txt 2>&1 &
 
 echo 'Starting hdb2...'
-q torq.q -load hdb/database ${KDBSTACKID} -proctype hdb -procname hdb2 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb2.txt 2>&1 &
+q torq.q -load ${KDBHDB} ${KDBSTACKID} -proctype hdb -procname hdb2 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb2.txt 2>&1 &
 
 # launch the gateway
 echo 'Starting gw...'

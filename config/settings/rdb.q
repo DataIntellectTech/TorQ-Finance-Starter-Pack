@@ -12,7 +12,7 @@ subscribesyms:`			//a list of syms to subscribe for, (`) means all syms
 savetables:1b			//if true tables will be saved at end of day, if false tables wil not be saved, only wiped
 garbagecollect:1b		//if true .Q.gc will be called after each writedown - tradeoff: latency vs memory usage
 upd:insert			//value of upd
-hdbdir:`:hdb			//the location of the hdb directory
+hdbdir:hsym`$getenv[`KDBHDB]    //the location of the hdb directory
 replaylog:1b			//replay the tickerplant log file
 schema:1b			//retrieve the schema from the tickerplant
 tpconnsleepintv:10		//number of seconds between attempts to connect to the tp                                                                 

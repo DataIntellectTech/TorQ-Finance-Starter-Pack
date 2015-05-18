@@ -33,8 +33,8 @@ partitiontype:`date			// set type of partition (defaults to `date, can be `date,
 gmttime:1b				// define whether the process is on gmttime or not
 getpartition:{(`date^partitiontype)$(.z.d;.z.D)gmttime}       // function to determine the partition value
 reloadorder:`hdb`rdb			// order to reload hdbs and rdbs
-hdbdir:`:hdb/database			// move wdb database to different location
-sortcsv:`:config/sort.csv		// location of csv file
+hdbdir:hsym`$getenv[`KDBHDB]            // move wdb database to different location
+sortcsv:hsym`$getenv[`KDBCONFIG],"/sort.csv"               // location of csv file
 permitreload:1b				// enable reload of hdbs/rdbs
 compression:()				// specify the compress level, empty list if no required
 gc:1b					// garbage collect at appropriate points (after each table save and after sorting data)
