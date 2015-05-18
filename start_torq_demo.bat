@@ -19,6 +19,8 @@ REM DEMOEMAILRECEIVER=test@youremail.com
 REM launch the discovery service
 start "discovery" q torq.q -load code/processes/discovery.q -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -o 0 -localtime 
 
+timeout 2
+
 REM launch the tickerplant, rdb, hdb
 start "tickerplant" q code/processes/tickerplant.q database %TORQHOME%/hdb -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime 
 start "rdb" q torq.q -load code/processes/rdb.q -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30
