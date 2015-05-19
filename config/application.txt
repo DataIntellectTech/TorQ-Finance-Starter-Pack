@@ -1,2 +1,2 @@
 
-TorQ Finance Starter Pack
+TorQ Finance Starter Pack v 1.0.0
