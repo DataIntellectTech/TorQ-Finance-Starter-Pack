@@ -17,7 +17,7 @@ n:last each sn
 p:33 27 84 12 20 72 36 51 42 29 / price
 m:" ABHILNORYZ" / mode
 c:" 89ABCEGJKLNOPRTWZ" / cond
-e:8#.Q.a / ex
+e:"NONNONONNN" / ex
 
 / init.q
 
@@ -58,12 +58,12 @@ qpt:5   / avg quotes per trade
 t:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;qn+:x;
- (s i;qp n;`int$x?99;1=x?20;x?c;`$3?e)}
+ (s i;qp n;`int$x?99;1=x?20;x?c;e i)}
 
 q:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;p:qp n;qn+:x;
- (s i;p-qb n;p+qa n;`long$vol x;`long$vol x;x?m;`$3?e)}
+ (s i;p-qb n;p+qa n;`long$vol x;`long$vol x;x?m;e i)}
 
 feed:{h$[rand 2;
  (".u.upd";`trade;t 1+rand maxn);
