@@ -14,3 +14,4 @@ localhost,{KDBBASEPORT}+11,housekeeping,housekeeping1
 localhost,{KDBBASEPORT}+12,reporter,reporter1
 localhost,{KDBBASEPORT}+13,compression,compression1
 localhost,{KDBBASEPORT}+14,feed,feed1
+localhost,{KDBBASEPORT}+15,chainedtp,chainedtp1

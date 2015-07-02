@@ -10,4 +10,5 @@ reporter:pass
 sort:pass
 tickerplant:pass
 wdb:pass
+chainedtp:pass
 admin:admin
