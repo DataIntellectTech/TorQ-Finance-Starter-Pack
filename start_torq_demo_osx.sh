@@ -18,14 +18,14 @@ export DEMOEMAILRECEIVER=test@youremail.com
 echo 'Starting discovery proc...'
 q torq.q -load code/processes/discovery.q ${KDBSTACKID} -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqdiscovery.txt 2>&1 &
 
-# launch the tickerplant, rdb, hdb
+# launch the tickerplant, rdb, ctp, hdb
 echo 'Starting tp...'
 q code/processes/tickerplant.q database ${TORQHOME}/hdb ${KDBSTACKID} -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqtp.txt 2>&1 &
 
 echo 'Starting rdb...'
 q torq.q -load code/processes/rdb.q ${KDBSTACKID} -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqrdb.txt 2>&1 &
 
-echo 'Starting chainedtp...'
+echo 'Starting ctp...'
 q torq.q -load code/processes/chainedtp.q ${KDBSTACKID} -proctype chainedtp -procname chainedtp1 -U config/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqchainedtp.txt 2>&1 &
 
 echo 'Starting hdb1...'
