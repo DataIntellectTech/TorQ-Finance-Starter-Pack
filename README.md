@@ -12,3 +12,9 @@ Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.
 5. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo.sh for Linux and start_torq_demo_osx.sh for Mac OS X. 
 
 For more information on how to configure and get started, read [this document](https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/blob/master/AquaQTorQFinanceStarterPack.pdf?raw=true).  You will need to make some modifications if you wish to send emails from the system. 
+
+## Release Notes
+
+- **1.0.1, July 2015**:
+  * Added Chained Tickerplant process
+
