@@ -10,6 +10,9 @@ set KDBLIB=%TORQHOME%\lib
 set KDBBASEPORT=6000
 set KDBHDB=%TORQHOME%/hdb/database
 
+REM App specific configuration directory
+set KDBAPPCONFIG=%TORQHOME%/appconfig
+
 REM Additional demo specific environment variables
 set PATH=%PATH%;%KDBLIB%\w32
 

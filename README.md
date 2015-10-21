@@ -18,3 +18,7 @@ For more information on how to configure and get started, read [this document](h
 - **1.0.1, July 2015**:
   * Added Chained Tickerplant process
 
+- **1.1.0, October 2015**:
+  * REQUIRES TORQ 2.2.0
+  * Added compatibility with $KDBAPPCONFIG in TorQ 2.2.0 Release
+  
