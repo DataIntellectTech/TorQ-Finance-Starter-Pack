@@ -3,6 +3,7 @@
 
 # sets the base port for a default TorQ installation
 export KDBHDB=${TORQHOME}/hdb/database
+export KDBWDB=${TORQHOME}/wdbhdb
 export KDBBASEPORT=6000
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
