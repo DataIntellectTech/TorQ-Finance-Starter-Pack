@@ -1,6 +1,6 @@
 /- Bespoke configuration file for the compression process
 
 \d .cmp
-hdbpath:`:hdb/database								// hdb directory
+hdbpath:hsym`$getenv[`KDBHDB]								// hdb directory
 maxage:365									// the maximum date range of partitions to scan
 
