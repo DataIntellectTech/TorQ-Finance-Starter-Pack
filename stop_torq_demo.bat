@@ -1,11 +1,17 @@
 REM see README.txt
 REM SET UP ENVIRONMENT VARIABLES
 
-set KDBCODE=%cd%\code
-set KDBCONFIG=%cd%\config
-set KDBLOG=%cd%\logs
-set KDBHTML=%cd%\html
-set KDBLIB=%cd%\lib
+set TORQHOME=%cd%
+set KDBCODE=%TORQHOME%\code
+set KDBCONFIG=%TORQHOME%\config
+set KDBLOG=%TORQHOME%\logs
+set KDBHTML=%TORQHOME%\html
+set KDBLIB=%TORQHOME%\lib
+set KDBBASEPORT=6000
+set KDBHDB=%TORQHOME%/hdb/database
+
+REM App specific configuration directory
+set KDBAPPCONFIG=%TORQHOME%\appconfig
 
 set KDBBASEPORT=6000
 
