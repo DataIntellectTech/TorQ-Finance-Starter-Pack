@@ -21,4 +21,7 @@ For more information on how to configure and get started, read [this document](h
 - **1.1.0, October 2015**:
   * REQUIRES TORQ 2.2.0
   * Added compatibility with $KDBAPPCONFIG in TorQ 2.2.0 Release
-  
+- **1.2.0, April 2016**:
+  * REQUIRES TORQ 2.5.0
+  * Removed u.q
+  * Moved all config directory into appconfig
