@@ -15,3 +15,5 @@ localhost,{KDBBASEPORT}+12,reporter,reporter1
 localhost,{KDBBASEPORT}+13,compression,compression1
 localhost,{KDBBASEPORT}+14,feed,feed1
 localhost,{KDBBASEPORT}+15,chainedtp,chainedtp1
+localhost,{KDBBASEPORT}+16,sortslave,sortslave1
+localhost,{KDBBASEPORT}+17,sortslave,sortslave2

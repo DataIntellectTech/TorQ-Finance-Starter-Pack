@@ -4,7 +4,7 @@
 # sets the base port for a default TorQ installation
 export KDBHDB=${TORQHOME}/hdb/database
 export KDBWDB=${TORQHOME}/wdbhdb
-export KDBBASEPORT=6000
+export KDBBASEPORT=18000
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 
@@ -53,7 +53,7 @@ q torq.q -load code/processes/housekeeping.q ${KDBSTACKID} -proctype housekeepin
 
 # launch sort processes
 echo 'Starting sorting proc...'
-q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sort -procname sort1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqsort.txt 2>&1 & # sort process
+q torq.q -load code/processes/wdb.q -s -2 ${KDBSTACKID} -proctype sort -procname sort1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqsort.txt 2>&1 & # sort process
 
 # launch wdb
 echo 'Starting wdb...'
@@ -66,3 +66,12 @@ q torq.q -load code/processes/compression.q ${KDBSTACKID} -proctype compression 
 # launch feed
 echo 'Starting feed...'
 q torq.q -load code/tick/feed.q ${KDBSTACKID} -proctype feed -procname feed1 -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
+
+# launch sort slave 1
+echo 'Starting sort slave-1...'
+q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortslave -procname sortslave1 -localtime -g 1 </dev/null >$KDBLOG/torqsortslave1.txt 2>&1 &
+
+# launch sort slave 2 
+echo 'Starting sort slave-2...'
+q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortslave -procname sortslave2 -localtime -g 1 </dev/null >$KDBLOG/torqsortslave2.txt 2>&1 &
+
