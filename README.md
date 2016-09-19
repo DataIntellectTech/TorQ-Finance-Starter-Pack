@@ -25,3 +25,7 @@ For more information on how to configure and get started, read [this document](h
   * REQUIRES TORQ 2.5.0
   * Removed u.q
   * Moved all config directory into appconfig
+- **1.2.1, September 2016**:
+  * REQUIRES TORQ 2.6.2
+  * added broadcast functionality to u.q
+  * added sortslave functionality
