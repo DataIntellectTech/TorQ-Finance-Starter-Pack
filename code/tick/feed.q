@@ -84,4 +84,4 @@ init:{
 h:.servers.gethandlebytype[`tickerplant;`any]
 
 init 0
-.z.ts:feed
+.timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];
