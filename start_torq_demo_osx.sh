@@ -20,7 +20,7 @@ q torq.q -load code/processes/discovery.q ${KDBSTACKID} -proctype discovery -pro
 
 # launch the tickerplant, rdb, ctp, hdb
 echo 'Starting tp...'
-q code/processes/tickerplant.q database ${TORQHOME}/hdb ${KDBSTACKID} -proctype tickerplant -procname tickerplant1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqtp.txt 2>&1 &
+q torq.q -load code/processes/tickerplant.q -schemafile database -tplogdir ${TORQHOME}/hdb ${KDBSTACKID} -proctype tickerplant -procname tickerplant1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqtp.txt 2>&1 &
 
 echo 'Starting rdb...'
 q torq.q -load code/processes/rdb.q ${KDBSTACKID} -proctype rdb -procname rdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqrdb.txt 2>&1 &

@@ -26,7 +26,7 @@ start "discovery" q torq.q -load code/processes/discovery.q -proctype discovery 
 timeout 2
 
 REM launch the tickerplant, rdb, hdb
-start "tickerplant" q code/processes/tickerplant.q database %TORQHOME%/hdb -proctype tickerplant -procname tickerplant1 -U appconfig/passwords/accesslist.txt -localtime 
+start "tickerplant" q torq.q -load code/processes/tickerplant.q -schemafile database -tplogdir %TORQHOME%/hdb -proctype tickerplant -procname tickerplant1 -U appconfig/passwords/accesslist.txt -localtime 
 start "rdb" q torq.q -load code/processes/rdb.q -proctype rdb -procname rdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1
 start "chainedtp" q torq.q -load code/processes/chainedtp.q -proctype chainedtp -procname chainedtp1 -U appconfig/passwords/accesslist.txt -localtime
 start "hdb1" q torq.q -load %KDBHDB% -proctype hdb -procname hdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -w 4000
