@@ -29,3 +29,8 @@ For more information on how to configure and get started, read [this document](h
   * REQUIRES TORQ 2.6.2
   * added broadcast functionality to u.q
   * added sortslave functionality
+- **1.3.0, November 2016**:
+  * REQUIRES TORQ 2.7.0
+  * Removed kdb+ tick code
+  * Moved KDBBASEPORT assignment to setenv.sh
+  * Feed process uses timer library
