@@ -47,7 +47,7 @@ eodwaittime:0D00:00:10.000		// time to wait for async calls to complete at eod
 
 // Server connection details
 \d .servers
-CONNECTIONS:`hdb`tickerplant`rdb`gateway	// list of connections to make at start up
+CONNECTIONS:()				// sortslave doesn't need to connect to other processes
 STARTUP:1b					// create connections
 
 // Bespoke WDB config : Finance Starter Pack
@@ -55,3 +55,4 @@ STARTUP:1b					// create connections
 \d .wdb
 savedir:hsym `$getenv[`KDBWDB]		// location to save wdb data
 hdbdir:hsym`$getenv[`KDBHDB]            // move wdb database to different location
+tickerplanttypes:rdbtypes:hdbtypes:gatewaytypes:sorttypes:sortslavetypes:()	// sortslaves don't need these connections
