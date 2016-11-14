@@ -59,5 +59,8 @@ REM launch sort slave process
 start "sortslave1" q torq.q -load code/processes/wdb.q -proctype sortslave -procname slavesort1 -localtime -g 1 
 start "sortslave2" q torq.q -load code/processes/wdb.q -proctype sortslave -procname slavesort2 -localtime -g 1
 
+REM launch metrics
+start "metrics" q torq.q -load code/processes/metrics.q -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1
+
 REM to kill it, run this:
 REM q torq.q -load code/processes/kill.q -proctype kill -procname killtick -.servers.CONNECTIONS rdb wdb tickerplant hdb gateway housekeeping monitor discovery sort reporter compression feed -localtime 

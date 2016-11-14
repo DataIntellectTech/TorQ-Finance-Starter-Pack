@@ -74,3 +74,6 @@ q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortslave -procname 
 echo 'Starting sort slave-2...'
 q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortslave -procname sortslave2 -localtime -g 1 </dev/null >$KDBLOG/torqsortslave2.txt 2>&1 &
 
+# launch metrics
+echo 'Stating metrics...'
+q torq.q -load code/processes/metrics.q ${KDBSTACKID} -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqmetrics.txt 2>&1 &

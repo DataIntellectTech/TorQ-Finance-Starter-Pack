@@ -64,3 +64,6 @@ q torq.q -load code/processes/compression.q ${KDBSTACKID} -proctype compression 
 # launch feed
 echo 'Starting feed...'
 q torq.q -load code/tick/feed.q ${KDBSTACKID} -proctype feed -procname feed1 -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
+
+# launch metrics
+q torq.q -load code/processes/metrics.q ${KDBSTACKID} -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqcompress1.txt 2>&1 &  # compression process
