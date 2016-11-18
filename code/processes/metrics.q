@@ -1,10 +1,10 @@
-/ time windows for metric calculations
 / schemas for tables
 sumstab:([] time:`timestamp$(); sym:`g#`symbol$(); sumssize:`int$(); sumsps:`float$(); sumspricetimediff:`float$());
 latest:([sym:`u#`symbol$()] time:`timestamp$(); sumssize:`int$(); sumsps:`float$(); sumspricetimediff:`float$());
 
-/windows:0D00:01 0D00:05 0D01;
 \d .metrics
+
+/ load settings
 windows:@[value;`windows;0D00:01 0D00:05 0D01];
 enableallday:@[value;`enableallday;1b];
 
@@ -21,7 +21,7 @@ upd:{[t;x]
  }
 
 / function to calc twap/vwap
-/ calculates metrics for windows in "windows"
+/ calculates metrics for windows in .metrics.windows
 metrics:{[syms]
    / allow calling function with ` for all syms
    syms:$[syms~`;exec distinct sym from latest;syms,()];
@@ -80,8 +80,6 @@ init:{
    t:h"select time,sym,size,price from trade where i<",string r[`icounts][`trade];
    .lg.o[`recovery;"recovered ",(string count t)," records"];
    / insert data recovered from RDB into relevant tables
-/   `sumstab insert select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
-/   `latest insert select by sym from sumstab;
    t:select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
    @[`.;`sumstab;:;t];
    @[`.;`latest;:;select by sym from t];
@@ -92,10 +90,6 @@ init:{
  }
 
 \d .
-
-/ assign top level upd & metrics functions to metrics namespace
-/upd:.metrics.upd;
-/metrics:.metrics.metrics;
 
 / get connections to TP, & RDB for recovery
 .servers.CONNECTIONS:`rdb`tickerplant;
