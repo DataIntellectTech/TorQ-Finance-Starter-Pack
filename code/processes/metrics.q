@@ -1,9 +1,14 @@
 / time windows for metric calculations
-windows:0D00:01 0D00:05 0D01;
-
 / schemas for tables
 sumstab:([] time:`timestamp$(); sym:`g#`symbol$(); sumssize:`int$(); sumsps:`float$(); sumspricetimediff:`float$());
 latest:([sym:`u#`symbol$()] time:`timestamp$(); sumssize:`int$(); sumsps:`float$(); sumspricetimediff:`float$());
+
+/windows:0D00:01 0D00:05 0D01;
+\d .metrics
+windows:@[value;`windows;0D00:01 0D00:05 0D01];
+enableallday:@[value;`enableallday;1b];
+
+\d .
 
 / define upd to keep running sums
 upd:{[t;x]
@@ -23,15 +28,20 @@ metrics:{[syms]
    / metric calcs
    t:select sym,timediff,vwap:(lsumsps-sumsps)%lsumssize-sumssize,twap:(lsumspricetimediff-sumspricetimediff)%.z.p - time
      / get sums asof time each window ago
-     from aj[`sym`time;([]sym:syms) cross update time:.z.p - timediff from ([]timediff:windows);sumstab] 
+     from aj[`sym`time;([]sym:syms) cross update time:.z.p - timediff from ([]timediff:.metrics.windows);sumstab] 
           / join latest sums for each sym
-          lj 1!select sym,lsumssize:sumssize, lsumsps:sumsps, lsumspricetimediff:sumspricetimediff from latest
+          lj 1!select sym,lsumssize:sumssize, lsumsps:sumsps, lsumspricetimediff:sumspricetimediff from latest;
 
    / add allday window
-   if[not all syms in key start;start::exec first time by sym from sumstab];
-   `sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - start[sym] from latest where sym in syms
+   if[.metrics.enableallday;
+    if[not all syms in key .metrics.start;.metrics.start::exec first time by sym from sumstab];
+    t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms];
+
+   t
   
  }
+
+\d .metrics 
 
 / check for TP connection
 notpconnected:{[]
@@ -39,32 +49,56 @@ notpconnected:{[]
 
 / get handle for TP & subscribe
 subscribe:{
+  / get handle
   if[count s:.sub.getsubscriptionhandles[`tickerplant;();()!()];
-  r:.sub.subscribe[`trade;`;0b;0b;first s]];:r};
+  subproc:first s;
+  / if got handle successfully, subsribe to trade table
+  .lg.o[`subscribe;"subscribing to ", string subproc`procname];
+  :.sub.subscribe[`trade;`;0b;0b;subproc]]};
 
 / get subscribed to TP, recover up until now from RDB
 init:{
   r:subscribe[];
 
+  / make sure connection to TP was successful, or else wait
   while[notpconnected[];
-	.os.sleep[10];
-	.servers.startup[];
-  	r:subscribe[]];
+   / wait 10 seconds
+   .os.sleep[10];
+   / try again to connect to discovery
+   .servers.startup[];
+   / try again to subscribe to TP
+   r:subscribe[]];
 
+  / check if updates have already been sent from TP, if so recover from RDB
   if[r[`icounts][`trade] > 0;
-   / recover from RDB
+   / make sure connection is made to RDB
    while[not count s:.sub.getsubscriptionhandles[`rdb;();()!()];.os.sleep[10]];
+   / get handle for RDB
    h:exec first w from s;
+   .lg.o[`recovery;"recovering ",(string r[`icounts][`trade])," records from trade table on ",string first s`procname];
+   / query data from before subscription from RDB
    t:h"select time,sym,size,price from trade where i<",string r[`icounts][`trade];
-   `sumstab insert select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
-   `latest insert select by sym from sumstab;
+   .lg.o[`recovery;"recovered ",(string count t)," records"];
+   / insert data recovered from RDB into relevant tables
+/   `sumstab insert select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
+/   `latest insert select by sym from sumstab;
+   t:select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
+   @[`.;`sumstab;:;t];
+   @[`.;`latest;:;select by sym from t];
    ];
 
    / setup empty start dict for use in all day calculation
    start::()!();
  }
 
+\d .
+
+/ assign top level upd & metrics functions to metrics namespace
+/upd:.metrics.upd;
+/metrics:.metrics.metrics;
+
 / get connections to TP, & RDB for recovery
 .servers.CONNECTIONS:`rdb`tickerplant;
 .servers.startup[];
-init[];
+/ run the initialisation function to get subscribed & recover
+.metrics.init[];
