@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    
+      
+        <title>Architecture - Finance Starter Pack</title>
+      
+      
+      
+      
+    
+    <meta property="og:url" content="None">
+    <meta property="og:title" content="Finance Starter Pack">
+    <meta property="og:image" content="None/../graphics/TorQ-logo.png">
+    <meta name="apple-mobile-web-app-title" content="Finance Starter Pack">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+      <link rel="apple-touch-icon" href="../graphics/TorQ-logo.png">
+    
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../graphics/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../graphics/favicon.ico">
+    <style>
+      @font-face {
+      	font-family: 'Icon';
+      	src: url('../assets/fonts/icon.eot?52m981');
+      	src: url('../assets/fonts/icon.eot?#iefix52m981')
+               format('embedded-opentype'),
+      		   url('../assets/fonts/icon.woff?52m981')
+               format('woff'),
+      		   url('../assets/fonts/icon.ttf?52m981')
+               format('truetype'),
+      		   url('../assets/fonts/icon.svg?52m981#icon')
+               format('svg');
+      	font-weight: normal;
+      	font-style: normal;
+      }
+    </style>
+    <link rel="stylesheet" href="../assets/stylesheets/application-a422ff04cc.css">
+    
+      <link rel="stylesheet" href="../assets/stylesheets/palettes-05ab2406df.css">
+    
+    
+      
+      
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono">
+      <style>
+        body, input {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+        }
+        pre, code {
+          font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+        }
+      </style>
+    
+    
+    <script src="../assets/javascripts/modernizr-4ab42b99fd.js"></script>
+    
+  </head>
+  
+  
+  
+  <body class="palette-primary-indigo palette-accent-green">
+    
+      
+      
+    
+    <div class="backdrop">
+      <div class="backdrop-paper"></div>
+    </div>
+    <input class="toggle" type="checkbox" id="toggle-drawer">
+    <input class="toggle" type="checkbox" id="toggle-search">
+    <label class="toggle-button overlay" for="toggle-drawer"></label>
+    <header class="header">
+      <nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        
+          <span class="path">
+            
+          </span>
+        
+        Architecture
+      </div>
+    </div>
+    
+      
+      <div class="button button-twitter" role="button" aria-label="Twitter">
+        <a href="https://twitter.com/AquaQAnalytics" title="@AquaQAnalytics on Twitter" target="_blank" class="toggle-button icon icon-twitter"></a>
+      </div>
+    
+    
+      
+      <div class="button button-github" role="button" aria-label="GitHub">
+        <a href="https://github.com/AquaQAnalytics" title="@AquaQAnalytics on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+      </div>
+    
+    <div class="button button-search" role="button" aria-label="Search">
+      <label class="toggle-button icon icon-search" title="Search" for="toggle-search"></label>
+    </div>
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+    </header>
+    <main class="main">
+      
+      <div class="drawer">
+        <nav aria-label="Navigation">
+  
+  <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack" class="project">
+    <div class="banner">
+      
+        <div class="logo">
+          <img src="../graphics/TorQ-logo.png">
+        </div>
+      
+      <div class="name">
+        <strong>
+          Finance Starter Pack
+          <span class="version">
+            
+          </span>
+        </strong>
+        
+          <br>
+          AquaQAnalytics/TorQ-Finance-Starter-Pack
+        
+      </div>
+    </div>
+  </a>
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul class="repo">
+          <li class="repo-download">
+            
+            <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/archive/master.zip" target="_blank" title="Download" data-action="download">
+              <i class="icon icon-download"></i> Download
+            </a>
+          </li>
+          <li class="repo-stars">
+            <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/stargazers" target="_blank" title="Stargazers" data-action="star">
+              <i class="icon icon-star"></i> Stars
+              <span class="count">&ndash;</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+      
+      <div class="toc">
+        <ul>
+          
+            
+  <li>
+    <a class="" title="Home" href="..">
+      Home
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Getting Started" href="../gettingstarted/">
+      Getting Started
+    </a>
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="current" title="Architecture" href="./">
+      Architecture
+    </a>
+    
+      
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="Processes" href="#processes">
+                Processes
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="What Advantages Does This Give Me?" href="#what-advantages-does-this-give-me">
+                What Advantages Does This Give Me?
+              </a>
+            </li>
+          
+        </ul>
+      
+    
+  </li>
+
+          
+            
+  <li>
+    <a class="" title="Have a Play" href="../play/">
+      Have a Play
+    </a>
+    
+  </li>
+
+          
+        </ul>
+        
+          <hr>
+          <span class="section">The author</span>
+          <ul>
+            
+              
+              <li>
+                <a href="https://twitter.com/AquaQAnalytics" target="_blank" title="@AquaQAnalytics on Twitter">
+                  @AquaQAnalytics on Twitter
+                </a>
+              </li>
+            
+            
+              
+              <li>
+                <a href="https://github.com/AquaQAnalytics" target="_blank" title="@AquaQAnalytics on GitHub">
+                  @AquaQAnalytics on GitHub
+                </a>
+              </li>
+            
+          </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      </div>
+      <article class="article">
+        <div class="wrapper">
+          
+          <h1 id="architecture">Architecture</h1>
+<p>This section will be used to describe the different features included
+within the Finance Starter Pack. For more information on TorQ
+implementation details you can refer to the <a href="https://aquaqanalytics.github.io/TorQ/">TorQ
+Manual</a>,
+review the code which comprises the system or contact us at
+<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#105;&#110;&#102;&#111;&#64;&#97;&#113;&#117;&#97;&#113;&#46;&#99;&#111;&#46;&#117;&#107;">&#105;&#110;&#102;&#111;&#64;&#97;&#113;&#117;&#97;&#113;&#46;&#99;&#111;&#46;&#117;&#107;</a>.</p>
+<h2 id="processes">Processes</h2>
+<p>The architecture of the demo system is as below.</p>
+<p><img alt="Demo Data Capture" src="../graphics/fullarchitecture.png" /></p>
+<h3 id="feed">Feed</h3>
+<p>The feed comprises two randomly generated tables, trade and quote. These
+tables have ’ticks’ generated by feed.q which are pushed to the
+tickerplant in batches every 200 milliseconds. A large batch is pushed
+initially then smaller batches after it. The timestamps are local time.</p>
+<p>The schema definitions can be seen below and can also be viewed in the
+file tick/database.q which will be located under the directory you
+extract the TorQ and Starter Pack files to.</p>
+<pre><code>quote:([]time:`timestamp$(); sym:`g#`symbol$(); bid:`float$(); ask:`float$(); bsize:`long$(); asize:`long$(); mode:`char$(); ex:`symbol$())
+trade:([]time:`timestamp$(); sym:`g#`symbol$(); price:`float$(); size:`int$(); stop:`boolean$(); cond:`char$(); ex:`symbol$())
+
+meta quote
+c    | t f a
+-----| -----
+time | p    
+sym  | s   g
+bid  | f    
+ask  | f    
+bsize| j    
+asize| j    
+mode | c    
+ex   | s
+
+meta trade
+c    | t f a
+-----| -----
+time | p    
+sym  | s   g
+price| f    
+size | i    
+stop | b    
+cond | c    
+ex   | s
+</code></pre>
+<h3 id="tickerplant">Tickerplant</h3>
+<p>The tickerplant is the standard kdb+tick tickerplant, with a
+modification to apply timestamps as timestamp type rather than timespan.
+The tickerplant log file will be written to hdb/database.</p>
+<h3 id="rdb">RDB</h3>
+<p>The RDB is a TorQ process which holds data for the current GMT day in
+memory. Unlike kdb+tick, it does not persist data to disk at end-of-day.</p>
+<h3 id="wdb-and-sort-processes">WDB and Sort Processes</h3>
+<p>The WDB is a specilized database process which subscribes to a
+tickerplant and periodically persists data to disk. At EOD this data is
+used to create the HDB partition. It has been configured to operate in
+conjuction with a sorting process which sorts the data it writes to
+disk.</p>
+<p>The sorting process is configured to sort by sym(p#) and time, although
+this can be configured on a per-table basis in $KDBCONFIG/sort.csv</p>
+<h3 id="gateway">Gateway</h3>
+<p>The gateway connects to the RDB and HDB processes and runs queries
+against them. It can access a single process, or join data across
+multiple processes. It also does load balancing and implements a level
+of resilience by hiding back end process failure from clients. Later in
+this document in the Have a Pay chapter a number of example queries are
+provided which demonstrate the functionality of the gateway process</p>
+<h3 id="report-engine">Report Engine</h3>
+<p>The Report Engine runs queries on a schedule against specific back end
+processes, including gateways. Once the report is complete the result
+can be further processed, with available actions such as emailing it out
+or writing it to a file. This has been used to implement some basic
+monitoring checks and run some end of day reports. The configuration
+file is in $KDBCONFIG/reporter.csv.</p>
+<h3 id="housekeeping">Housekeeping</h3>
+<p>The housekeeping process is used to maintain some of the files written
+to disk by TorQ. In the demo we use it to archive tplogs and both
+archive and eventually remove log files from the TorQ working
+directories.</p>
+<p>The process has been configured like so:</p>
+<pre><code>zip,{KDBLOG}/,*.log,,10
+rm,{KDBLOG}/,*.gz,,30
+zip,{KDBHDB}/,database20*,,1
+</code></pre>
+<p>The first line can be translated to mean ’Compress the files in the
+KDBLOG/ path, matching the *.log pattern, excluding no files and
+where the files are older than 10 days’</p>
+<p>Combined with the other lines, the system will compress process logs
+after 10 days, delete compressed process logs after 30 days and compress
+tplogs after 1 day.</p>
+<p>The compression process will check for work to be done everyday at 0200
+local time.</p>
+<h3 id="compression">Compression</h3>
+<p>The compression process is used to periodically scan the hdb directory
+for columnar binary files to compress. The compression settings are
+defined in $KDBCONFIG/compressionconfig.csv. This allows configuration
+of compression parameters on a per table, column and age basis.</p>
+<p>It is intended to be used with a scheduling program like cron. By
+default it is a transient process as it will start up, check for files
+to compress, does any work required and then dies.</p>
+<h3 id="discovery">Discovery</h3>
+<p>The discovery process is used by the other processes to locate other
+processes of interest, and register their own capabilities.</p>
+<h3 id="monitor">Monitor</h3>
+<p>The monitor process is a basic monitoring process to show process
+avaiability via heartbeating, and to display error messages published by
+other processes.</p>
+<h2 id="what-advantages-does-this-give-me">What Advantages Does This Give Me?</h2>
+<p>A standard kdb+tick set up is great for a lot of installations but some
+customers have modified it substantially to fit their needs.</p>
+<h3 id="end-of-day">End Of Day</h3>
+<p>In a standard kdb+tick setup, the end-of-day event is time consuming and
+the data is unavailable as it is written from the RDB memory to the HDB
+disk. With the above setup, this outage is minimized in the following
+ways:</p>
+<ul>
+<li>
+<p>Faster end-of-day as data is written periodically to disk throughout
+    the day</p>
+</li>
+<li>
+<p>No back-pressure (slow subscriber problem) on the tickerplant as the
+    RDB doesn’t write to disk, and the WDB doesn’t do the time consuming
+    sort on the data</p>
+</li>
+<li>
+<p>“Yesterday’s” data is available in the RDB until the end-of-day
+    operation is complete, meaning no data outage</p>
+</li>
+</ul>
+<h3 id="gateway-resilience-load-balancing-and-parallel-access">Gateway: Resilience, Load Balancing and Parallel Access</h3>
+<p>kdb+tick doesn’t include a gateway as standard. There are some examples
+on code.kx, but production gateways are generally non trivial to write.
+The TorQ gateway ensures</p>
+<ul>
+<li>
+<p>Backend processes can be replicated as required. If one process
+    fails, another will take over transparently to the client</p>
+</li>
+<li>
+<p>New processes can be started intraday and will be automatically
+    available via Discovery Service notifications</p>
+</li>
+<li>
+<p>Queries are run in parallel and load balanced across back end
+    processes- multiple clients can query at once</p>
+</li>
+</ul>
+<h3 id="supportability">Supportability</h3>
+<p>TorQ adds a layer of standard tools to aid system supportability on top
+of kdb+tick.</p>
+<ul>
+<li>
+<p>Common directories for loading code in a fault tolerant way</p>
+</li>
+<li>
+<p>Output and error log messages are timestamped and standardized</p>
+</li>
+<li>
+<p>Log messages can be published to external applications</p>
+</li>
+<li>
+<p>All client queries are logged and timed, and can be externally
+    published</p>
+</li>
+<li>
+<p>Monitoring checks are incorporated</p>
+</li>
+<li>
+<p>Email notifications are incorporated</p>
+</li>
+<li>
+<p>Housekeeping automatically executed</p>
+</li>
+</ul>
+          <aside class="copyright" role="note">
+            
+              Copyright &copy 2016 AquaQ Analytics Limited.  Kx &reg and kdb+ are registered trademarks of Kx Systems Inc. &ndash;
+            
+            Documentation built with
+            <a href="http://www.mkdocs.org" target="_blank">MkDocs</a>
+            using the
+            <a href="http://squidfunk.github.io/mkdocs-material/" target="_blank">
+              Material
+            </a>
+            theme.
+          </aside>
+          
+            <footer class="footer">
+              
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      
+        <a href="../gettingstarted/" title="Getting Started">
+          <span class="direction">
+            Previous
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                Getting Started
+              </div>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+    <div class="next">
+      
+        <a href="../play/" title="Have a Play">
+          <span class="direction">
+            Next
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                Have a Play
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      
+    </div>
+  </nav>
+
+            </footer>
+          
+        </div>
+      </article>
+      <div class="results" role="status" aria-live="polite">
+        <div class="scrollable">
+          <div class="wrapper">
+            <div class="meta"></div>
+            <div class="list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      var base_url = '..';
+      var repo_id  = 'AquaQAnalytics/TorQ-Finance-Starter-Pack';
+    </script>
+    <script src="../assets/javascripts/application-997097ee0c.js"></script>
+    
+    
+      <script>
+        (function(i,s,o,g,r,a,m){
+          i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||
+          []).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;
+          m.parentNode.insertBefore(a,m)
+        })(window, document,
+          'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        /* General initialization */
+        ga('create', 'UA-51911331-4', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
+        /* Track outbound links */
+        var buttons = document.querySelectorAll('a');
+        Array.prototype.map.call(buttons, function(item) {
+          if (item.host != document.location.host) {
+            item.addEventListener('click', function() {
+              var action = item.getAttribute('data-action') || 'follow';
+              ga('send', 'event', 'outbound', action, item.href);
+            });
+          }
+        });
+        /* Register handler to log search on blur */
+        var query = document.querySelector('.query');
+        query.addEventListener('blur', function() {
+          if (this.value) {
+            var path = document.location.pathname;
+            ga('send', 'pageview', path + '?q=' + this.value);
+          }
+        });
+      </script>
+    
+  </body>
+</html>
