@@ -29,5 +29,6 @@ time.
 Further information about each feature can be found in the [TorQ
 Manual](https://aquaqanalytics.github.io/TorQ/).
 
-*email:* [support@aquaq.co.uk](support@aquaq.co.uk)
-*web:*[www.aquaq.co.uk](www.aquaq.co.uk)
+*email:* <support@aquaq.co.uk>
+
+*web:* [www.aquaq.co.uk](http://www.aquaq.co.uk)
