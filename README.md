@@ -11,7 +11,23 @@ Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.
 4. Unzip the starter pack over the top (this will replace some files)
 5. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo.sh for Linux and start_torq_demo_osx.sh for Mac OS X. 
 
-For more information on how to configure and get started, read [this document](https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/blob/master/AquaQTorQFinanceStarterPack.pdf?raw=true).  You will need to make some modifications if you wish to send emails from the system. 
+For more information on how to configure and get started, go to [this site](https://aquaqanalytics.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system. 
+
+## Updating the Documentation with Mkdocs
+
+To make changes to the documentation website you must simply use this command while in the branch you have made the changes on:
+
+`mkdocs gh-deploy`
+
+You will be prompted to enter a username and password, after this the site should have been updated. You can test the site locally if you want using mkdocs. First use the command:
+
+`mkdocs build`
+
+Then:
+
+`mkdocs serve -a YourIp:Port`
+
+Head to the address it gives you to check if your changes have worked. More information about using mkdocs can be found [here](http://www.mkdocs.org/)
 
 ## Release Notes
 
