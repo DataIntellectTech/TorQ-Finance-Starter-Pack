@@ -52,12 +52,6 @@ extract the TorQ and Starter Pack files to.
     cond | c    
     ex   | s   
 
-### Tickerplant
-
-The tickerplant is the standard kdb+tick tickerplant, with a
-modification to apply timestamps as timestamp type rather than timespan.
-The tickerplant log file will be written to hdb/database.
-
 ### RDB
 
 The RDB is a TorQ process which holds data for the current GMT day in
@@ -137,6 +131,21 @@ processes of interest, and register their own capabilities.
 The monitor process is a basic monitoring process to show process
 avaiability via heartbeating, and to display error messages published by
 other processes.
+
+### Metrics
+
+A simple metrics engine is provided as an example of a real-time
+subscriber process. This process subscribes to updates from the 
+tickerplant, and provides TWAP and VWAP metrics for configurable time
+windows. On connection it subscribes to the tickerplant and attempts 
+to recover relevant data up until that point from the RDB. 
+
+The settings are shown here:
+
+| Settings | Type | Description |
+| :------: | :--: | :---------: |
+| .metrics.windows | timespan (list) | List of time windows over which to perform metrics |
+| .metrics.enableallday | boolean | Boolean to enable the "all day" window in addition to above windows |
 
 What Advantages Does This Give Me?
 ----------------------------------
