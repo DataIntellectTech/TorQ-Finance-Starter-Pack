@@ -1,2 +1,2 @@
 \d .subcut
-cutenabled:1b                   /- switch on subscribercutoff
+enabled:1b                   /- switch on subscribercutoff
