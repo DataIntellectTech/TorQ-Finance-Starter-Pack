@@ -9,7 +9,7 @@ replaylog:@[value;`replaylog;1b];                         // Whether or not to r
 
 
 // datareplay settings
-realtime:@[value;`realtime;1b];                           // use realtime feed or datareplay. default is 0b (datareplay)
+realtime:@[value;`realtime;0b];                           // use realtime feed or datareplay. default is 0b (datareplay)
 replayinterval:@[value;`replayinterval;0D00:10:00.00];    // interval to run calcvwap at
 replaysts:@[value;`replaysts;2015.01.07D01:00:00.00];     // start time of data to retreive from hdb
 replayets:@[value;`replayets;2015.01.08D17:00:00.00];     // end time of data to retrieve from hdb
@@ -82,7 +82,7 @@ subscribe:{[]
     .lg.o[`subscribe;"found available tickerplant, attempting to subscribe"];
     .sub.subscribe[subscribeto;subscribesyms;schema;replaylog;first s];
     ];
-  .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;replayinterval;(`.vwapsub.calcvwap;`);0h;"Run calcvwap every 1";1b]
+  .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;replayinterval;(`logvwapnow;`);0h;"Run showvwapnow at set interval";1b]
   }
 
 \d .
@@ -91,7 +91,7 @@ subscribe:{[]
 vwap:([sym:`$()]spts:`float$();ssize:`int$());
 vwaptimes:([]time:`timestamp$();vwap:());
 
-calcvwap:.vwapsub.calcvwap
+logvwapnow:{.vwapsub.logvwap[.z.p]};
 
 // set upd function at top level
 upd:.vwapsub.upd;
