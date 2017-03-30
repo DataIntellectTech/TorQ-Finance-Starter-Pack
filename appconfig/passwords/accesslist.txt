@@ -13,4 +13,5 @@ wdb:pass
 chainedtp:pass
 sortslave:pass
 metrics:pass
+vwapsub:pass
 admin:admin
