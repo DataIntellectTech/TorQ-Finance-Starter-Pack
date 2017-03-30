@@ -82,7 +82,7 @@ subscribe:{[]
     .lg.o[`subscribe;"found available tickerplant, attempting to subscribe"];
     .sub.subscribe[subscribeto;subscribesyms;schema;replaylog;first s];
     ];
-  .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;replayinterval;(`logvwapnow;`);0h;"Run showvwapnow at set interval";1b]
+  .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;replayinterval;(`logvwapnow;`);0h;"Run logvwapnow at set interval";1b]
   }
 
 \d .
