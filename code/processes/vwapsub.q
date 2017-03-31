@@ -2,11 +2,6 @@
 
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant]; // tickerplant types to subscribe to
 hdbtypes:@[value;`hdbtypes;`hdb];                         // hdbtypes to connect to
-subscribeto:@[value;`subscribeto;`trade];                 // tables to subscribe to
-subscribesyms:@[value;`subscribesyms;`];                  // symbols to subscribe to
-schema:@[value;`schema;0b];                               // Whether or not to get table schemas
-replaylog:@[value;`replaylog;1b];                         // Whether or not to replay tickerplant logfile
-
 
 // datareplay settings
 realtime:@[value;`realtime;0b];                           // use realtime feed or datareplay. default is 0b (datareplay)
@@ -80,7 +75,7 @@ subscribe:{[]
 
   if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];;
     .lg.o[`subscribe;"found available tickerplant, attempting to subscribe"];
-    .sub.subscribe[subscribeto;subscribesyms;schema;replaylog;first s];
+    .sub.subscribe[`trade;`;0b;0b;first s];
     ];
   .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;replayinterval;(`logvwapnow;`);0h;"Run logvwapnow at set interval";1b]
   }
