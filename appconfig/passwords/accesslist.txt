@@ -1,5 +1,6 @@
 discovery:pass
 feed:pass
+iexfeed:pass
 gateway:pass
 hdb:pass
 housekeeping:pass
