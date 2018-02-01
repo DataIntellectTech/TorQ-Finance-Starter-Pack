@@ -16,7 +16,7 @@ For more information on how to configure and get started, go to [this site](http
 ## Further Information
 
 The [IEX API](https://iextrading.com/developer/docs/) provides free data that currently does not require authentication to access. Any changes to the API will be reflected in this TorQ pack.
-[IEX Terms of Service] (https://iextrading.com/api-exhibit-a/)
+[IEX Terms of Service](https://iextrading.com/api-exhibit-a/)
 
 ## Updating the Documentation with Mkdocs
 
@@ -34,13 +34,13 @@ Then:
 
 Head to the address it gives you to check if your changes have worked. More information about using mkdocs can be found [here](http://www.mkdocs.org/)
 
-## Windows SSL Certificate
+## SSL Certificate
 
-The web request that goes to the API provided by IEX goes through the HTTPS protocol. If the relevant security certificates are not installed then the data requests will fail. To install the SSL ceritificates:
+The web request that goes to the API provided by IEX goes through HTTPS. If the relevant security certificates are not installed then the data requests will fail. The setup is similar for Windows and Linux systems. To install the SSL ceritificates:
 
-1. Install OpenSSL from [SLProWeb](https://slproweb.com/products/Win32OpenSSL.html)
+1. Install OpenSSL from [SLProWeb](https://slproweb.com/products/Win32OpenSSL.html). This should be installed as default on most Linux distributions.
 2. Download the [certificate file](https://curl.haxx.se/ca/cacert.pem)
-3. The environment path must then be set in command prompt via "setx SSL_CA_CERT_FILE C:\path\to\cacert.pem" which will permanently set the path for future sessions
+3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
 ## To do list
 

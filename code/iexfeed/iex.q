@@ -6,21 +6,22 @@ reqtype:@[value;`reqtype;`both];
 syms:@[value;`syms;`CAT`DOG];
 callback:@[value;`callback;".u.upd"];
 callbackhandle:@[value;`callbackhandle;0i];
+callbackconnection:@[value;`callbackconnection;`];
 quote_suffix:@[value;`quote_suffix;{[sym] "/1.0/stock/",sym,"/quote"}];
 trade_suffix:@[value;`trade_suffix;{[sym]"/1.0/tops/last?symbols=",sym}];
 upd:@[value;`upd;{[t;x] .iex.callbackhandle(.iex.callback;t; value flip x)}];
 timerperiod:@[value;`timerperiod;0D00:00:02.000];
 
 .iex.init:{[x]
-   if[`main_url in key[x];.iex.main_url:x[`main_url]];
-   if[`quote_suffix in key[x];.iex.quote_suffix:x[`quote_suffix]];
-   if[`trade_suffix in key[x];.iex.trade_suffix:x[`trade_suffix]];
-   if[`syms in key[x];.iex.syms: upper x[`syms]];
-   if[`reqtype in key[x];.iex.reqtype:x[`reqtype]];
-   if[`callbackconnection in key[x];.iex.callbackhandle :neg[hopen[.iex.callbackconnection:x[`callbackconnection]]]];
-   if[`callbackhandle in key[x];.iex.callbackhandle:x[`callbackhandle]];
-   if[`callback in key[x];.iex.callback: $[.iex.callbackhandle=0; string @[value;x[`callback];{[x;y]x set {[t;x]x}}[x[`callback]]]; x[`callback]]];
-   if[`upd in key[x]; .iex.upd:x[`upd]];
+   if[`main_url in key x;.iex.main_url:x[`main_url]];
+   if[`quote_suffix in key x;.iex.quote_suffix:x[`quote_suffix]];
+   if[`trade_suffix in key x;.iex.trade_suffix:x[`trade_suffix]];
+   if[`syms in key x;.iex.syms: upper x[`syms]];
+   if[`reqtype in key x;.iex.reqtype:x[`reqtype]];
+   if[`callbackconnection in key x;.iex.callbackhandle :neg[hopen[.iex.callbackconnection:x[`callbackconnection]]]];
+   if[`callbackhandle in key x;.iex.callbackhandle:x[`callbackhandle]];
+   if[`callback in key x;.iex.callback: $[.iex.callbackhandle=0; string @[value;x[`callback];{[x;y]x set {[t;x]x}}[x[`callback]]]; x[`callback]]];
+   if[`upd in key x; .iex.upd:x[`upd]];
    .iex.timer:$[not .iex.reqtype in key .iex.timer_dict;'`timer;.iex.timer_dict[.iex.reqtype]];
    }
 
@@ -47,7 +48,6 @@ get_last_trade:{tab:{[syms]
    }[.iex.syms]; .iex.upd[`trade;tab]
    }
 
-
 get_quote:{tab:raze {[sym]
    sym:string[upper sym];
    suffix:.iex.quote_suffix[sym];
@@ -56,7 +56,6 @@ get_quote:{tab:raze {[sym]
    select time:"P"$string(.iex.convert_epoch latestUpdate), sym:`$symbol, bid: `float$iexBidPrice, ask:`float$iexAskPrice, bsize:`long$iexBidSize, asize:`long$iexAskSize, mode:(count data)#`char$(), ex:(count data)#`char$() from data
    }'[.iex.syms,()]; .iex.upd[`quote;tab] 
    }
-
 
 timer_tradeonly:.iex.get_last_trade
 timer_quoteonly:.iex.get_quote

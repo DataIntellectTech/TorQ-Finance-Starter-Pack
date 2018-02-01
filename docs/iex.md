@@ -1,16 +1,11 @@
 # TorQ-IEX
 
-An example production ready market data capture system, using randomly generated financial data along with market data pulled from the IEX. This is installed on top of the base TorQ package, and includes a version of [kdb+tick](http://code.kx.com/wsvn/code/kx/kdb+tick).
+An example production ready market data capture system, using randomly generated financial data along with live market data from the IEX. This is installed on top of the base TorQ package, and includes a version of [kdb+tick](http://code.kx.com/wsvn/code/kx/kdb+tick).
 
 ### Example-Usage
 
-Below are examples showing how to use the ``.iex.init`` functions.
+When the IEX feed is launched in TorQ, ``appconfig/settings/iexfeed.q`` is ran, followed by ``code/iexfeed/iex.q`` and finally ``code/processes/iexfeed.q``. ``appconfig/settings/iexfeed.q`` can be used to change default variables within the ``.iex`` namespace. These default values are set in ``code/iexfeed/iex.q``, if no values have been assigned in ``appconfig/settings/iexfeed.q``.  The .iex variables that can be changed are:  
 
-#### ``.iex.init``
-
-When TorQ is started the ``.iex.init`` function is called to initialise certain variables. It is callled within the code/processes/iexfeed.q file. This process is set by default to run on KDBBASEPORT+14.
-
-The variables that can be changed by ``.iex.init`` are: 
 * ``.iex.main_url``
   * Used to decide which API to request data from
   * Default value is ``"https://api.iextrading.com"``
@@ -23,32 +18,40 @@ The variables that can be changed by ``.iex.init`` are:
   * Default value is `` `CAT`DOG``
 * ``.iex.reqtype``
   * This decides the request type to make. Trade data, quote data or both can be requested
-  * Default value is `` `trade``
-  * This can be changed to either `` `quote`` or `` `both``  
+  * Default value is `` `both``
+  * This can be changed to either `` `quote`` or `` `trade``
 * ``.iex.upd``
-  * This is called when either a trade or quote request is made 
+  * This is called when either a trade or quote request is made
   * It is called with two arguements. The first is the table name, either `` `trade`` or `` `quote``, and the second is the corresponding table
   * The default value is ``{[t;x] .iex.callbackhandle(.iex.callback;t; value flip x)}``
 * ``.iex.callback``
   * This is called within the default ``.iex.upd`` function
-  * If the ``.iex.upd`` function is unchanged the ``.iex.callback`` function is executed within a port decided by ``.iex.callbackhandle`` and ``.iex.callbackconnection``
-  * The default value is ``.u.upd``, if ``.u.upd`` is defined within the current session or ``{[t;x] x}`` if not
+  * The default value is ``.u.upd``
+  * If the ``.iex.upd`` function is unchanged, the ``.iex.callback`` function is executed within a port decided by ``.iex.callbackhandle``
+  * ``.iex.callbackhandle`` is set in ``code/processes/iexfeed.q``. The discovery service is used to open an asynchronous connection to the tickerplant
+
+#### .iex.init
+
+If you wish to use the standalone ``code/iexfeed/iex.q`` script then the ``.iex.init`` function can be called to change the default vaariables described above. This should only be used if not using the TorQ framework. 
+
+When using ``code/iexfeed/iex.q`` outside of the TorQ framework the port in which the ``.iex.callback`` function will be executed in is not set. Thus the ``.iex.init`` function can be used to set two further variables:
+
 * ``.iex.callbackconnection``
-  * This determines which port the default ``.iex.callback`` function will be executed in 
-  * Default value is `` ` `` 
+  * This is the port the default ``.iex.callback`` function will be executed in
+  * Default value is `` ` ``
   * If .iex.callbackconnection is set messages will be sent asynchronously
 * ``.iex.callbackhandle``
   * This can also be changed to decide which port the ``.iex.callback`` function will be executed in, using the handle to the port itself
-  * Default value is ``0i`` and can also be changed by setting ``.iex.callbackconnection`` using ``.iex.init``
+  * Default value is ``0i``
   * If both ``.iex.callbackconnection`` and ``.iex.callbackhandle`` are set using ``.iex.init``, ``.iex.callbackhandle`` has precidence
   * Messages will be sent synchronously or asynchronously depending on the sign of the handle
 
 #### Example Function Call
 
-``.iex.init`` should be called with a dictionary. The keys of the dictionary should be the names of the variables or functions that are being set. The values associated with these keys should be the new variable values. An example of using ``.iex.init`` can be seen within the code/processes/iexfeed.q file.
+``.iex.init`` should be called with a dictionary. The keys of the dictionary should be the names of the variables or functions that are being set. The values associated with these keys should be the new variable values. An example of using ``.iex.init`` can be seen below.
 
 ```
-.iex.init (`syms;`callbackhandle;`callback;`reqtype)!(`cat;h;".u.upd";`both)
+.iex.init (`syms;`callbackhandle;`callback;`reqtype)!(`cat;5i;".u.upd";`both)
 ```
 
 ### Raw JSON Data
@@ -60,7 +63,6 @@ The following data is an example of trade and quote data that can be pulled down
 Taken from: [most recent Apple trade data](https://api.iextrading.com/1.0/tops/last?symbols=AAPL)
 
 ` [{"symbol":"AAPL","price":178.675,"size":100,"time":1516723026747}] `
-
 
 ##### Raw Quote Data
 
