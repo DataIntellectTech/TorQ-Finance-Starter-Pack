@@ -16,7 +16,6 @@ syms:`CAT`DOG
 callback:".u.upd"
 quote_suffix:{[sym] "/1.0/stock/",sym,"/quote"}
 trade_suffix:{[sym]"/1.0/tops/last?symbols=",sym}
-upd:{[t;x] .iex.callbackhandle(.iex.callback;t; value flip x)}
+upd:{[t;x] .iex.callbackhandle(.iex.callback;t; value flip delete time from x)}
 timerperiod:0D00:00:02.000
-
 \d .

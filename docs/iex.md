@@ -1,6 +1,6 @@
 # TorQ-IEX
 
-An example production ready market data capture system, using randomly generated financial data along with live market data from the IEX. This is installed on top of the base TorQ package, and includes a version of [kdb+tick](http://code.kx.com/wsvn/code/kx/kdb+tick).
+An example production ready market data capture system, using randomly generated financial data along with live market data from the IEX. This is installed on top of the base TorQ package, and includes a version of [kdb+tick](http://code.kx.com/wsvn/code/kx/kdb+tick). The live market data from the IEX is sent to the ``trade_iex`` and ``quote_iex`` tables within the RDB.
 
 ### Example-Usage
 
