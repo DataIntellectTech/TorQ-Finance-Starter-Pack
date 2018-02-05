@@ -42,12 +42,6 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 2. Download the [certificate file](https://curl.haxx.se/ca/cacert.pem)
 3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
-## To do list
-
-Future features of this finance pack are listed below:
-
-- [ ] Only pass new data from IEX
-
 ## Release Notes
 
 - **1.0.1, July 2015**:
@@ -69,7 +63,12 @@ Future features of this finance pack are listed below:
   * Removed kdb+ tick code
   * Moved KDBBASEPORT assignment to setenv.sh
   * Feed process uses timer library
-- **1.4.0, January 2018**:
+- **1.4.0, December 2017**:
+  * Rationalised connections
+  * Added metrics engine
+  * Added vwap subscriber process
+  * Added version dependency requirements
+- **1.5.0, January 2018**:
   * Added IEX feed
   * Added usage file for IEX functions
 

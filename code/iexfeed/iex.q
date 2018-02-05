@@ -36,7 +36,7 @@ get_last_trade:{tab:{[syms]
    suffix:.iex.trade_suffix[syms];
    / Parse json response and put into table. Trade data from https://iextrading.com/developer/
    data:.j.k .iex.get_data[.iex.main_url;suffix];
-   tab:select sym:`$symbol, price:`float$price, size:`int$size, stop:(count data)#0b, cond:(count data)#`char$(), ex:(count data)#`char$(), srctime:"P"$string(.iex.convert_epoch time) from data
+   tab:select sym:`$symbol, price:`float$price, size:`int$size, stop:(count data)#0b, cond:(count data)#`char$(), ex:(count data)#`char$(), srctime:.iex.convert_epoch time from data
    }[.iex.syms]; .iex.upd[`trade_iex;tab]
    }
 
@@ -45,12 +45,18 @@ get_quote:{tab:raze {[sym]
    suffix:.iex.quote_suffix[sym];
    / Parse json response and put into table
    data: enlist .j.k .iex.get_data[.iex.main_url;suffix];
-   select sym:`$symbol, bid: `float$iexBidPrice, ask:`float$iexAskPrice, bsize:`long$iexBidSize, asize:`long$iexAskSize, mode:(count data)#`char$(), ex:(count data)#`char$(), srctime:"P"$string(.iex.convert_epoch latestUpdate) from data
+   select sym:`$symbol, bid: `float$iexBidPrice, ask:`float$iexAskPrice, bsize:`long$iexBidSize, asize:`long$iexAskSize, mode:(count data)#`char$(), ex:(count data)#`char$(), srctime:.iex.convert_epoch latestUpdate from data
    }'[.iex.syms,()]; .iex.upd[`quote_iex;tab] 
    }
 
 timer_both:{.iex.get_last_trade[];.iex.get_quote[]}
 timer_dict:`trade`quote`both!(.iex.get_last_trade;.iex.get_quote;timer_both)
-timer:$[not .iex.reqtype in key .iex.timer_dict;'`timer;.iex.timer_dict[.iex.reqtype]]
+
+timer:{ @[$[not .iex.reqtype in key .iex.timer_dict;
+              {'`$"timer request type not valid: ",string .iex.reqtype};
+              .iex.timer_dict[.iex.reqtype]];
+          [];
+          {.lg.e[`iextimer;"failed to run iex timer function: ",x]}]}
+
 
 \d . 
