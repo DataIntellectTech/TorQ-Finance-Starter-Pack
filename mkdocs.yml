@@ -5,6 +5,7 @@ pages:
     - Getting Started: gettingstarted.md
     - Architecture: architecture.md
     - Have a Play: play.md
+    - IEX: iex.md
 copyright: 'Copyright &copy 2016 AquaQ Analytics Limited.  Kx &reg and kdb+ are registered trademarks of Kx Systems Inc.'
 
 theme: 'material'

@@ -16,3 +16,13 @@ export KDBBASEPORT=6000
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l[32|64]
 # e.g. osx:
 # export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m[32|64]
+
+touch $KDBLOG/torqsslcert.txt
+if [ -z "${SSL_CA_CERT_FILE}" ]; then
+	mkdir ${PWD}/certs
+	curl -s  https://curl.haxx.se/ca/cacert.pm > ${PWD}/certs/cabundle.pem
+	echo "`date`    The SSL securiity certificate has been downloaded to ${PWD}/certs/cabundle.pem" </dev/null >>$KDBLOG/torqsslcert.txt 
+	export SSL_CA_CERT_FILE=${PWD}/certs/cabundle.pem
+else
+	echo "`date`    The SSL security certificate already exists. If https requests fail it may be because of inappropriate certification." </dev/null >>$KDBLOG/torqsslcert.txt 
+fi
