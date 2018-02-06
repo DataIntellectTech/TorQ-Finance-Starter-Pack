@@ -39,7 +39,7 @@ Head to the address it gives you to check if your changes have worked. More info
 The web request that goes to the API provided by IEX goes through HTTPS. If the relevant security certificates are not installed then the data requests will fail. The setup is similar for Windows and Linux systems. To install the SSL ceritificates:
 
 1. Install OpenSSL from [SLProWeb](https://slproweb.com/products/Win32OpenSSL.html). This should be installed as default on most Linux distributions.
-2. Download the [certificate file](https://curl.haxx.se/ca/cacert.pem)
+2. Download the [certificate file](https://curl.haxx.se/ca/cacert.pem).
 3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
 ## Release Notes

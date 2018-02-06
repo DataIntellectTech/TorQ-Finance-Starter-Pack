@@ -37,21 +37,21 @@ If you wish to use the standalone ``code/iexfeed/iex.q`` script then the ``.iex.
 When using ``code/iexfeed/iex.q`` outside of the TorQ framework the port in which the ``.iex.callback`` function will be executed in is not set. Thus the ``.iex.init`` function can be used to set two further variables:
 
 * ``.iex.callbackconnection``
-  * This is the port the default ``.iex.callback`` function will be executed in
-  * Default value is `` ` ``
-  * If .iex.callbackconnection is set messages will be sent asynchronously
+  * These are the server details ``.iex.callback`` function will be executed in
+  * If not supplied during the init call the message callback will be executed locally `` ` ``
+  * If ``.iex.callbackconnection`` is supplied a connection handle will be opened and all updates will be sent asynchronously 
 * ``.iex.callbackhandle``
-  * This can also be changed to decide which port the ``.iex.callback`` function will be executed in, using the handle to the port itself
+  * This can also be changed to decide which server the ``.iex.callback`` function will be executed in, using the handle to the server itself
   * Default value is ``0i``
   * If both ``.iex.callbackconnection`` and ``.iex.callbackhandle`` are set using ``.iex.init``, ``.iex.callbackhandle`` has precidence
-  * Messages will be sent synchronously or asynchronously depending on the sign of the handle
+  * Messages should be sent asynchronously
 
 #### Example Function Call
 
 ``.iex.init`` should be called with a dictionary. The keys of the dictionary should be the names of the variables or functions that are being set. The values associated with these keys should be the new variable values. An example of using ``.iex.init`` can be seen below.
 
 ```
-.iex.init (`syms;`callbackhandle;`callback;`reqtype)!(`cat;5i;".u.upd";`both)
+.iex.init [(`syms`callbackhandle`callback`reqtype)]!(`cat;5i;".u.upd";`both)
 ```
 
 ### Raw JSON Data
