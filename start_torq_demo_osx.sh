@@ -65,5 +65,9 @@ q torq.q ${KDBSTACKID} -proctype compression -procname compression1 -load code/p
 echo 'Starting feed...'
 q torq.q ${KDBSTACKID} -proctype feed -procname feed1 -load code/tick/feed.q -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
 
+# launch iexfeed
+echo 'Starting iexfeed...'
+q torq.q -load code/processes/iexfeed.q ${KDBSTACKID} -proctype iexfeed -procname iexfeed1 -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
+
 # launch metrics
 q torq.q ${KDBSTACKID} -proctype metrics -procname metrics1 -load code/processes/metrics.q -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqcompress1.txt 2>&1 &

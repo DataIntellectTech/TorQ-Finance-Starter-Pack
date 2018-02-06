@@ -55,6 +55,9 @@ start "compression" q torq.q -proctype compression -procname compression1 -load 
 REM launch feed
 start "feed" q torq.q -proctype feed -procname feed1 -load code/tick/feed.q -U appconfig/passwords/accesslist.txt -localtime
 
+REM launch iexfeed
+start "iexfeed" q torq.q -load code/processes/iexfeed.q -proctype iexfeed -procname iexfeed1 -U appconfig/passwords/accesslist.txt -localtime
+
 REM launch sort slave process
 start "sortslave1" q torq.q -proctype sortslave -procname slavesort1 -load code/processes/wdb.q -localtime -g 1
 start "sortslave2" q torq.q -proctype sortslave -procname slavesort2 -load code/processes/wdb.q -localtime -g 1

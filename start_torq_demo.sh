@@ -66,6 +66,10 @@ nohup q torq.q ${KDBSTACKID} -proctype compression -procname compression1 -load 
 echo 'Starting feed...'
 nohup q torq.q ${KDBSTACKID} -proctype feed -procname feed1 -load code/tick/feed.q -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
 
+# Launch iexfeed
+echo 'Starting iexfeed...'
+nohup q torq.q -load code/processes/iexfeed.q ${KDBSTACKID} -proctype iexfeed -procname iexfeed1 -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
+
 # launch sort slave 1
 echo 'Starting sort slave-1...'
 nohup q torq.q ${KDBSTACKID} -proctype sortslave -procname sortslave1 -load code/processes/wdb.q -localtime -g 1 </dev/null >$KDBLOG/torqsortslave1.txt 2>&1 &
