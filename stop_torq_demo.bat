@@ -18,4 +18,4 @@ set KDBBASEPORT=6000
 set PATH=%PATH%;%KDBLIB%\w32
 
 REM to kill it, run this:
-start "kill" q torq.q -load code/processes/kill.q -proctype kill -procname killtick -.servers.CONNECTIONS rdb wdb tickerplant chainedtp hdb gateway housekeeping monitor discovery sort sortslave reporter compression iexfeed feed metrics
+start "kill" q torq.q -proctype kill -procname killtick -load code/processes/kill.q -.servers.CONNECTIONS rdb wdb tickerplant chainedtp hdb gateway housekeeping monitor discovery sort sortslave reporter compression iexfeed feed metrics
