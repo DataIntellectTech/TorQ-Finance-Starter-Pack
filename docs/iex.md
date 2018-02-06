@@ -51,7 +51,7 @@ When using ``code/iexfeed/iex.q`` outside of the TorQ framework the port in whic
 ``.iex.init`` should be called with a dictionary. The keys of the dictionary should be the names of the variables or functions that are being set. The values associated with these keys should be the new variable values. An example of using ``.iex.init`` can be seen below.
 
 ```
-.iex.init [(`syms`callbackhandle`callback`reqtype)]!(`cat;5i;".u.upd";`both)
+.iex.init (`syms`callbackhandle`callback`reqtype)!(`cat;5i;".u.upd";`both)
 ```
 
 ### Raw JSON Data
