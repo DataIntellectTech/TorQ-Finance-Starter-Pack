@@ -29,7 +29,8 @@ nordbconnected:{[]                                                              
 
 .symcheck.subscribe[]                                                                           //subscribe to the rdb
 
-while[.symcheck.nordbconnected[];                                                               // check if the tickerplant has connected, block the process until connection is established
+while[
+  .symcheck.nordbconnected[];                                                                   // check if the tickerplant has connected, block the process until connection is established
   .os.sleep[.symcheck.rdbconnsleepintv];                                                        // while not connected, proc sleeps for X seconds then runs the subscribe function again
   .servers.startup[];                                                                           // run the servers startup code again (to make connection to discovery)
  ];
