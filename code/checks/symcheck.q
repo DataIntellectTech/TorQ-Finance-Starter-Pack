@@ -39,8 +39,8 @@ while[.symcheck.nordbconnected[];                                               
 tablist:`quote`trade`trade_iex`quote_iex;
 
 missingcheck:{[x]                                                                               //function to be run on torq timer
-  symgrab;                                                                                      //gets syms from rdb
-  symsnotpresent[o;tablist];
+  symgrab[];                                                                                    //gets syms from rdb
+  symsnotpresent[tablist];
   if[0<count .chk.data;                                                                         //send email if there are entries in table .chk.data
    .email.send[`to`subject`body`debug!(.email`user;"Missing syms on rdb";
     ("The following syms are missing at: ",string .z.P;"Syms missing: ", 
@@ -58,10 +58,10 @@ symgrab:{                                                                       
   }each tablist;
  };
 
-symsnotpresent:{[o;tablist]
+symsnotpresent:{[tablist]
   .chk.syms:select last time by sym,tab from symtab where tab in tablist;
   .chk.symlist:(exec distinct sym from .chk.syms)except 
-    exec distinct sym from symtab where time within(.z.P-o`tm1;.z.P),tab in tablist;
+    exec distinct sym from symtab where time within(.z.P-.symcheck.tm1;.z.P),tab in tablist;
   .chk.data:`sym xkey select sym,last_time:time from 
     select from `time xasc symtab where sym in raze[.chk.symlist],tab in tablist;
  };
