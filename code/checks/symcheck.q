@@ -61,7 +61,7 @@ symgrab:{                                                                       
 symsnotpresent:{[tablist]
   .chk.syms:select last time by sym,tab from symtab where tab in tablist;
   .chk.symlist:(exec distinct sym from .chk.syms)except 
-    exec distinct sym from symtab where time within(.z.P-.symcheck.tm1;.z.P),tab in tablist;
+    exec distinct sym from symtab where time within(.z.P-.symcheck.wn1;.z.P),tab in tablist;
   .chk.data:`sym xkey select sym,last_time:time from 
     select from `time xasc symtab where sym in raze[.chk.symlist],tab in tablist;
  };
