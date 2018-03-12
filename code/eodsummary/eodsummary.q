@@ -10,9 +10,9 @@ if[not .timer.enabled;.lg.e[`symcheckinit;
 subscribe:{                                                                                     //subscribe to rdb
   if[count s:.sub.getsubscriptionhandles[`rdb;();()!()];                                        //get handle
    subproc:first s;
-   .lg.o[`subscribe;"subscribing to ", string subproc`procname];                                 //if got handle successfully, subsribe to tables
+   .lg.o[`subscribe;"subscribing to ", string subproc`procname];                                //if got handle successfully, subsribe to tables
    :.sub.subscribe[`trade`quote`quote_iex`trade_iex;`;0b;0b;subproc];
-  ]
+  ];
  };
 
 nordbconnected:{[]                                                                              // function to check that the rdb is connected and subscription has been setup
@@ -28,27 +28,28 @@ nordbconnected:{[]                                                              
 
 .eodsum.subscribe[]                                                                             //subscribe to the rdb
 
-while[.eodsum.nordbconnected[];                                                                 // check if the tickerplant has connected, block the process until connection is established
+while[
+  .eodsum.nordbconnected[];                                                                     // check if the rdb has connected, block the process until connection is established
   .os.sleep[.eodsum.rdbconnsleepintv];                                                          // while not connected, proc sleeps for X seconds then runs the subscribe function again
   .servers.startup[];                                                                           // run the servers startup code again (to make connection to discovery)
  ];
 
 
-rdbhandle:(first exec w from .sub.getsubscriptionhandles[`rdb;();()!()]);                       //open handle to the rdb
+rdbhandle:first exec w from .sub.getsubscriptionhandles[`rdb;();()!()];                         //open handle to the rdb
 
 metrics:{[rdbhandle]
-  .eodsum.avgsprd:rdbhandle"select avgSpread:avg ask-bid by sym from quote";                              //query quote table for avgSpread
-  .eodsum.voltrd:rdbhandle"select volTraded:sum size, numTrades:count i by sym from trade";               //query trade table for vol+num traded
-  .eodsum.c:rdbhandle"select twas:avg ask-bid by sym,bucket:2 xbar time.hh from quote";                   //query quote table for TWAS in 2 hour buckets
+  .eodsum.avgsprd:rdbhandle"select avgSpread:avg ask-bid by sym from quote";                    //query quote table for avgSpread
+  .eodsum.voltrd:rdbhandle"select volTraded:sum size, numTrades:count i by sym from trade";     //query trade table for vol+num traded
+  .eodsum.c:rdbhandle"select twas:avg ask-bid by sym,bucket:2 xbar time.hh from quote";         //query quote table for TWAS in 2 hour buckets
  };
 
-metrics[rdbhandle];
+metrics rdbhandle;
 
 createsummary:{
-  update `$string bucket from `.eodsum.c;                                                                 //change type from long to sym
+  update `$string bucket from `.eodsum.c;                                                       //change type from long to sym
   .eodsum.d:exec distinct bucket from .eodsum.c;                                                //get all unique values to be used as column headers
-  .eod.twas:exec .eodsum.d#(bucket!twas) by sym:sym from .eodsum.c;                               //pivot table
-  .eod.summary:0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;.eod.twas);   
+  .eodsum.twas:exec .eodsum.d#(bucket!twas) by sym:sym from .eodsum.c;                          //pivot table
+  .eodsum.summary:0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;.eod.twas);   
  };
 
 createsummary[];
@@ -59,6 +60,7 @@ savetable:{[d;p;f;t]
   (d;p;f;count value t);
   .Q.dpft[d;p;f;t];
  };
+
 summarytab:.eod.summary;
 
 savetable[savepath;.z.D;`sym;`summarytab];
