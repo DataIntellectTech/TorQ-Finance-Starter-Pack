@@ -1,5 +1,4 @@
 \d .eodsum
-show "in symcheck ns";                                                                          //get rdb info and schema, reconnection wait time
 rdbtypes:@[value;`rdbtypes;`rdb];                                                               //list of rdb types to look for and call in rdb
 rdbnames:@[value;`rdbnames;()];                                                                 //list of rdb names to search for and call in rdb
 schema:@[value;`schema;1b];                                                                     //retrieve the schema from the rdb
@@ -10,9 +9,9 @@ if[not .timer.enabled;.lg.e[`symcheckinit;
 
 subscribe:{                                                                                     //subscribe to rdb
   if[count s:.sub.getsubscriptionhandles[`rdb;();()!()];                                        //get handle
-  subproc:first s;
+   subproc:first s;
    .lg.o[`subscribe;"subscribing to ", string subproc`procname];                                 //if got handle successfully, subsribe to tables
-   :.sub.subscribe[`trade`quote`quote_iex`trade_iex;`;0b;0b;subproc]
+   :.sub.subscribe[`trade`quote`quote_iex`trade_iex;`;0b;0b;subproc];
   ]
  };
 
@@ -37,27 +36,31 @@ while[.eodsum.nordbconnected[];                                                 
 
 rdbhandle:(first exec w from .sub.getsubscriptionhandles[`rdb;();()!()]);                       //open handle to the rdb
 
-eodavgsprd:rdbhandle"select avgSpread:avg ask-bid by sym from quote";                           //query quote table for avgSpread
-eodvoltrd:rdbhandle"select volTraded:sum size, numTrades:count i by sym from trade";            //query trade table for vol+num traded
-c:rdbhandle"select twas:avg ask-bid by sym,bucket:2 xbar time.hh from quote";                   //query quote table for TWAS in 2 hour buckets
-
-update `$string bucket from `c;                                                                 //change type from long to sym
-d:exec distinct bucket from c;                                                                  //get all unique values to be used as column headers
-eodtwas:exec d#(bucket!twas) by sym:sym from c;                                                 //pivot table
-
-eodsummary:(uj/)(eodvoltrd;eodavgsprd;eodtwas);                                                 //aj to create summary table
-/
-dt:`$raze ":",(system "pwd"),"/deploy/summary", ssr[string .z.d;".";""];                        //create dynamic variable to save table
-
-dt set summary;                                                                                 //save local summary table to correct directory
-\
-
-savepath:hsym `$":/home/jburrows/deploy/newdeploy/hdb/database/";
-
-savetable:{[d;p;f;t](d;p;f;count value t);
-  .Q.dpft[d;p;f;t]
+metrics:{[rdbhandle]
+  .eodsum.avgsprd:rdbhandle"select avgSpread:avg ask-bid by sym from quote";                              //query quote table for avgSpread
+  .eodsum.voltrd:rdbhandle"select volTraded:sum size, numTrades:count i by sym from trade";               //query trade table for vol+num traded
+  .eodsum.c:rdbhandle"select twas:avg ask-bid by sym,bucket:2 xbar time.hh from quote";                   //query quote table for TWAS in 2 hour buckets
  };
 
-savetable[savepath;.z.D;`sym;0!`eodsummary];
+metrics[rdbhandle];
+
+createsummary:{
+  update `$string bucket from `.eodsum.c;                                                                 //change type from long to sym
+  .eodsum.d:exec distinct bucket from .eodsum.c;                                                //get all unique values to be used as column headers
+  .eod.twas:exec .eodsum.d#(bucket!twas) by sym:sym from .eodsum.c;                               //pivot table
+  .eod.summary:0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;.eod.twas);   
+ };
+
+createsummary[];
+
+savepath:hsym `$":",getenv[`TORQHOME],"/hdb/database/";
+
+savetable:{[d;p;f;t]
+  (d;p;f;count value t);
+  .Q.dpft[d;p;f;t];
+ };
+summarytab:.eod.summary;
+
+savetable[savepath;.z.D;`sym;`summarytab];
 
 exit 0                                                                                          //terminate q session once task is complete
