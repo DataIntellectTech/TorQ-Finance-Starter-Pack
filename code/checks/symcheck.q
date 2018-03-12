@@ -10,9 +10,9 @@ if[not .timer.enabled;.lg.e[`symcheckinit;
 
 subscribe:{                                                                                     //subscribe to rdb
   if[count s:.sub.getsubscriptionhandles[`rdb;();()!()];                                        //get handle
-  subproc:first s;
+   subproc:first s;
    .lg.o[`subscribe;"subscribing to ", string subproc`procname];                                 //if got handle successfully, subsribe to tables
-   :.sub.subscribe[`trade`quote`quote_iex`trade_iex;`;0b;0b;subproc]
+   :.sub.subscribe[`trade`quote`quote_iex`trade_iex;`;0b;0b;subproc];
   ]
  };
 
@@ -46,7 +46,7 @@ missingcheck:{[x]                                                               
     ("The following syms are missing at: ",string .z.P;"Syms missing: ", 
     " ; " sv string exec sym from .chk.data;
     "They were last seen at: ",string exec last last_time from .chk.data);1i)
-   ]
+   ];
   ];
  };
 
