@@ -49,7 +49,7 @@ createsummary:{
   update `$string bucket from `.eodsum.c;                                                       //change type from long to sym
   .eodsum.d:exec distinct bucket from .eodsum.c;                                                //get all unique values to be used as column headers
   .eodsum.twas:exec .eodsum.d#(bucket!twas) by sym:sym from .eodsum.c;                          //pivot table
-  .eodsum.summary:0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;.eod.twas);   
+  .eodsum.summary:0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;.eodsum.twas);   
  };
 
 createsummary[];
@@ -61,7 +61,7 @@ savetable:{[d;p;f;t]
   .Q.dpft[d;p;f;t];
  };
 
-summarytab:.eod.summary;
+summarytab:.eodsum.summary;                                                                     //define summarytab since global/namespace won't work with .Q.dpft
 
 savetable[savepath;.z.D;`sym;`summarytab];
 
