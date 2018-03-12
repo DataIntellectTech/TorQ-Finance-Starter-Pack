@@ -35,7 +35,7 @@ while[
   .servers.startup[];                                                                           // run the servers startup code again (to make connection to discovery)
  ];
 
-.email.connect[`url`user`password`from`usessl`debug#.email];                                    //create email connection, namespace read in from default.q
+.email.connect`url`user`password`from`usessl`debug#.email;                                      //create email connection, namespace read in from default.q
 
 tablist:`quote`trade`trade_iex`quote_iex;
 
