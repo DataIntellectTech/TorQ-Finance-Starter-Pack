@@ -11,7 +11,7 @@ if[not .timer.enabled;.lg.e[`symcheckinit;
 subscribe:{                                                                                     //subscribe to rdb
   if[count s:.sub.getsubscriptionhandles[`rdb;();()!()];                                        //get handle
    subproc:first s;
-   .lg.o[`subscribe;"subscribing to ", string subproc`procname];                                 //if got handle successfully, subsribe to tables
+   .lg.o[`subscribe;"subscribing to ", string subproc`procname];                                //if got handle successfully, subsribe to tables
    :.sub.subscribe[`trade`quote`quote_iex`trade_iex;`;0b;0b;subproc];
   ]
  };
@@ -34,7 +34,7 @@ while[.symcheck.nordbconnected[];                                               
   .servers.startup[];                                                                           // run the servers startup code again (to make connection to discovery)
  ];
 
-.email.connect[`url`user`password`from`usessl`debug!.email`url`user`password`from`usessl`debug];  //create email connection, namespace read in from default.q
+.email.connect[`url`user`password`from`usessl`debug#.email];                                    //create email connection, namespace read in from default.q
 
 tablist:`quote`trade`trade_iex`quote_iex;
 
