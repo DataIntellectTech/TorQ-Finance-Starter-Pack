@@ -12,7 +12,7 @@ subscribe:{                                                                     
   if[count s:.sub.getsubscriptionhandles[`rdb;();()!()];                                        //get handle
    subproc:first s;
    .lg.o[`subscribe;"subscribing to ", string subproc`procname];                                //if got handle successfully, subsribe to tables
-   :.sub.subscribe[`trade`quote`quote_iex`trade_iex;`;0b;0b;subproc];
+   :.sub.subscribe[`quote`trade`trade_iex`quote_iex;`;0b;0b;subproc];
   ]
  };
 
@@ -31,7 +31,7 @@ nordbconnected:{[]                                                              
 
 while[
   .symcheck.nordbconnected[];                                                                   // check if the tickerplant has connected, block the process until connection is established
-  .os.sleep[.symcheck.rdbconnsleepintv];                                                        // while not connected, proc sleeps for X seconds then runs the subscribe function again
+  .os.sleep .symcheck.rdbconnsleepintv;                                                         // while not connected, proc sleeps for X seconds then runs the subscribe function again
   .servers.startup[];                                                                           // run the servers startup code again (to make connection to discovery)
  ];
 
@@ -39,14 +39,15 @@ while[
 
 tablist:`quote`trade`trade_iex`quote_iex;
 
-missingcheck:{[x]                                                                               //function to be run on torq timer
+missingcheck:{                                                                                  //function to be run on torq timer
   symgrab[];                                                                                    //gets syms from rdb
-  symsnotpresent[tablist];
+  symsnotpresent tablist;
   if[0<count .chk.data;                                                                         //send email if there are entries in table .chk.data
-   .email.send[`to`subject`body`debug!(.email`user;"Missing syms on rdb";
+   .email.send[`to`subject`debug`body!(.email`user;"Missing syms on rdb";
+    1i;
     ("The following syms are missing at: ",string .z.P;"Syms missing: ", 
     " ; " sv string exec sym from .chk.data;
-    "They were last seen at: ",string exec last last_time from .chk.data);1i)
+    "They were last seen at: ",string exec last last_time from .chk.data))
    ];
   ];
  };
