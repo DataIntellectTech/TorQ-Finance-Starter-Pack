@@ -47,22 +47,15 @@ metrics rdbhandle;
 
 createsummary:{
   update `$string bucket from `.eodsum.c;                                                       //change type from long to sym
-  .eodsum.d:exec distinct bucket from .eodsum.c;                                                //get all unique values to be used as column headers
-  .eodsum.twas:exec .eodsum.d#(bucket!twas) by sym:sym from .eodsum.c;                          //pivot table
-  .eodsum.summary:0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;.eodsum.twas);   
+  d:exec distinct bucket from .eodsum.c;                                                        //get all unique values to be used as column headers
+  twas:exec d#(bucket!twas) by sym:sym from .eodsum.c;                                          //pivot table
+  `summarytab set 0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;twas);   
  };
 
 createsummary[];
 
 savepath:hsym `$":",getenv[`TORQHOME],"/hdb/database/";
 
-savetable:{[d;p;f;t]
-  (d;p;f;count value t);
-  .Q.dpft[d;p;f;t];
- };
-
-summarytab:.eodsum.summary;                                                                     //define summarytab since global/namespace won't work with .Q.dpft
-
-savetable[savepath;.z.D;`sym;`summarytab];
+.Q.dpft[savepath;.z.D;`sym;`summarytab];
 
 exit 0                                                                                          //terminate q session once task is complete
