@@ -15,45 +15,65 @@ lvcq:@[value;`lvcq;1!flip `sym`bid`ask`bsize`asize`mode`ex`srctime!8#()];
 lvct:@[value;`lvct;1!flip`sym`price`size`stop`cond`ex`srctime!7#()];
 
 init:{[x]
-   if[`main_url in key x;.iex.main_url:x `main_url];
-   if[`quote_suffix in key x;.iex.quote_suffix:x `quote_suffix];
-   if[`trade_suffix in key x;.iex.trade_suffix:x`trade_suffix];
-   if[`syms in key x;.iex.syms: upper x`syms];
-   if[`reqtype in key x;.iex.reqtype:x`reqtype];
-   if[`callbackconnection in key x;.iex.callbackhandle:neg hopen .iex.callbackconnection:x `callbackconnection];
-   if[`callbackhandle in key x;.iex.callbackhandle:x `callbackhandle];
-   if[`callback in key x;.iex.callback: $[.iex.callbackhandle=0; string @[value;x `callback;{[x;y]x set {[t;x]x}}[x`callback]]; x`callback]];
-   if[`upd in key x; .iex.upd:x[`upd]];
-   .iex.timer:$[not .iex.reqtype in key .iex.timer_dict;'`timer;.iex.timer_dict .iex.reqtype];
-   }
+  if[`main_url in key x;.iex.main_url:x `main_url];
+  if[`quote_suffix in key x;.iex.quote_suffix:x `quote_suffix];
+  if[`trade_suffix in key x;.iex.trade_suffix:x`trade_suffix];
+  if[`syms in key x;.iex.syms: upper x`syms];
+  if[`reqtype in key x;.iex.reqtype:x`reqtype];
+  if[`callbackconnection in key x;.iex.callbackhandle:neg hopen .iex.callbackconnection:x `callbackconnection];
+  if[`callbackhandle in key x;.iex.callbackhandle:x `callbackhandle];
+  if[`callback in key x;.iex.callback: $[.iex.callbackhandle=0; string @[value;x `callback;{[x;y]x set {[t;x]x}}[x`callback]]; x`callback]];
+  if[`upd in key x; .iex.upd:x[`upd]];
+  .iex.timer:$[not .iex.reqtype in key .iex.timer_dict;'`timer;.iex.timer_dict .iex.reqtype];
+  }
 
 get_data:{[main_url;suffix]
-   :.Q.hg`$main_url,suffix;
-   };
+  :.Q.hg`$main_url,suffix;
+ };
 
 get_last_trade:{tab:{[syms]
-   / This function can run for multiple securities.
-   syms:$[1<count syms;"," sv string[upper syms];string[upper syms]];
-   / Construct the GET request
-   suffix:.iex.trade_suffix[syms];
-   / Parse json response and put into table. Trade data from https://iextrading.com/developer/
-   data:.j.k .iex.get_data[.iex.main_url;suffix];
-   tab:select sym:`$symbol,price:`float$price,size:`int$size,stop:(count data)#0b,cond:(count data)#`char$(),ex:(count data)#`char$(),srctime:.iex.convert_epoch time from data
-   }[.iex.syms];
-    tab:check_dup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab]; 
-    if[count tab;.iex.upd[`trade_iex;tab]];
-   };
+  / This function can run for multiple securities.
+  syms:$[1<count syms;"," sv string[upper syms];string[upper syms]];
+  / Construct the GET request
+  suffix:.iex.trade_suffix[syms];
+  / Parse json response and put into table. Trade data from https://iextrading.com/developer/
+  data:.j.k .iex.get_data[.iex.main_url;suffix];
+  :select
+    sym:`$symbol,
+    price:`float$price,
+    size:`int$size,
+    stop:count[data]#0b,
+    cond:count[data]#`char$(),
+    ex:count[data]#`char$(),
+    srctime:.iex.convert_epoch time
+  from
+    data;
+  }[.iex.syms];
+   tab:check_dup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab]; 
+   if[count tab;.iex.upd[`trade_iex;tab]];
+  };
 
 get_quote:{tab:raze{[sym]
-   sym:string[upper sym];
-   suffix:.iex.quote_suffix[sym];
-   / Parse json response and put into table
-   data: enlist .j.k .iex.get_data[.iex.main_url;suffix];
-   select sym:`$symbol, bid:`float$iexBidPrice, ask:`float$iexAskPrice, bsize:`long$iexBidSize, asize:`long$iexAskSize, mode:(count data)#`char$(), ex:(count data)#`char$(), srctime:.iex.convert_epoch latestUpdate from data
-   }'[.iex.syms,()];
-   tab:check_dup[;;`.iex.lvcq;qcols;nullq]/[0#tab;tab];                 / Check for duplicate data
-   if[count tab;.iex.upd[`quote_iex;tab]]; 
-   };
+  sym:string[upper sym];
+  suffix:.iex.quote_suffix[sym];
+  / Parse json response and put into table
+  data: enlist .j.k .iex.get_data[.iex.main_url;suffix];
+  :select
+    sym:`$symbol,
+    bid:`float$iexBidPrice,
+    ask:`float$iexAskPrice,
+    bsize:`long$iexBidSize,
+    asize:`long$iexAskSize,
+    mode:(count data)#`char$(),
+    ex:(count data)#`char$(),
+    srctime:.iex.convert_epoch latestUpdate
+  from 
+    data;
+  }'[.iex.syms,()];
+  / Check for duplicate data
+  tab:check_dup[;;`.iex.lvcq;qcols;nullq]/[0#tab;tab];
+  if[count tab;.iex.upd[`quote_iex;tab]];
+  };
 
 timer_both:{.iex.get_last_trade[];.iex.get_quote[]}
 timer_dict:`trade`quote`both!(.iex.get_last_trade;.iex.get_quote;timer_both)
