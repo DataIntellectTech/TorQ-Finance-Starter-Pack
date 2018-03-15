@@ -12,7 +12,7 @@ trade_suffix:@[value;`trade_suffix;{{[sym]"/1.0/tops/last?symbols=",sym}}];
 upd:@[value;`upd;{{[t;x].iex.callbackhandle(.iex.callback;t; value flip x)}}];
 timerperiod:@[value;`timerperiod;0D00:00:02.000];
 lvcq:@[value;`lvcq;1!flip `sym`bid`ask`bsize`asize`mode`ex`srctime!8#()];
-.iex.lvct:@[value;`.iex.lvct;1!flip`sym`price`size`stop`cond`ex`srctime!7#()];
+lvct:@[value;`lvct;1!flip`sym`price`size`stop`cond`ex`srctime!7#()];
 
 init:{[x]
    if[`main_url in key x;.iex.main_url:x `main_url];
@@ -28,8 +28,8 @@ init:{[x]
    }
 
 get_data:{[main_url;suffix]
-   .Q.hg `$main_url,suffix
-   }
+   :.Q.hg`$main_url,suffix;
+   };
 
 get_last_trade:{tab:{[syms]
    / This function can run for multiple securities.
@@ -42,7 +42,7 @@ get_last_trade:{tab:{[syms]
    }[.iex.syms];
     tab:check_dup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab]; 
     if[count tab;.iex.upd[`trade_iex;tab]];
-   }
+   };
 
 get_quote:{tab:raze{[sym]
    sym:string[upper sym];
@@ -52,8 +52,8 @@ get_quote:{tab:raze{[sym]
    select sym:`$symbol, bid:`float$iexBidPrice, ask:`float$iexAskPrice, bsize:`long$iexBidSize, asize:`long$iexAskSize, mode:(count data)#`char$(), ex:(count data)#`char$(), srctime:.iex.convert_epoch latestUpdate from data
    }'[.iex.syms,()];
    tab:check_dup[;;`.iex.lvcq;qcols;nullq]/[0#tab;tab];                 / Check for duplicate data
-   if[count tab;.iex.upd[`quote_iex;tab]];     / run upd
-   }
+   if[count tab;.iex.upd[`quote_iex;tab]]; 
+   };
 
 timer_both:{.iex.get_last_trade[];.iex.get_quote[]}
 timer_dict:`trade`quote`both!(.iex.get_last_trade;.iex.get_quote;timer_both)
@@ -63,7 +63,7 @@ timer:{@[$[not .iex.reqtype in key .iex.timer_dict;
   .iex.timer_dict[.iex.reqtype]];
   [];
   {.lg.e[`iextimer;"failed to run iex timer function: ",x]}]
- }
+ };
 
 check_dup:{[x;y;lvc;c;n]
   / Checks for duplicates and nulls
@@ -80,6 +80,6 @@ init1:{
   .iex.nullt:tcols!(0f;0i;0b;" ";" ");
   };
 
-init1[]
+init1[];
 
 \d . 
