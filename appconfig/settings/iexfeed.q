@@ -18,4 +18,18 @@ quote_suffix:{[sym] "/1.0/stock/",sym,"/quote"}
 trade_suffix:{[sym]"/1.0/tops/last?symbols=",sym}
 upd:{[t;x] .iex.callbackhandle(.iex.callback;t; value flip delete time from x)}
 timerperiod:0D00:00:02.000
+
+
+\d .trd
+ocol:`symbol`price`size`stop`cond`ex`time; /!(`symbol$();0f;0j;0b;" ";" ";0);
+ncol:`sym`price`size`stop`cond`ex`srctime;
+typ:`"SfjbCCn";
+
+\d .qte
+ocol:`symbol`iexBidPrice`iexAskPrice`iexBidSize`iexAskSize`mode`ex`latestUpdate; /!(`symbol$();0f;0f;0j;0j;" ";" ";0);
+ncol:`sym`bid`ask`bsize`asize`mode`ex`srctime;
+typ:"SffjjCCn";
+
 \d .
+
+
