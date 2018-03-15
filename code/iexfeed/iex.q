@@ -16,7 +16,7 @@ lvct:@[value;`lvct;1!flip`sym`price`size`stop`cond`ex`srctime!()];
 qcols:@[value;`qcols;`bid`ask`bsize`asize`mode`ex];
 nullq:@[value;`nullq;qcols!(0f;0f;0;0;" ";" ")];
 tcols:@[value;`tcols;`price`size`stop`cond`ex];
-nullt:@[value;`nullt;tcols!(0f;0i;0b;" ";" ")];
+nullt:@[value;`nullt;tcols!(0f;0;"B"$();" ";" ")];
 
 init:{[x]
   if[`main_url in key x;.iex.main_url:x`main_url];
@@ -34,45 +34,26 @@ init:{[x]
 get_data:{[main_url;suffix].Q.hg`$main_url,suffix};
 
 get_last_trade:{
-  tab:{[syms]
+  .t.t:tab:{[syms]
     / This function can run for multiple securities.
     syms:$[1<count syms;"," sv string[upper syms];string[upper syms]];
     / Construct the GET request
     suffix:.iex.trade_suffix[syms];
     / Parse json response and put into table. Trade data from https://iextrading.com/developer/
     data:.j.k .iex.get_data[.iex.main_url;suffix];
-    :select
-      sym:`$symbol,
-      price:`float$price,
-      size:`int$size,
-      stop:count[data]#0b,
-      cond:count[data]#`char$(),
-      ex:count[data]#`char$(),
-      srctime:.iex.convert_epoch time
-    from
-      data;
-   }[.iex.syms];
+    :createtable[`.trd;data];
+   }[.iex.syms]; 
   tab:check_dup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab]; 
   if[count tab;.iex.upd[`trade_iex;tab]];
  };
 
 get_quote:{
-  tab:raze{[sym]
+  .p.p:tab:raze{[sym]
     sym:string[upper sym];
     suffix:.iex.quote_suffix[sym];
     / Parse json response and put into table
     data: enlist .j.k .iex.get_data[.iex.main_url;suffix];
-    :select
-      sym:`$symbol,
-      bid:`float$iexBidPrice,
-      ask:`float$iexAskPrice,
-      bsize:`long$iexBidSize,
-      asize:`long$iexAskSize,
-      mode:count[data]#`char$(),
-      ex:count[data]#`char$(),
-      srctime:.iex.convert_epoch latestUpdate
-    from 
-      data;
+    :createtable[`.qte;data];
    }'[.iex.syms,()];
   / Check for duplicate data
   tab:check_dup[;;`.iex.lvcq;qcols;nullq]/[0#tab;tab];
@@ -96,5 +77,7 @@ check_dup:{[x;y;lvc;c;n]
   if[not i;lvc upsert y;x,:y];
   :x; 
  };
+
+createtable:{[x;data] update .iex.convert_epoch[srctime] from x[`ncol]xcol flip x[`typ]$x[`ocol]#flip data};
 
 \d . 
