@@ -11,8 +11,8 @@ quote_suffix:@[value;`quote_suffix;{{[sym] "/1.0/stock/",sym,"/quote"}}];
 trade_suffix:@[value;`trade_suffix;{{[sym]"/1.0/tops/last?symbols=",sym}}];
 upd:@[value;`upd;{{[t;x].iex.callbackhandle(.iex.callback;t; value flip x)}}];
 timerperiod:@[value;`timerperiod;0D00:00:02.000];
-lvcq:@[value;`lvcq;1!flip `sym`bid`ask`bsize`asize`mode`ex`srctime!8#()];
-lvct:@[value;`lvct;1!flip`sym`price`size`stop`cond`ex`srctime!7#()];
+lvcq:@[value;`lvcq;1!flip `sym`bid`ask`bsize`asize`mode`ex`srctime!()];
+lvct:@[value;`lvct;1!flip`sym`price`size`stop`cond`ex`srctime!()];
 
 init:{[x]
   if[`main_url in key x;.iex.main_url:x `main_url];
@@ -25,33 +25,34 @@ init:{[x]
   if[`callback in key x;.iex.callback: $[.iex.callbackhandle=0; string @[value;x `callback;{[x;y]x set {[t;x]x}}[x`callback]]; x`callback]];
   if[`upd in key x; .iex.upd:x[`upd]];
   .iex.timer:$[not .iex.reqtype in key .iex.timer_dict;'`timer;.iex.timer_dict .iex.reqtype];
-  }
+ };
 
 get_data:{[main_url;suffix]
   :.Q.hg`$main_url,suffix;
  };
 
-get_last_trade:{tab:{[syms]
-  / This function can run for multiple securities.
-  syms:$[1<count syms;"," sv string[upper syms];string[upper syms]];
-  / Construct the GET request
-  suffix:.iex.trade_suffix[syms];
-  / Parse json response and put into table. Trade data from https://iextrading.com/developer/
-  data:.j.k .iex.get_data[.iex.main_url;suffix];
-  :select
-    sym:`$symbol,
-    price:`float$price,
-    size:`int$size,
-    stop:count[data]#0b,
-    cond:count[data]#`char$(),
-    ex:count[data]#`char$(),
-    srctime:.iex.convert_epoch time
-  from
-    data;
-  }[.iex.syms];
-   tab:check_dup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab]; 
-   if[count tab;.iex.upd[`trade_iex;tab]];
-  };
+get_last_trade:{
+  tab:{[syms]
+    / This function can run for multiple securities.
+    syms:$[1<count syms;"," sv string[upper syms];string[upper syms]];
+    / Construct the GET request
+    suffix:.iex.trade_suffix[syms];
+    / Parse json response and put into table. Trade data from https://iextrading.com/developer/
+    data:.j.k .iex.get_data[.iex.main_url;suffix];
+    :select
+      sym:`$symbol,
+      price:`float$price,
+      size:`int$size,
+      stop:count[data]#0b,
+      cond:count[data]#`char$(),
+      ex:count[data]#`char$(),
+      srctime:.iex.convert_epoch time
+    from
+      data;
+   }[.iex.syms];
+  tab:check_dup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab]; 
+  if[count tab;.iex.upd[`trade_iex;tab]];
+ };
 
 get_quote:{tab:raze{[sym]
   sym:string[upper sym];
