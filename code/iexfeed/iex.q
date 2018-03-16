@@ -17,7 +17,7 @@ qcols:@[value;`qcols;`bid`ask`bsize`asize`mode`ex];
 nullq:@[value;`nullq;qcols!(0f;0f;0;0;" ";" ")];
 tcols:@[value;`tcols;`price`size`stop`cond`ex];
 nullt:@[value;`nullt;tcols!(0f;0;"B"$();" ";" ")];
-dtrd:@[value;`dtrd;`ocol`ncol`typ!(`symbol`price`size`stop`cond`ex`time;`sym`price`size`stop`cond`ex`srctime;"SfjbCCn")];
+dtrd:@[value;`dtrd;`ocol`ncol`typ!(`symbol`price`size`stop`cond`ex`time;`sym`price`size`stop`cond`ex`srctime;"SfjBCCn")];
 dqte:@[value;`dqte;`ocol`ncol`typ!(`symbol`iexBidPrice`iexAskPrice`iexBidSize`iexAskSize`mode`ex`latestUpdate;`sym`bid`ask`bsize`asize`mode`ex`srctime;"SffjjCCn")];
 
 init:{[x]
@@ -46,7 +46,7 @@ getlasttrade:{
     :createtable[`.iex.dtrd;data];
    }[.iex.syms]; 
   tab:checkdup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab]; 
-  if[count tab;.iex.upd[`tradeiex;tab]];
+  if[count tab;.iex.upd[`trade_iex;tab]];
  };
 
 getquote:{
@@ -59,7 +59,7 @@ getquote:{
    }'[.iex.syms,()];
   / Check for duplicate data
   tab:checkdup[;;`.iex.lvcq;qcols;nullq]/[0#tab;tab];
-  if[count tab;.iex.upd[`quoteiex;tab]];
+  if[count tab;.iex.upd[`quote_iex;tab]];
  };
 
 timerboth:{.iex.getlasttrade[];.iex.getquote[]};
@@ -80,6 +80,6 @@ checkdup:{[x;y;lvc;c;n]
   :x;
  };
 
-createtable:{[x;data] update .iex.convertepoch[srctime] from x[`ncol]xcol flip x[`typ]$x[`ocol]#flip data};
+createtable:{x;data]update .iex.convertepoch[srctime] from x[`ncol]xcol flip x[`typ]$x[`ocol]#flip data};
 
 \d . 
