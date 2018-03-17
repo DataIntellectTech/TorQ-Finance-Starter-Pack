@@ -17,8 +17,6 @@ qcols:@[value;`qcols;`bid`ask`bsize`asize`mode`ex];
 nullq:@[value;`nullq;qcols!(0f;0f;0;0;" ";" ")];
 tcols:@[value;`tcols;`price`size`stop`cond`ex];
 nullt:@[value;`nullt;tcols!(0f;0;"B"$();" ";" ")];
-dtrd:@[value;`dtrd;`ocol`ncol`typ!(`symbol`price`size`stop`cond`ex`time;`sym`price`size`stop`cond`ex`srctime;"SfjBCCn")];
-dqte:@[value;`dqte;`ocol`ncol`typ!(`symbol`iexBidPrice`iexAskPrice`iexBidSize`iexAskSize`mode`ex`latestUpdate;`sym`bid`ask`bsize`asize`mode`ex`srctime;"SffjjCCn")];
 
 init:{[x]
   if[`mainurl in key x;.iex.mainurl:x`main_url];
@@ -80,6 +78,13 @@ checkdup:{[x;y;lvc;c;n]
   :x;
  };
 
-createtable:{x;data]update .iex.convertepoch[srctime] from x[`ncol]xcol flip x[`typ]$x[`ocol]#flip data};
+createtable:{[x;data]update .iex.convertepoch[srctime] from x[`ncol]xcol flip x[`typ]$x[`ocol]#flip data};
+
+loadcsv:{
+  `dtrd set ("SSC";enlist",")0:hsym`$getenv[`KDBAPPCONFIG],"/settings/trade_iex.csv";
+  `dqte set ("SSC";enlist",")0:hsym`$getenv[`KDBAPPCONFIG],"/settings/quote_iex.csv";
+ };
+
+loadcsv[];
 
 \d . 
