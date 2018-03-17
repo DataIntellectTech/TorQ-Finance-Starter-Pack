@@ -19,10 +19,6 @@ tradesuffix:{[sym]"/1.0/tops/last?symbols=",sym}
 upd:{[t;x].iex.callbackhandle(.iex.callback;t; value flip delete time from x)}
 timerperiod:0D00:00:02.000
 
-// Define columns for trade and quote data
-dtrd:`ocol`ncol`typ!(`symbol`price`size`stop`cond`ex`time;`sym`price`size`stop`cond`ex`srctime;"SfiBCCn");
-dqte:`ocol`ncol`typ!(`symbol`iexBidPrice`iexAskPrice`iexBidSize`iexAskSize`mode`ex`latestUpdate;`sym`bid`ask`bsize`asize`mode`ex`srctime;"SffiiCCn");
-
 \d .
 
 

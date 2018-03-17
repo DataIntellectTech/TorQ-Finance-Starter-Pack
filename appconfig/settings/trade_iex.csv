@@ -1,0 +1,8 @@
+ocol,ncol,typ
+symbol,sym,S
+price,price,f
+size,size,i
+stop,stop,B
+cond,cond,C
+ex,ex,C
+time,srctime,n
