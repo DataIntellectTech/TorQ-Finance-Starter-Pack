@@ -9,13 +9,16 @@ CONNECTIONS:enlist `tickerplant         // Feedhandler connects to the tickerpla
 HOPENTIMEOUT:30000
 
 \d .iex
-main_url:"https://api.iextrading.com"
-convert_epoch:{"p"$1970.01.01D+1000000j*x}
+mainurl:"https://api.iextrading.com"
+convertepoch:{"p"$1970.01.01D+1000000j*x}
 reqtype:`both
 syms:`CAT`DOG
 callback:".u.upd"
-quote_suffix:{[sym] "/1.0/stock/",sym,"/quote"}
-trade_suffix:{[sym]"/1.0/tops/last?symbols=",sym}
-upd:{[t;x] .iex.callbackhandle(.iex.callback;t; value flip delete time from x)}
+quotesuffix:{[sym] "/1.0/stock/",sym,"/quote"}
+tradesuffix:{[sym]"/1.0/tops/last?symbols=",sym}
+upd:{[t;x].iex.callbackhandle(.iex.callback;t; value flip delete time from x)}
 timerperiod:0D00:00:02.000
+
 \d .
+
+
