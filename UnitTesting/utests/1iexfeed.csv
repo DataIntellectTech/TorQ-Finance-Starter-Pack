@@ -1,0 +1,19 @@
+action,ms,bytes,lang,code,repeat,minver,comment
+run,,,q,dH[`iex]("a:.iex.getdata[.iex.mainurl;.iex.quotesuffix[\"CAT\"]]"),,,downloads data
+run,,,q,dH[`iex]("b:.iex.getdata[.iex.mainurl;.iex.tradesuffix[\"CAT\"]]")
+run,,,q,dH[`iex]("c:.iex.getdata[.iex.mainurl;.iex.quotesuffix[\"DOG\"]]"),,,downloads data 
+run,,,q,dH[`iex]("d:.iex.getdata[.iex.mainurl;.iex.tradesuffix[\"DOG\"]]"),,,downloads data
+true,,,q,10h~type dH[`iex]("a"),,,checks if stremead data is of type 10h
+true,,,q,10h~type dH[`iex]("b"),,,checks if streamed data is of type 10h
+run,,,q,98h~type dH[`iex](".iex.createtable[`.iex.dqte;enlist .j.k a]"),,,check if function create table returns the right type 
+run,,,q,98h~type dH[`iex](".iex.createtable[`.iex.dtrd;.j.k b]"),,,check if functien create table returns the right type
+run,,,q,e:dH[`rdb]("tables[]!count each value each tables[]"),,,get a count of the values for all tables
+run,,,q,dH[`iex](".iex.upd[`quote_iex;enlist raze .iex.createtable[`.iex.dqte;enlist .j.k .iex.getdata[.iex.mainurl;.iex.quotesuffix[string[upper .iex.syms[0]]]]]]"),,,push table to quote_iex
+true,,,q,e[`quote_iex]<>dH[`rdb]("count quote_iex"),,,check table count increasing
+run,,,q,dH[`iex](".iex.upd[`trade_iex;.iex.createtable[`.iex.dtrd;.j.k .iex.getdata[.iex.mainurl;.iex.tradesuffix[\"CAT\"]]]]"),,,push table to trade_iex 
+true,,,q,e[`trade_iex]<>dH[`rdb]("count trade_iex"),,,check table count increasing
+runbefore,,,q,dH[`iex]("testTabNulls:([]sym:`CAT`DOG;bid:(0f;0f); ask:(0f;0f); bsize:(0;0); asize:(0;0);mode:(\" \";\" \"); ex:(\" \";\" \");srctime:2001.01.01D01:01:01.100000000)"),,,create test table for nulls
+true,,,q,0=dH[`iex]("count .iex.checkdup[;;`.iex.lvcq;.iex.qcols;.iex.nullq]/[0#testTabNulls;testTabNulls]"),,,check if count 0
+runbefore,,,q,dH[`iex]("testTabDup:raze {sym:string[upper x]; suffix:.iex.quotesuffix[sym]; data:enlist .j.k .iex.getdata[.iex.mainurl;suffix];.iex.createtable[`.iex.dqte;data]}'[.iex.syms,()]; .iex.lvcq:delete from .iex.lvcq;.iex.lvcq:.iex.lvcq upsert testTabDup;"),,,prepare test table 
+true,,,q,0=dH[`iex]("count .iex.checkdup[;;`.iex.lvcq;.iex.qcols;.iex.nullq]/[0#testTabDup;testTabDup]"),,,checking if checkdup works as it should
+ 
