@@ -44,33 +44,32 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 
 ## Release Notes
 
-- **1.0.1, July 2015**:
-  * Added Chained Tickerplant process
-
-- **1.1.0, October 2015**:
-  * REQUIRES TORQ 2.2.0
-  * Added compatibility with $KDBAPPCONFIG in TorQ 2.2.0 Release
-- **1.2.0, April 2016**:
-  * REQUIRES TORQ 2.5.0
-  * Removed u.q
-  * Moved all config directory into appconfig
-- **1.2.1, September 2016**:
-  * REQUIRES TORQ 2.6.2
-  * added broadcast functionality to u.q
-  * added sortslave functionality
-- **1.3.0, November 2016**:
-  * REQUIRES TORQ 2.7.0
-  * Removed kdb+ tick code
-  * Moved KDBBASEPORT assignment to setenv.sh
-  * Feed process uses timer library
+- **1.5.0, January 2018**:
+  * Added IEX feed
+  * Added usage file for IEX functions
 - **1.4.0, December 2017**:
   * Rationalised connections
   * Added metrics engine
   * Added vwap subscriber process
   * Added version dependency requirements
-- **1.5.0, January 2018**:
-  * Added IEX feed
-  * Added usage file for IEX functions
+- **1.3.0, November 2016**:
+  * REQUIRES TORQ 2.7.0
+  * Removed kdb+ tick code
+  * Moved KDBBASEPORT assignment to setenv.sh
+  * Feed process uses timer library
+- **1.2.1, September 2016**:
+  * REQUIRES TORQ 2.6.2
+  * added broadcast functionality to u.q
+  * added sortslave functionality
+- **1.2.0, April 2016**:
+  * REQUIRES TORQ 2.5.0
+  * Removed u.q
+  * Moved all config directory into appconfig
+- **1.1.0, October 2015**:
+  * REQUIRES TORQ 2.2.0
+  * Added compatibility with $KDBAPPCONFIG in TorQ 2.2.0 Release
+- **1.0.1, July 2015**:
+  * Added Chained Tickerplant process
 
 ## License Info
 
