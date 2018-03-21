@@ -26,7 +26,7 @@ init:{[x]
    }
 
 get_data:{[main_url;suffix]
-   .Q.hg `$main_url,suffix
+   :$[3.6=.Q.k;.Q.hg main_url,suffix;.Q.hg `$main_url,suffix];
    }
 
 get_last_trade:{tab:{[syms]
