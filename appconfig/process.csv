@@ -20,3 +20,4 @@ localhost,{KDBBASEPORT}+17,sortslave,sortslave2
 localhost,{KDBBASEPORT}+18,metrics,metrics1
 localhost,{KDBBASEPORT}+19,iexfeed,iexfeed1
 localhost,{KDBBASEPORT}+20,checker,symcheck
+localhost,{KDBBASEPORT}+21,vtwap,vtwap1

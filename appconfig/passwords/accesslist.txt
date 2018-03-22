@@ -17,3 +17,4 @@ metrics:pass
 vwapsub:pass
 checker:pass
 admin:admin
+vtwap:pass

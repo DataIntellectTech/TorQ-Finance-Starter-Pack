@@ -79,5 +79,20 @@ echo 'Starting sort slave-2...'
 nohup q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortslave -procname sortslave2 -localtime -g 1 </dev/null >$KDBLOG/torqsortslave2.txt 2>&1 &
 
 # launch metrics
-echo 'Stating metrics...'
+echo 'Starting metrics...'
 nohup q torq.q -load code/processes/metrics.q ${KDBSTACKID} -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqmetrics.txt 2>&1 &
+
+# launch symcheck
+echo 'Starting symcheck...'
+nohup q torq.q -load code/checks/symcheck.q ${KDBSTACKID} -proctype checker -procname symcheck1 appconfig/passwords/accesslist.txt -localtime -g 1 -T 30 -.symcheck.tm1 0D00:00:15.000000000 -.symcheck.wn1 0D00:00:00.000000001 </dev/null >$KDBLOG/torqsymcheck.txt 2>&1 &
+
+# launch eodsummary
+echo 'Starting eodsummary...'
+nohup q torq.q -load code/eodsummary/eodsummary.q ${KDBSTACKID} -proctype metrics -procname eodsummary1 appconfig/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqeodsummary.txt 2>&1 &
+
+# launch vtwap
+echo 'Starting vtwap...'
+nohup q ${TORQHOME}/torq.q -load code/processes/vtwap.q ${KDBSTACKID} -proctype vtwap -procname vtwap1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqvtwap.txt 2>&1 &
+
+
+
