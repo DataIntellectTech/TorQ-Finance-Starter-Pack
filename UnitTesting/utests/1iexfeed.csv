@@ -1,0 +1,24 @@
+action,ms,bytes,lang,code,repeat,minver,comment
+run,,,q,dH[`iex]("a:.iex.getdata[.iex.mainurl;.iex.quotesuffix[\"CAT\"]]"),,,downloads quote data
+run,,,q,dH[`iex]("b:.iex.getdata[.iex.mainurl;.iex.tradesuffix[\"CAT\"]]"),,,download trade data
+true,,,q,10h~type dH[`iex]("a"),,,checks if stremead data is type 10h
+true,,,q,10h~type dH[`iex]("b"),,,checks if streamed data is type 10h
+true,,,q,98h~type dH[`iex](".iex.createtable[`.iex.dqte;enlist .j.k a]"),,,check if function create table returns the right type 
+true,,,q,98h~type dH[`iex](".iex.createtable[`.iex.dtrd;.j.k b]"),,,check if functien create table returns the right type
+true,,,q,createtableBENCH~dH[`iex](`.iex.createtable;dtrd;dat),,,check if the output of the .iex.createtable is the same
+run,,,q,e:dH[`rdb]("tables[]!count each value each tables[]"),,,get a count of the values for all tables
+run,,,q,dH[`iex](".iex.upd[`quote_iex;enlist raze .iex.createtable[`.iex.dqte;enlist .j.k .iex.getdata[.iex.mainurl;.iex.quotesuffix[string[upper .iex.syms[0]]]]]]"),,,push table to quote_iex
+true,,,q,e[`quote_iex]<>dH[`rdb]("count quote_iex"),,,check table count increasing
+run,,,q,dH[`iex](".iex.upd[`trade_iex;.iex.createtable[`.iex.dtrd;.j.k .iex.getdata[.iex.mainurl;.iex.tradesuffix[\"CAT\"]]]]"),,,push table to trade_iex 
+true,,,q,e[`trade_iex]<>dH[`rdb]("count trade_iex"),,,check table count increasing
+run,,,q,dH[`iex]("tN::([]sym:`CAT`DOG;bid:(0f;0f); ask:(0f;0f); bsize:(0i;0i); asize:(0i;0i);mode:(\" \";\" \"); ex:(\" \";\" \");srctime:2001.01.01D01:01:01.100000000)"),,,create test table for nulls
+true,,,q,0=dH[`iex]("count .iex.checkdup[;;`.iex.lvcq;.iex.qcols;.iex.nullq]/[0#tN;tN]"),,,check if count 0
+run,,,q,dH[`iex]("tD::([]sym:enlist `CAT;bid:120f;ask:140f;bsize:100i;asize:200i;mode:\"T\";ex:\"T\";srctime:2001.01.01D01:01:01.100000000)"),,,prepare test table
+run,,,q,dH[`iex]("delete from `.iex.lvcq;"),,,clear last memory cached 
+run,,,q,dH[`iex]("`.iex.lvcq upsert tD"),,,upsert testTabDup in lvcq to record it as a duplicate 
+true,,,q,0=dH[`iex]("count .iex.checkdup[;;`.iex.lvcq;.iex.qcols;.iex.nullq]/[0#tD;tD]"),,,checking if checkdup works as it should
+true,,,q,vwapBENCH~{(dH[`vtwap]("getvwap"))[x;16:30;17:00]}'[key .vtwap.data],,,compare vwap with Benchmark
+true,,,q,twapBENCH~{(dH[`vtwap]("gettwap"))[x;16:30;17:00]}'[key .vtwap.data],,,compare vwap with Benchmark
+run,5900,,q,\t:100 {(dH[`vtwap]("getvwap"))[x;16:30;17:00]}'[key .vtwap.data],,,check if times are less than bench
+run,1360,,q,\t:100 {(dH[`vtwap]("gettwap"))[x;16:30;17:00]}'[key .vtwap.data],,,check if times are less than bench
+ 
