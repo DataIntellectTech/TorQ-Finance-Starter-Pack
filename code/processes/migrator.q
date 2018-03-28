@@ -1,4 +1,5 @@
 \d .mig
+
 hdbtypes:@[value;`hdbtypes;`hdb];                                                               //list of hdb types to look for and call
 hdbnames:@[value;`hdbnames;()];                                                                 //list of hdb names to search for and call
 hdbconnsleepintv:@[value;`hdbconnsleepintv;10];                                                 //number of seconds between attempts to connect to the hdb
@@ -14,8 +15,22 @@ dates:"D"$.proc.params.dates;
 tablist:`$.proc.params.tablist;
 parpath:hsym `$.proc.params.parpath;
 sourcepath:.proc.params.sourcepath;
-dstdp:"B"$first .proc.params.dstdp;
-hstdp:"B"$first .proc.params.hstdp;
+
+databasesave:{                                                                                  //function called to load source directory and save data to new partitions
+  {
+    system "l ",raze sourcepath;
+    set[x;{[x;y]delete date from select from x where date=y}[x;y]];
+    .Q.dpft[first parpath;y;`sym;x];
+   }\'[tablist;]each dates;
+ };
+
+hdbsave:{                                                                                       //function called to connect to hdb and save data to new partitions
+  {
+   remotehdb:exec first w from .servers.SERVERS where proctype in`hdb;
+   set[x;remotehdb({[x;y]delete date from select from x where date=y};x;y)];
+   .Q.dpft[first parpath;y;`sym;x];
+   }\'[tablist;]each dates;
+ };
 
 \d .
 
@@ -25,21 +40,12 @@ hstdp:"B"$first .proc.params.hstdp;
 
 .servers.startup[];
 
-.mig.databasesavetabledatepar:{                                                                 //function called to load source directory and save data to new partitions
-  {
-    system "l ",raze .mig.sourcepath;
-    set[x;{[x;y]delete date from select from x where date=y}[x;y]];
-    .Q.dpft[first .mig.parpath;y;`sym;x];
-   }\'[.mig.tablist;]each .mig.dates;
- };
+if[`dbasesave in key .proc.params and not`hdbsave in key .proc.params;
+  .mig.databasesave[];
+  exit 0
+ ];
 
-.mig.hdbsavetabledatepar:{                                                                      //function called to connect to hdb and save data to new partitions
-  {
-   remotehdb:exec first w from .servers.SERVERS where proctype in`hdb;
-   set[x;remotehdb({[x;y]delete date from select from x where date=y};x;y)];
-   .Q.dpft[first .mig.parpath;y;`sym;x];
-   }\'[.mig.tablist;]each .mig.dates;
- };
-
-
-$[.mig.dstdp;.mig.databasesavetabledatepar[];.mig.hstdp;.mig.hdbsavetabledatepar[];];
+if[`hdbsave in key .proc.params and not`dbasesave in key .proc.params;
+  .mig.hdbsave[];
+  exit 0
+ ];                                                                                             //if either present in cmdline, run corresponding function then quit
