@@ -13,7 +13,9 @@ nohdbconnected:{[]                                                              
 dates:"D"$.proc.params.dates;
 tablist:`$.proc.params.tablist;
 parpath:hsym `$.proc.params.parpath;
-.mig.sourcepath:.proc.params.sourcepath;
+sourcepath:.proc.params.sourcepath;
+dstdp:"B"$first .proc.params.dstdp;
+hstdp:"B"$first .proc.params.hstdp;
 
 \d .
 
@@ -23,7 +25,7 @@ parpath:hsym `$.proc.params.parpath;
 
 .servers.startup[];
 
-databasesavetabledatepar:{                                                                      //function called to load source directory and save data to new partitions
+.mig.databasesavetabledatepar:{                                                                 //function called to load source directory and save data to new partitions
   {
     system "l ",raze .mig.sourcepath;
     set[x;{[x;y]delete date from select from x where date=y}[x;y]];
@@ -31,10 +33,13 @@ databasesavetabledatepar:{                                                      
    }\'[.mig.tablist;]each .mig.dates;
  };
 
-hdbsavetabledatepar:{                                                                           //function called to connect to hdb and save data to new partitions
+.mig.hdbsavetabledatepar:{                                                                      //function called to connect to hdb and save data to new partitions
   {
    remotehdb:exec first w from .servers.SERVERS where proctype in`hdb;
    set[x;remotehdb({[x;y]delete date from select from x where date=y};x;y)];
    .Q.dpft[first .mig.parpath;y;`sym;x];
    }\'[.mig.tablist;]each .mig.dates;
  };
+
+
+$[.mig.dstdp;.mig.databasesavetabledatepar[];.mig.hstdp;.mig.hdbsavetabledatepar[];];
