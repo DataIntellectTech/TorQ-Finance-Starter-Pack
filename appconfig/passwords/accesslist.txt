@@ -18,3 +18,4 @@ vwapsub:pass
 checker:pass
 admin:admin
 vtwap:pass
+unittests:pass
