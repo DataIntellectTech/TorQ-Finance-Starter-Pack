@@ -16,6 +16,7 @@ sortslave:pass
 metrics:pass
 vwapsub:pass
 checker:pass
+unittest:pass
 admin:admin
 vtwap:pass
 unittests:pass
