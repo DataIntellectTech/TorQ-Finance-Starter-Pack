@@ -5,7 +5,8 @@ hdbnames:@[value;`hdbnames;()];                                                 
 hdbconnsleepintv:@[value;`hdbconnsleepintv;10];                                                 //number of seconds between attempts to connect to the hdb
 
 if[not .timer.enabled;.lg.e[`migratorinit;
-   "the timer must be enabled to run the migrator process"]];                                   //if the timer is not enabled, then exit with error. Useful if want to migrate periodically
+  "the timer must be enabled to run the migrator process"]
+ ];                                                                                             //if the timer is not enabled, then exit with error. Useful if want to migrate periodically
 
 nohdbconnected:{[]                                                                              //function to check that the hdb is connected to and subscription has been setup
   :0 = count select from .sub.SUBSCRIPTIONS where proctype in .mig.hdbtypes,active;
@@ -13,12 +14,12 @@ nohdbconnected:{[]                                                              
 
 dates:"D"$.proc.params.dates;
 tablist:`$.proc.params.tablist;
-parpath:hsym `$.proc.params.parpath;
+parpath:`$.proc.params.parpath;
 sourcepath:.proc.params.sourcepath;
 pardirs:.proc.params.pardirs;
 
 parcreate:{
-  {system "echo ",x," >> ",(parpath,"par.txt;")}each pardirs;                                   //function creates par.txt and fills with designated partition directories
+  {system"echo ",x," >> ",(first string parpath),"/","par.txt;"}each pardirs;                   //function creates par.txt and fills with designated partition directories
  };
 
 databasesave:{                                                                                  //function called to load source directory and save data to new partitions
@@ -26,7 +27,7 @@ databasesave:{                                                                  
   {
     system "l ",raze sourcepath;                                                                //load hdb directory
     set[x;{[x;y]delete date from select from x where date=y}[x;y]];                             //assign x via set so can be used in .Q.dpft rather than explicit tablename
-    .Q.dpft[first parpath;y;`sym;x];                                                            //save data to directory containing par.txt
+    .Q.dpft[first hsym parpath;y;`sym;x];                                                       //save data to directory containing par.txt
    }\'[tablist;]each dates;
  };
 
@@ -35,9 +36,19 @@ hdbsave:{                                                                       
   {
    remotehdb:exec first w from .servers.SERVERS where proctype in`hdb;                          //assign hdb handle to variable
    set[x;remotehdb({[x;y]delete date from select from x where date=y};x;y)];                    //assign x via set as result of handle call
-   .Q.dpft[first parpath;y;`sym;x];                                                             //save data to directory containing par.txt
+   .Q.dpft[first hsym parpath;y;`sym;x];                                                        //save data to directory containing par.txt
    }\'[tablist;]each dates;
  };
+
+savebysym:{[tab;dir;sim];
+  (` sv hsym[`$dir],tab,`)set .Q.en[parpath] delete sym from select from tab where sym=sim;
+ };
+
+sbysym:{
+  syms:asc first value flip select distinct sym from last .Q.pt;
+  d:segments[{floor[26%x]*til x}[.mig.h]bin .Q.A?first each string syms],'"/",'string syms;
+  savebysym'[;d;syms]'[.Q.pt];
+ }; 
 
 \d .
 
