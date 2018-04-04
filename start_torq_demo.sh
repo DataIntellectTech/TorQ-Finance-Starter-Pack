@@ -7,7 +7,6 @@ export KDBWDB=${TORQHOME}/wdbhdb
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 export KDBSYM=${TORQHOME}/hdb/symrecs
-
 ##### EMAILS #####
 # this is where the emails will be sent to
 # export DEMOEMAILRECEIVER=user@torq.co.uk
@@ -93,7 +92,7 @@ nohup q torq.q -load code/eodsummary/eodsummary.q ${KDBSTACKID} -proctype metric
 
 # launch vtwap
 echo 'Starting vtwap...'
-nohup q ${TORQHOME}/torq.q -load code/processes/vtwap.q ${KDBSTACKID} -proctype vtwap -procname vtwap1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqvtwap.txt 2>&1 &
+nohup q torq.q -load code/processes/vtwap.q ${KDBSTACKID} -proctype wap -procname wap1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqwap.txt 2>&1 &
 
 
 
