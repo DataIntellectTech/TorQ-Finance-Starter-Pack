@@ -4,7 +4,7 @@ upd:{[t;x].wap.tabfuncs[t][t;changetotab[t;x]]};                                
 
 \d .wap
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                                       / List of tickerplant types to try and make a connection to
-replaylog:@[value;`replaylog;1b];                                                               / Replay the tickerplant log file
+replaylog:@[value;`replaylog;0b];                                                               / Replay the tickerplant log file
 schema:@[value;`schema;1b];                                                                     / Retrieve the schema from the tickerplant
 subscribeto:@[value;`subscribeto;`];	                                                          / A list of tables to subscribe to, default (`) means all tables
 subscribesyms:@[value;`subscribesyms;`];                                                        / A list of syms to subscribe for, (`) means all syms
@@ -12,7 +12,8 @@ tpconnsleepintv:@[value;`tpconnsleepintv;10];                                   
 summary:([sym:()]time:();price:();size:());                                                     / Summary table schema
 tabfuncs:()!();																																									/ Define dictionary for upd functions
 tabfuncs[`trade`trade_iex]:{[t;x]@[`.wap.summary;asc([]sym:distinct x`sym);,';value exec (time;price;size) by sym from x];t insert x};
-tabfuncs[`quote`quote_iex`srcquote`clienttrade]:{[t;x]t insert x};
+tabfuncs[`srcquote`clienttrade]:{[t;x] if[.pnl.tickmode=1b;.pnl.updtick[t;x]]};
+tabfuncs[`quote`quote_iex`pnltab]:{[t;x]t insert x};
 
 subscribe:{[]
   if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];
@@ -25,6 +26,42 @@ subscribe:{[]
 upd:{[t;x]tabfuncs[t][t;x]}; 																																		/ Generic upd
 																									
 notpconnected:{0=count select from .sub.SUBSCRIPTIONS where proctype in .wap.tickerplanttypes,active};
+
+\d .pnl
+
+tickmode:@[value;`tickmode;1b];
+ticktime:@[value;`ticktime;`timestamp$0];
+quote:([sym:`symbol$()]src:`symbol$();bid:`float$();ask:`float$());
+trade:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();position:`long$();dcost:`float$());
+pnltab:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();position:`long$();dcost:`float$();src:`symbol$();bid:`float$();ask:`float$();pnl:`float$();r:`float$();totpnl:`float$());
+tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];
+
+updtick:{[t;x]
+  if[t=`clienttrade;
+    /lstpos:(exec last position by sym from pnltab);
+    /lstdcost:(exec last dcost by sym from pnltab);
+    /.pnl.trade:update dcost:?[sym in key lstdcost;lstdcost sym;0]+sums price*size*?[side=`BUY;-1;1], position:?[sym in key lstpos;lstpos sym;0]+sums size*?[side=`BUY;1;-1] by sym from 
+     /             select time,sym,price,size,side from x;
+    .pnl.trade:update dcost:sums price*size*?[side=`BUY;-1;1],position:sums size*?[side=`BUY;1;-1] by sym from 
+      select time,sym,price,size,side from x;
+    .pnl.ticktime:first x`time;
+    pnlcalc[.pnl.trade;.pnl.quote];
+    
+   ];
+  if[t=`srcquote;
+    `.pnl.quote upsert `sym xkey select sym,src,bid,ask from select by sym from x;
+   ];
+ };
+
+pnlcalc:{[td;qt]
+  scount:count select by sym from .pnl.pnltab;
+  pnl:scount _ update totpnl:sums r by sym from
+        update r:0^deltas pnl by sym from
+          uj[`time`sym xcols 0!select by sym from .pnl.pnltab;
+             update pnl:dcost+position*?[1=signum position;ask;bid]from td lj qt];
+  pnltab,:pnl;
+  /.u.upd[`pnltab;flip pnl];
+ };
 
 \d .
 
