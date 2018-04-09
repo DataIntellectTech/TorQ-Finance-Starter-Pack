@@ -22,3 +22,4 @@ localhost,{KDBBASEPORT}+19,iexfeed,iexfeed1
 localhost,{KDBBASEPORT}+20,checker,symcheck
 localhost,{KDBBASEPORT}+21,wap,wap1
 localhost,{KDBBASEPORT}+23,housekeeping,migrator1
+localhost,{KDBBASEPORT}+24,metrics,bookbuilder1
