@@ -6,12 +6,11 @@ upd:{[t;x].bbo.tabfuncs[t][t;changetotab[t;x]]};                                
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                                       //List of tickerplant types to try and make a connection to
 replaylog:@[value;`replaylog;1b];                                                               //Replay the tickerplant log file
 schema:@[value;`schema;1b];                                                                     //Retrieve the schema from the tickerplant
-subscribeto:@[value;`subscribeto;`];                                                            //A list of tables to subscribe to, default (`) means all tables
+subscribeto:@[value;`subscribeto;`srcquote];                                                    //A list of tables to subscribe to, default (`) means all tables
 subscribesyms:@[value;`subscribesyms;`];                                                        //A list of syms to subscribe for, (`) means all syms
 tpconnsleepintv:@[value;`tpconnsleepintv;10];                                                   //Number of seconds between attempts to connect to the tp
 tabfuncs:()!();                                                                                 //Define dictionary for upd functions
-tabfuncs[`trade`trade_iex`clienttrade`quote`quote_iex]:{[t;x]t insert x};
-tabfuncs[`srcquote]:{[t;x]t insert x;build[t;x]};
+tabfuncs[`srcquote]:{[t;x]t insert x;update id:i from t;build[t;x]};
 
 subscribe:{[]
   if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];
@@ -31,6 +30,7 @@ notpconnected:{0=count select from .sub.SUBSCRIPTIONS where proctype in .bbo.tic
 .lg.o[`init;"searching for servers"];
 .servers.startup[];
 .bbo.subscribe[];                                                                               //Subscribe to the tickerplant
+
 while[                                                                                          //Check if the tickerplant has connected, block the process until a connection is established
   .bbo.notpconnected[];
   .os.sleep .bbo.tpconnsleepintv;                                                               //While no connected make the process sleep for X seconds then rerun the subscribe function
@@ -40,12 +40,11 @@ while[                                                                          
 
 upd:.bbo.upd;
 
-
 .bbo.build:{[t;x]
-  state:([sym:`symbol$();src:`symbol$()] price:`float$();size:`long$());
-  func:{[x;y;z] x:z[`price] x upsert `sym`src`price`size!(y[1 0 4 3]); x};
-  `book set update bidbook:{[f;x;y]f[x;y;xdesc]}[func]\[state;flip(src;sym;time;bsize;bid)],
-    askbook:{[f;x;y]f[x;y;xasc]}[func]\[state;flip(src;sym;time;asize;ask)]
+  state:([sym:`symbol$();src:`symbol$()]price:`float$();size:`long$();id:`int$());
+  func:{[x;y;z] x:z[`price] x upsert `sym`src`price`size`id!(y[1 0 4 3 5]); x};
+  `book set update bidbook:{[f;x;y]f[x;y;xdesc]}[func]\[state;flip(src;sym;time;bsize;bid;id)],
+   askbook:{[f;x;y]f[x;y;xasc]}[func]\[state;flip(src;sym;time;asize;ask;id)]
   by sym 
-  from srcquote;
+  from update `s#id,`s#time,`g#sym from srcquote;
  };
