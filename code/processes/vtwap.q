@@ -43,6 +43,7 @@ pnlsnap:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`
   position:`long$();dcost:`float$();src:`symbol$();bid:`float$();ask:`float$();pnl:`float$();	
   r:`float$();totpnl:`float$());
 pnlbatch:pnlsnap;													/ pnl batch
+pnlsum:pnlsnap;
 pnltab:pnlsnap;														/ full pnl records ###remove in release version###
 
 getlast:{{?[null x;0;x]}@[shrttrade each x;y]};										/ function to get the last value from trade fields, .i.e last position/dcost
@@ -64,10 +65,11 @@ updsrcq:{[t;x]
  };
 
 pnlcalc:{[td;qt]													/ function to calculate pnl
-  pnl:(count exec distinct sym from pnltab)_ update totpnl:sums r by sym from						
-                update r:0^first[r]^pnl-prev[pnl] by sym from
+  pnl:(count exec distinct sym from pnltab)_ update totpnl:sums r from						
+                update r:deltas pnl by sym from
                   uj[`time`sym xcols 0!select by sym from pnltab;
-                    update pnl:dcost+position*?[1=signum position;bid;ask]from lj[td;qt]];
+                    update pnl:0^dcost+position*?[1=signum position;bid;ask]from lj[td;qt]];
+  
   pnltab,:pnl;														/ append to total pnl record
   $[tickmode;
     (pnl.pnlsnap:pnl;													/ either save snapshot or batch up pnl
