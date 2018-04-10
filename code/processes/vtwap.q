@@ -34,12 +34,12 @@ tickmode:@[value;`tickmode;1b];												/ post mode
 ticktime:@[value;`ticktime;`timestamp$0];										/ last tick time
 tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];
 
-shrtquote:([sym:`symbol$()]src:`symbol$();bid:`float$();ask:`float$());							/ last value cache quote table
-lngtrade:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();tid:`long$();		/ full trade records
+shrtquote:([sym:`symbol$()]src:`symbol$();bid:`float$();ask:`float$();qid:`long$());					/ last value cache quote table
+lngtrade:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();tid:`long$();qid:`long$();	/ full trade records
   position:`long$();dcost:`float$());
 shrttrade:`sym xkey lngtrade;												/ last value cache trade table 
 idstp:0;														/ trade id
-pnlsnap:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();tid:`long$();			/ pnl snapshot
+pnlsnap:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();tid:`long$();qid:`long$();	/ pnl snapshot
   position:`long$();dcost:`float$();src:`symbol$();bid:`float$();ask:`float$();pnl:`float$();	
   r:`float$();totpnl:`float$());
 pnlbatch:pnlsnap;													/ pnl batch
@@ -60,7 +60,7 @@ updclientt:{[t;x]														/ upd for pnl data
  };
 
 updsrcq:{[t;x]
-  `.pnl.shrtquote upsert `sym xkey select sym,src,bid,ask from select by sym from x;					/ update last value cache quote table ###update to BBO book for release###
+  `.pnl.shrtquote upsert `sym xkey select sym,src,bid,ask,qid:0 from select by sym from x;				/ update last value cache quote table ###update to BBO book for release###
   /pnlcalc[`time`sym xcols 0!shrttrade;quote];
  };
 
@@ -72,7 +72,7 @@ pnlcalc:{[td;qt]													/ function to calculate pnl
   
   pnltab,:pnl;														/ append to total pnl record
   $[tickmode;
-    (pnl.pnlsnap:pnl;													/ either save snapshot or batch up pnl
+    (.pnl.pnlsnap:pnl;													/ either save snapshot or batch up pnl
     tph(`.u.upd;`pnltab;value flip pnl));
     pnlbatch,:pnl];
  };
