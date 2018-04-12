@@ -7,14 +7,15 @@ upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                              
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                                                               / List of tickerplant types to try and make a connection to
 replaylog:@[value;`replaylog;1b];                                                                                       / Replay the tickerplant log file
 schema:@[value;`schema;1b];                                                                                             / Retrieve the schema from the tickerplant
-subscribeto:@[value;`subscribeto;`trade`trade_iex`srcquote`clienttrade];                                                                                    / A list of tables to subscribe to, default (`) means all tables
+subscribeto:@[value;`subscribeto;`trade`trade_iex`srcquote`clienttrade];                                                / A list of tables to subscribe to, default (`) means all tables
 subscribesyms:@[value;`subscribesyms;`];                                                                                / A list of syms to subscribe for, (`) means all syms
 tpconnsleepintv:@[value;`tpconnsleepintv;10];                                                                           / Number of seconds between attempts to connect to the tp
 summary:([sym:()]time:();price:();size:());                                                                             / Summary table schema
 tabfuncs:()!();                                                                                                         / Define dictionary for upd functions
                                                                                                                         
-tabfuncs[`trade`trade_iex]:{[t;x]@[`.rtsub.summary;asc([]sym:distinct x`sym);,';value exec (time;price;size) by sym from x];t insert x};
-tabfuncs[`srcquote]:{[t;x].pnl.updsrcquote[t;x]};
+tabfuncs[`trade`trade_iex]:{[t;x]@[`.rtsub.summary;asc([]sym:distinct x`sym);                                           / redirect trade and trade_iex tables for wap formating
+  ,';value exec (time;price;size) by sym from x];t insert x};
+tabfuncs[`srcquote]:{[t;x].pnl.updsrcquote[t;x]};                                                                       / redirect srcquote and clienttrade tables for pnl calculation
 tabfuncs[`clienttrade]:{[t;x].pnl.updclienttrade[t;x]};
 
 subscribe:{[]
@@ -34,8 +35,8 @@ waps:{[syms;st;et]                                                              
   syms:(),syms;
   a:@'[x;i:{[x;y]x+til y-x}./:{[st;et;x]x bin (st;et)}[st;et;]each x:.rtsub.summary'[syms;`time]];
   :([]sym:syms;
-    vwap:wavg'[@'[.rtsub.summary'[syms;`size];i];                                                                         / Calculate vwap
-    @'[.rtsub.summary'[syms;`price];i]];twap:wavg'[(next'[a]-a);@'[.rtsub.summary'[syms;`price];i]]                         / Calculate twap
+    vwap:wavg'[@'[.rtsub.summary'[syms;`size];i];                                                                       / Calculate vwap
+    @'[.rtsub.summary'[syms;`price];i]];twap:wavg'[(next'[a]-a);@'[.rtsub.summary'[syms;`price];i]]                     / Calculate twap
   );
  };
 
@@ -60,8 +61,8 @@ getlast:{0^shrttrade'[x]y};                                                     
 updclienttrade:{[t;x]                                                                                                   / upd for clienttrade table, calculates pnl
   tsnap:ungroup update tid:.pnl.tidstp+i from                                                                           / calculate required fields for pnl calculation
     select time:last time,price,size,side,position:last position,dcost:last dcost by sym from 
-    update position:.pnl.getlast[sym;`position]+sum size*?[side=`BUY;1;-1],                                             
-    dcost:.pnl.getlast[sym;`dcost]+sum price*size*?[side=`BUY;-1;1] by sym from x;
+      update position:.pnl.getlast[sym;`position]+sum size*?[side=`BUY;1;-1],                                             
+        dcost:.pnl.getlast[sym;`dcost]+sum price*size*?[side=`BUY;-1;1] by sym from x;
  
   .pnl.ticktime:last x`time;                                                    
   tppostback[`pnltrade;`time`sym xcols tsnap];                                                                          / post back trade table to TP with tid
@@ -83,15 +84,15 @@ updbbo:{[t;x]                                                                   
  };
 
 pnlcalc:{[td;qt]                                                                                                        / function to calculate pnl
-  pnl:select time,sym,tid,qid,pnlid,position,dcost,pnl from    
+  pnl:select time,sym,tid,qid,pnlid,position,dcost,pnl from                                                             / calculate pnl by sym for each new trade/quote record
     update pnlid:.pnl.pnlidstp+i,pnl:0^dcost+position*?[1=signum position;bid;ask]from lj[td;qt];
-  pnl,:select last time,sym:`TOTAL,pnlid:1+last pnlid,dcost:(0^last[.pnl.pnlsnap`dcost])+sum dcost,                     / generate record for pseudosym TOTAL
-    pnl:(0^last[.pnl.pnlsnap`pnl])+sum pnl from pnl;
+  pnl,:select last time,sym:`TOTAL,pnlid:1+last pnlid,dcost:(0^last .pnl.pnlsnap`dcost)+sum dcost,                      / generate record for pseudosym TOTAL
+    pnl:(0^last .pnl.pnlsnap`pnl)+sum pnl from pnl;
  
-  .pnl.pnlidstp+:count pnl;                                                                                                     
-  $[tickmode;                                                                                                           / either save snapshot or batch up pnl
-    (.pnl.pnlsnap:pnl;tppostback[`pnltab;pnl]);
-    pnlbatch,:pnl
+  .pnl.pnlidstp+:count pnl;                                                                                             
+  $[tickmode;                                                                                                           
+    (.pnl.pnlsnap:pnl;tppostback[`pnltab;pnl]);                                                                         / save last value cache for pnl, post pnl records to TP
+    pnlbatch,:pnl                                                                                                       / batch up pnl to be sent off at regular intervals
    ];
  };
 
