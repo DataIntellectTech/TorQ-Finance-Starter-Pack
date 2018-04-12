@@ -1,6 +1,6 @@
 changetotab:{[t;x]flip cols[t]!x};                                                                                      / Flip list into correct table schema
 
-upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                        / Replay Upd
+upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                      / Replay Upd
 
 \d .rtsub
 
@@ -130,10 +130,10 @@ recreate:{[pt]                                                                  
 .servers.CONNECTIONS:distinct .servers.CONNECTIONS,.rtsub.tickerplanttypes;
 .lg.o[`init;"searching for servers"]; 
 .servers.startup[];
-.rtsub.subscribe[];                                                                                                       / Subscribe to the tickerplant
+.rtsub.subscribe[];                                                                                                     / Subscribe to the tickerplant
 while[                                                                                                                  / Check if the tickerplant has connected, block the process until a connection is established
   .rtsub.notpconnected[];
-  .os.sleep .rtsub.tpconnsleepintv;                                                                                       / While no connected make the process sleep for X seconds and then run the subscribe function again
+  .os.sleep .rtsub.tpconnsleepintv;                                                                                     / While no connected make the process sleep for X seconds and then run the subscribe function again
   .servers.startup[];                                                                                                   / Run the servers startup code again (to make connection to discovery)
   .rtsub.subscribe[];
   ];
