@@ -142,6 +142,6 @@ upd:.rtsub.upd;
 .pnl.tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];                                                     / tph handle
 .timer.repeat[.z.p;0W;0D00:00:02;.pnl.refreshpnl;"refresh pnl"];                                                        / set refresh timer job
 .timer.repeat[.z.p+1000000000;0W;0D+`second$5;(.pnl.batchpost;.pnl.pnlbatch);"batch mode calculation"];                 / set batch timer job
-.timer.repeat["p"$.z.d+1;0W;1D;({x set 0#value x};`.pnl.shrttrade);"flush last trade value cache"];                             
+.timer.repeat["p"$.z.d+1;0W;1D;({x set 0#value x};'[`.pnl.shrttrade;`.pnl.pnlsnap]);"flush last trade value cache"];                             
 update active:not active from `.timer.timer where (`$description)=`$"batch mode calculation";                           / make batch timer job inactive by default
 
