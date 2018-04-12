@@ -147,6 +147,50 @@ The settings are shown here:
 | .metrics.windows | timespan (list) | List of time windows over which to perform metrics |
 | .metrics.enableallday | boolean | Boolean to enable the "all day" window in addition to above windows |
 
+### Real-time Subscriber
+
+The TorQ Finance Starter Pack (FSP) real-time subscriber process is a 
+general real-time subscriber, built as a real-time analytics engine, 
+in contrast to the RDB which exists as a real-time database. This process 
+is written to be adaptable, such that additional metrics and data analytics 
+can be built upon what is presently included. At this moment this 
+includes a VWAP/TWAP calculator, and a PnL engine.
+
+The VWAP/TWAP calculator can be called with the .wap.waps[syms;st;et] 
+function, to calculate the metric over a certain time frame. This function 
+of the process does not involve any scheduled tasks and only calculates 
+the metric when specfically called. The VWAP/TWAP calculator uses the trade 
+and trade_iex tables for its calculations.
+
+The PnL engine by contrast is set up to continually calculate PnL. This 
+engine uses the BBO book and clienttrade tables as sent through from the TP 
+for its calculations. PnL is calculated by sym using the running position 
+and dollar cost of trades made intraday, and is flushed at the end of day, 
+such that the running position and dollar cost are reset. The calculation also 
+provides a total PnL, and dollar cost, calculated across all syms, and represented 
+by records for pseudosym TOTAL. Similarly this is reset at the end of day.
+
+PnL is calculated tick by tick as data is received and from that point either 
+posted immediately back to the TP, or batched up to be sent at regular intervals. 
+The .pnl.tickmode variable allows the user to run the PnL engine in either tick by 
+tick (1b) or batched mode (0b), by calling the .pnl.modeswitch[] function. In 
+practice this function will flip the value of the .pnl.tickmode variable and 
+activate a .timer.timer job to send the batched PnL data at regular intervals. 
+This interval can be set using the .pnl.setbatchtimer[seconds] function. By default 
+the PnL engine will run in tick by tick mode, until .pnl.modeswitch is called. 
+The batch mode timer period is set by default at 5 seconds.
+
+When running tick by tick, an additional .timer job is activated, set to run 
+every 2 seconds to call the .pnl.refreshpnl function, which in turn checks that 
+trade data has come through in the last 10 seconds. If this condition is not 
+found true, the .pnl.refreshpnl will resend the calculated PnL of the most recent 
+tick. This .timer job is also alternated active/inactive by the .pnl.modeswitch 
+function, such that it does not run when the PnL engine is in batch mode.
+
+The .pnl.recreate[pt] function can be called to recreate PnL records for historical data, 
+for a given partition. This function calls the .pnl.staticcalc[tradetab;quotetab] 
+function on tables retrieved from the HDB.
+
 What Advantages Does This Give Me?
 ----------------------------------
 
