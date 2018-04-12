@@ -5,7 +5,7 @@ upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                              
 \d .rtsub
 
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                                                               / List of tickerplant types to try and make a connection to
-replaylog:@[value;`replaylog;0b];                                                                                       / Replay the tickerplant log file
+replaylog:@[value;`replaylog;1b];                                                                                       / Replay the tickerplant log file
 schema:@[value;`schema;1b];                                                                                             / Retrieve the schema from the tickerplant
 subscribeto:@[value;`subscribeto;`trade`trade_iex`srcquote`clienttrade];                                                                                    / A list of tables to subscribe to, default (`) means all tables
 subscribesyms:@[value;`subscribesyms;`];                                                                                / A list of syms to subscribe for, (`) means all syms
@@ -76,6 +76,10 @@ updsrcquote:{[t;x]                                                              
   tppostback[`pnlquote;qsnap];                                                                                          / post back quote table to TP with qid
   .pnl.qidstp+:count qsnap;
   pnlcalc[shrttrade;shrtquote];                                                                                         / push data to pnl calculator
+ };
+
+updbbo:{[t;x]                                                                                                           / placeholder function for BBO book upd
+  
  };
 
 pnlcalc:{[td;qt]                                                                                                        / function to calculate pnl
