@@ -15,7 +15,7 @@ tabfuncs:()!();														/ Define dictionary for upd functions
 tabfuncs[`trade`trade_iex]:{[t;x]@[`.wap.summary;asc([]sym:distinct x`sym);,';value exec (time;price;size) by sym from x];t insert x};
 tabfuncs[`srcquote]:{[t;x].pnl.updsrcq[t;x]};
 tabfuncs[`clienttrade]:{[t;x].pnl.updclientt[t;x]};
-tabfuncs[`quote`quote_iex`pnltab]:{[t;x]t insert x};
+tabfuncs[`quote`quote_iex`pnltab`pnltrade`pnlquote]:{[t;x](::)};
 
 subscribe:{[]
   if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];
@@ -34,46 +34,52 @@ tickmode:@[value;`tickmode;1b];												/ post mode
 ticktime:@[value;`ticktime;`timestamp$0];										/ last tick time
 tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];								/ TP handle
 
-lngquote:([]time:`timestamp$();sym:`symbol$();src:`symbol$();bid:`float$();ask:`float$();qid:`long$());			/ full quote table
-lngtrade:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();tid:`long$();		/ full trade table
-  position:`long$();dcost:`float$());
-shrttrade:`sym xkey lngtrade;												/ last value cache trade table 
-shrtquote:`sym xkey lngquote;												/ last value cache quote table
+shrtquote:([sym:`symbol$()]time:`timestamp$();src:`symbol$();bid:`float$();ask:`float$();bsize:`long$();asize:`long$();mode:`char$();ex:`char$();qid:`long$());
+shrttrade:([sym:`symbol$()]time:`timestamp$();price:`float$();size:`int$();side:`symbol$();position:`long$();dcost:`float$();tid:`long$());
+/shrttrade:`sym xkey flip`time`sym`price`size`size`position`dcost`tid!();
+/shrtquote:`sym xkey flip`time`sym`src`bid`ask`bsize`asize`mode`ex`qid!();
 tidstp:0;														/ trade id
+qidstp:0;														/ ### REMOVE IN RELEASE ###
 pnlidstp:0;														/ pnl id
-pnlsnap:([]time:`timestamp$();sym:`symbol$();price:`float$();size:`int$();side:`symbol$();tid:`long$();qid:`long$();	/ pnl snapshot
-  position:`long$();dcost:`float$();src:`symbol$();bid:`float$();ask:`float$();pnl:`float$();	
-  r:`float$();totpnl:`float$();pnlid:`long$());
-pnlbatch:pnlsnap;													
+pnlsnap:([]time:`timestamp$();sym:`symbol$();tid:`long$();qid:`long$();pnlid:`long$();
+  position:`long$();dcost:`float$();pnl:`float$());
+pnlbatch:pnltab:pnlsnap;													
 
 getlast:{0^shrttrade'[x]y};												/ function to get the last value from trade fields, .i.e last position/dcost
 
 updclientt:{[t;x]				 									/ upd for clienttrade table, calculates pnl
-  lngtrade,:tsnap:update position:.pnl.getlast[sym;`position]+sums size*?[side=`BUY;1;-1],				/ calculate required fields for pnl calculation
-    dcost:.pnl.getlast[sym;`dcost]+sums price*size*?[side=`BUY;-1;1] by sym from
-    select time,sym,price,size,side,tid:.pnl.tidstp+i from x;
-  .pnl.ticktime:first x`time;												
-  pnlcalc[tsnap;delete time from shrtquote];										/ push data to pnl calculator
-  `.pnl.shrttrade upsert select by sym from tsnap;									/ update last value cache trade
-  .pnl.tidstp+:count tsnap;												
+  tsnap:ungroup update tid:.pnl.tidstp+i from 
+    select time:last time,price,size,side,position:last position,dcost:last dcost by sym from 
+    update position:.pnl.getlast[sym;`position]+sum size*?[side=`BUY;1;-1],						/ calculate required fields for pnl calculation
+    dcost:.pnl.getlast[sym;`dcost]+sum price*size*?[side=`BUY;-1;1] by sym from x;
+ 
+  .pnl.ticktime:last x`time;							
+  `.pnl.shrttrade upsert select by sym from tsnap;
+  pnlcalc[select by sym from tsnap;delete time from shrtquote];										/ push data to pnl calculator 			
+  tph(`.u.upd;`pnltrade;value flip `time`sym xcols tsnap);										/ post back trade table to TP with tid								
+  .pnl.tidstp+:count exec distinct tid from tsnap;
+  
  };
 
 updsrcq:{[t;x]														/ upd for srcquote table, calculates pnl
-  lngquote,:qsnap:select time,sym,src,bid,ask,qid:0 from select by sym from x;						
-  `.pnl.shrtquote upsert `sym xkey qsnap;										/ update last value cache quote table ###update to BBO book for release###
+  qsnap:update qid:.pnl.qidstp+i from x;						
+  `.pnl.shrtquote upsert select by sym from qsnap;										/ update last value cache quote table ###update to BBO book for release###
+  tph(`.u.upd;`pnlquote;value flip qsnap);										/ post back quote table to TP with qid
+  .pnl.qidstp+:count qsnap;
+  
   /pnlcalc[`time`sym xcols 0!shrttrade;quote];
  };
 
 pnlcalc:{[td;qt]													/ function to calculate pnl
-  pnl:uj[`time`sym xcols 0!select by sym from ?[tickmode;pnlsnap;pnlbatch];						/ join previous record by sym for pnl continuity
-        update pnl:0^dcost+position*?[1=signum position;bid;ask]from lj[td;qt]];
-
-  pnl:update pnlid:.pnl.pnlidstp+i from											/ calculate total pnl
-    (count exec distinct sym from ?[tickmode;pnlsnap;pnlbatch])_ update totpnl:sums r from				    
-      update r:deltas pnl by sym from pnl;
-
-  pnlidstp+:count pnl;													
-  $[tickmode;														/ either save snapshot or batch up pnl
+  pnl:select time,sym,tid,qid,pnlid,position,dcost,pnl from    
+    update pnlid:.pnl.pnlidstp+i,pnl:0^dcost+position*?[1=signum position;bid;ask]from lj[td;qt];
+ 
+  pnl,:select last time,sym:`TOTAL,pnlid:1+last pnlid,dcost:(0^last[.pnl.pnlsnap`dcost])+sum dcost,
+    pnl:(0^last[.pnl.pnlsnap`pnl])+sum pnl from pnl;
+ 
+  .pnl.pnltab,:pnl;
+  .pnl.pnlidstp+:count pnl;													
+    $[tickmode;														/ either save snapshot or batch up pnl
     (.pnl.pnlsnap:pnl;
     tph(`.u.upd;`pnltab;value flip pnl));
     pnlbatch,:pnl
@@ -93,12 +99,6 @@ modeswitch:{														/ function to switch between tick by tick and batch mo
  };
 
 refreshpnl:{if[0D00:00:10<.z.p-ticktime;tph(`.u.upd;`pnltab;value flip pnlsnap)]};					/ function to resend previous pnl tick
-
-refrecord:{[id]														/ function to reference trade/quote record used to generate pnl record
-  t:select ttime:time,sym,price,size,side,tid from lngtrade where tid=pnltab[`tid]id;
-  q:`sym xkey select qtime:time,sym,src,bid,ask,qid from lngquote where qid=pnltab[`qid]id;
-  :t lj q;
- };
 
 staticcalc:{[td;qt]													/ function for calculation of pnl for static date
   pnl:aj[`sym`time;
@@ -133,7 +133,8 @@ upd:.wap.upd;
 .pnl.tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];							/ tph handle
 .timer.repeat[.z.p;0W;0D00:00:02;.pnl.refreshpnl;"refresh pnl"];							/ set refresh timer job
 .timer.repeat[.z.p+1000000000;0W;0D+`second$5;(.pnl.batchpost;.pnl.pnlbatch);"batch mode calculation"];			/ set batch timer job
-.timer.repeat["p"$.z.d+1;0W;1D;({x:0#x};.pnl.shrttrade);"flush last trade value cache"];				/ set end of day flush of last value cache trade job
+.timer.repeat["p"$.z.d+1;0W;1D;({x set 0#value x};'[(`.pnl.shrttrade;`.pnl.pnltrade;`.pnl.pnlquote)]);			/ set end of day flush of .pnl tables
+  "flush last trade value cache"];				
 update active:not active from `.timer.timer where (`$description)=`$"batch mode calculation";				/ make batch timer job inactive by default
 
 waps:{[syms;st;et]													/ Calculate time/volume weighted average price			
