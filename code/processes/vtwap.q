@@ -1,32 +1,43 @@
 changetotab:{[t;x]flip cols[t]!x};                                                                                      / Flip list into correct table schema
 
-upd:{[t;x].wap.tabfuncs[t][t;changetotab[t;x]]};                                                                        / Replay Upd
+upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                        / Replay Upd
 
-\d .wap
+\d .rtsub
+
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                                                               / List of tickerplant types to try and make a connection to
 replaylog:@[value;`replaylog;0b];                                                                                       / Replay the tickerplant log file
 schema:@[value;`schema;1b];                                                                                             / Retrieve the schema from the tickerplant
-subscribeto:@[value;`subscribeto;`];                                                                                    / A list of tables to subscribe to, default (`) means all tables
+subscribeto:@[value;`subscribeto;`trade`trade_iex`srcquote`clienttrade];                                                                                    / A list of tables to subscribe to, default (`) means all tables
 subscribesyms:@[value;`subscribesyms;`];                                                                                / A list of syms to subscribe for, (`) means all syms
 tpconnsleepintv:@[value;`tpconnsleepintv;10];                                                                           / Number of seconds between attempts to connect to the tp
 summary:([sym:()]time:();price:();size:());                                                                             / Summary table schema
 tabfuncs:()!();                                                                                                         / Define dictionary for upd functions
                                                                                                                         
-tabfuncs[`trade`trade_iex]:{[t;x]@[`.wap.summary;asc([]sym:distinct x`sym);,';value exec (time;price;size) by sym from x];t insert x};
+tabfuncs[`trade`trade_iex]:{[t;x]@[`.rtsub.summary;asc([]sym:distinct x`sym);,';value exec (time;price;size) by sym from x];t insert x};
 tabfuncs[`srcquote]:{[t;x].pnl.updsrcquote[t;x]};
 tabfuncs[`clienttrade]:{[t;x].pnl.updclienttrade[t;x]};
-tabfuncs[`quote`quote_iex`pnltab`pnltrade`pnlquote]:{[t;x](::)};
 
 subscribe:{[]
   if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];
     .lg.o[`subscribe;"found available tickerplant, attempting to subscribe"];                  
     subinfo:.sub.subscribe[subscribeto;subscribesyms;schema;replaylog;first s];                                         / Call subscribe function and save info
-    @[`.wap;key subinfo;:;value subinfo];                                                                               / Setting subtables and tplogdate globals
+    @[`.rtsub;key subinfo;:;value subinfo];                                                                             / Setting subtables and tplogdate globals
     ];
   };
 
 upd:{[t;x]tabfuncs[t][t;x]};                                                                                            / Generic upd                                                                                                                                                                                                   
-notpconnected:{0=count select from .sub.SUBSCRIPTIONS where proctype in .wap.tickerplanttypes,active};
+notpconnected:{0=count select from .sub.SUBSCRIPTIONS where proctype in .rtsub.tickerplanttypes,active};
+
+\d .wap
+
+waps:{[syms;st;et]                                                                                                      / Calculate time/volume weighted average price
+  syms:(),syms;
+  a:@'[x;i:{[x;y]x+til y-x}./:{[st;et;x]x bin (st;et)}[st;et;]each x:.rtsub.summary'[syms;`time]];
+  :([]sym:syms;
+    vwap:wavg'[@'[.rtsub.summary'[syms;`size];i];                                                                         / Calculate vwap
+    @'[.rtsub.summary'[syms;`price];i]];twap:wavg'[(next'[a]-a);@'[.rtsub.summary'[syms;`price];i]]                         / Calculate twap
+  );
+ };
 
 \d .pnl
 
@@ -111,18 +122,18 @@ recreate:{[pt]                                                                  
 
 \d .
 
-.servers.CONNECTIONS:distinct .servers.CONNECTIONS,.wap.tickerplanttypes;
+.servers.CONNECTIONS:distinct .servers.CONNECTIONS,.rtsub.tickerplanttypes;
 .lg.o[`init;"searching for servers"]; 
 .servers.startup[];
-.wap.subscribe[];                                                                                                       / Subscribe to the tickerplant
+.rtsub.subscribe[];                                                                                                       / Subscribe to the tickerplant
 while[                                                                                                                  / Check if the tickerplant has connected, block the process until a connection is established
-  .wap.notpconnected[];
-  .os.sleep .wap.tpconnsleepintv;                                                                                       / While no connected make the process sleep for X seconds and then run the subscribe function again
+  .rtsub.notpconnected[];
+  .os.sleep .rtsub.tpconnsleepintv;                                                                                       / While no connected make the process sleep for X seconds and then run the subscribe function again
   .servers.startup[];                                                                                                   / Run the servers startup code again (to make connection to discovery)
-  .wap.subscribe[];
+  .rtsub.subscribe[];
   ];
 
-upd:.wap.upd;
+upd:.rtsub.upd;
 
 .pnl.tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];                                                     / tph handle
 .timer.repeat[.z.p;0W;0D00:00:02;.pnl.refreshpnl;"refresh pnl"];                                                        / set refresh timer job
@@ -130,11 +141,3 @@ upd:.wap.upd;
 .timer.repeat["p"$.z.d+1;0W;1D;({x set 0#value x};`.pnl.shrttrade);"flush last trade value cache"];                             
 update active:not active from `.timer.timer where (`$description)=`$"batch mode calculation";                           / make batch timer job inactive by default
 
-waps:{[syms;st;et]                                                                                                      / Calculate time/volume weighted average price                  
-  syms:(),syms;
-  a:@'[x;i:{[x;y]x+til y-x}./:{[st;et;x]x bin (st;et)}[st;et;]each x:.wap.summary'[syms;`time]];
-  :([]sym:syms;
-    vwap:wavg'[@'[.wap.summary'[syms;`size];i];                                                                         / Calculate vwap
-    @'[.wap.summary'[syms;`price];i]];twap:wavg'[(next'[a]-a);@'[.wap.summary'[syms;`price];i]]                         / Calculate twap
-  );
- };
