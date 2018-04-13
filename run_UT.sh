@@ -11,5 +11,5 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 # run unit tests
 #q TorQ/torq.q -procname unittests1 -proctype unittests -load $KDBAPPCODE/iexfeed/iex.q -test TorQ-Finance-Starter-Pack/utests/testCSV -debug
 #rlwrap q TorQ/torq.q -procname unittests1 -proctype unittests -test TorQ-Finance-Starter-Pack/unitTesting/testCSV -debug
-rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${KDBTORQFSP}/unitTesting/testCSV -debug
-
+#rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${KDBTORQFSP}/unitTesting/testCSV -debug
+q TorQ/torq.q -procname wap1 -proctype wap -load $KDBAPPCODE/processes/vtwap.q  -test TorQ-Finance-Starter-Pack/unitTesting/testCSV -debug

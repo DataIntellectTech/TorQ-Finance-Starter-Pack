@@ -85,11 +85,11 @@ updbbo:{[t;x]                                                                   
 
 pnlcalc:{[td;qt]                                                                                                        / function to calculate pnl
   pnl:select time,sym,tid,qid,pnlid,position,dcost,pnl from                                                             / calculate pnl by sym for each new trade/quote record
-    update pnlid:.pnl.pnlidstp+i,pnl:0^dcost+position*?[1=signum position;bid;ask]from lj[td;qt];
+    update pnlid:.pnl.pnlidstp+i,pnl:0^dcost+position*?[1=signum position;bid;ask]from td lj qt;
   pnl,:select last time,sym:`TOTAL,pnlid:1+last pnlid,dcost:(0^last .pnl.pnlsnap`dcost)+sum dcost,                      / generate record for pseudosym TOTAL
     pnl:(0^last .pnl.pnlsnap`pnl)+sum pnl from pnl;
- 
-  .pnl.pnlidstp+:count pnl;                                                                                             
+  
+  .pnl.pnlidstp+:count pnl;
   $[tickmode;                                                                                                           
     (.pnl.pnlsnap:pnl;tppostback[`pnltab;pnl]);                                                                         / save last value cache for pnl, post pnl records to TP
     pnlbatch,:pnl                                                                                                       / batch up pnl to be sent off at regular intervals
@@ -127,7 +127,7 @@ recreate:{[pt]                                                                  
 
 \d .
 
-.servers.CONNECTIONS:distinct .servers.CONNECTIONS,.rtsub.tickerplanttypes;
+.servers.CONNECTIONS:distinct .servers.CONNECTIONS,`wdb,.rtsub.tickerplanttypes;
 .lg.o[`init;"searching for servers"]; 
 .servers.startup[];
 .rtsub.subscribe[];                                                                                                     / Subscribe to the tickerplant
@@ -141,9 +141,9 @@ while[                                                                          
 upd:.rtsub.upd;
 
 .pnl.tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];                                                     / tph handle
+.timer.repeat["p"$.z.d+1;0W;1D;({{x set 0#value x}'[x]};`.pnl.shrttrade`.pnl.pnlsnap);"flush last trade value cache"]; 
 .timer.repeat[.z.p;0W;0D00:00:02;.pnl.refreshpnl;"refresh pnl"];                                                        / set refresh timer job
-.timer.repeat[.z.p+1000000000;0W;0D+`second$5;(.pnl.batchpost;.pnl.pnlbatch);"batch mode calculation"];                 / set batch timer job
-.timer.repeat["p"$.z.d+1;0W;1D;({x set 0#value x};'[`.pnl.shrttrade;`.pnl.pnlsnap]);"flush last trade value cache"];                             
+.timer.repeat[.z.p+1000000000;0W;0D+`second$5;(.pnl`batchpost`pnlbatch);"batch mode calculation"];                 / set batch timer job                     
 update active:not active from `.timer.timer where (`$description)=`$"batch mode calculation";                           / make batch timer job inactive by default
 
 waps:{[syms;st;et]																																							/ Calculate time/volume weighted average price			
