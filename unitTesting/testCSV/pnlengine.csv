@@ -10,12 +10,12 @@ before,0,0,,wdbcounts:wdbh({count each value each x};(`pnltab;`pnlquote;`pnltrad
 before,0,0,,qrcounts:count each(quotepnltab;quotepnlquote;quotepnltrade),,,Count sample results for quote tick
 before,0,0,,trcounts:count each(tradepnltab;tradepnlquote;tradepnltrade),,,Count sample results for trade tick
 
-run,0,0,,.pnl.updsrcquote[`srcquote;sqs],,,Run upd for srcquote data,,,Process sample quote tick
+run,0,0,,.pnl.updsrcquote[`srcquote;sqs],,,Process sample quote tick
 true,0,0,,(rdbcounts+qrcounts)~rdbh({count each value each x};`pnltab`pnlquote`pnltrade),,,Check new RDB counts
-run,0,0,,.pnl.updclienttrade[`clienttrade;cts],,,Run upd for clienttrade data,,,Process sample trade tick
+run,0,0,,.pnl.updclienttrade[`clienttrade;cts],,,Process sample trade tick
 true,0,0,,(rdbcounts+trcounts)~rdbh({count each value each x};`pnltab`pnlquote`pnltrade),,,Check new RDB counts
 true,0,0,,.pnl.pnlsnap~tradepnltab,,,Compare last value cache pnl to sample pnl results
-true,0,0,,.pnl.shrttrade~select by sym from tradepnltrade,,,Compare last value cache trade to sample trade results 
+true,0,0,,.pnl.shrttrade~select by sym from tradepnltrade,,,Compare last value cache trade to sample trade results
 true,0,0,,.pnl.shrtquote~select by sym from tradepnlquote,,,Compare last value cache quote to sample quotee results
 
 run,0,0,,.pnl.tickmode:0b,,,Switch tickmode flag
@@ -32,6 +32,5 @@ run,0,0,,.pnl.batchpost[.pnl.pnlbatch],,,Manually run batch post function
 true,0,0,,0~count .pnl.pnlbatch,,,Check pnl batch record has emptied
 run,0,0,,.pnl.recreate[.z.d-1],,,Run post rollover recreation function on previous days data
 
-after,0,0,)rdbh({{x set y#value x}'[x;y]};(`pnltab`pnlquote`pnltrade);rdbcounts),,,Remove test data from RDB
-after,0,0,)wdbh({{x set y#value x}'[x;y]};(`pnltab`pnlquote`pnltrade);wdbcounts),,,Remove test data from WDB
-
+after,0,0,,rdbh({{x set y#value x}'[x;y]};(`pnltab`pnlquote`pnltrade);rdbcounts),,,Remove test data from RDB
+after,0,0,,wdbh({{x set y#value x}'[x;y]};(`pnltab`pnlquote`pnltrade);wdbcounts),,,Remove test data from WDB
