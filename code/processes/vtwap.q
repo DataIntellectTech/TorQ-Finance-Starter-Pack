@@ -146,3 +146,12 @@ upd:.rtsub.upd;
 .timer.repeat["p"$.z.d+1;0W;1D;({x set 0#value x};'[`.pnl.shrttrade;`.pnl.pnlsnap]);"flush last trade value cache"];                             
 update active:not active from `.timer.timer where (`$description)=`$"batch mode calculation";                           / make batch timer job inactive by default
 
+waps:{[syms;st;et]																																							/ Calculate time/volume weighted average price			
+  syms:(),syms; 
+  a:@'[x;i:{[x;y]x+til y-x}./:{[st;et;x]x bin (st;et)}[st;et;]each x:.wap.summary'[syms;`time]];
+  :([]sym:syms;
+    vwap:wavg'[@'[.wap.summary'[syms;`size];i];                                                 / Calculate vwap
+    @'[.wap.summary'[syms;`price];i]];twap:wavg'[(next'[a]-a);@'[.wap.summary'[syms;`price];i]] / Calculate twap
+  );
+ };
+
