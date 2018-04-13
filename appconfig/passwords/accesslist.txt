@@ -17,5 +17,6 @@ metrics:pass
 vwapsub:pass
 checker:pass
 vtwap:pass
+summary:pass
 wap:pass
 unittests:pass

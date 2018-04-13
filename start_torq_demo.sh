@@ -94,5 +94,7 @@ nohup q torq.q -load code/eodsummary/eodsummary.q ${KDBSTACKID} -proctype metric
 echo 'Starting vtwap...'
 nohup q torq.q -load code/processes/vtwap.q ${KDBSTACKID} -proctype wap -procname wap1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqwap.txt 2>&1 &
 
-
+#launch vizScript
+echo 'Starting vizScript...'
+nohup q ${TORQHOME}/torq.q -load ${KDBTORQFSP}/code/vizSum/vizSum.q ${KDBSTACKID} -proctype summary -procname summary1 -U ${KDBAPPCONFIG}/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/vizScript.txt 2>&1 &
 
