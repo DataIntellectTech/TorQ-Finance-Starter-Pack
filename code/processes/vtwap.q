@@ -127,7 +127,7 @@ recreate:{[pt]                                                                  
 
 \d .
 
-.servers.CONNECTIONS:distinct .servers.CONNECTIONS,.rtsub.tickerplanttypes;
+.servers.CONNECTIONS:distinct .servers.CONNECTIONS,`wdb,.rtsub.tickerplanttypes;
 .lg.o[`init;"searching for servers"]; 
 .servers.startup[];
 .rtsub.subscribe[];                                                                                                     / Subscribe to the tickerplant
