@@ -16,7 +16,14 @@ setTableSchemas:{
  };
 
 checkTableNumber:{
-  :(count .schema.tablenames)=count tables[]where not tables[]in`logmsg`heartbeat;
+  $[result:(count .schema.tablenames)=count tables[]where not tables[]in`logmsg`heartbeat;
+    (.lg.o[`check;"The number of on-disk tables is correct"];:result);
+    .lg.e[`check;"The number of on-disk tables is not correct"];
+   ];
+ };
+
+checkEnum:{
+  
  };
 
 \d . 
