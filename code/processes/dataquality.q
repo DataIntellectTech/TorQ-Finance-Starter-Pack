@@ -2,11 +2,26 @@
 
 \d .dqe
 
+testvar:101;
 connectiontypes:@[value;`connectiontypes;`hdb];
 sleepintv:@[value;`sleepintv;10];
-notpconnected:{[]0 = count select from .sub.SUBSCRIPTIONS where proctype in .dqe.connectiontypes,active};
+notconnected:{[]0 = count select from .servers.SERVERS where proctype in .dqe.connectiontypes,not null w};
+
+.proc.loadf[(src:$[`schemafile in key .proc.params;raze .proc.params`schemafile;"sym"]),".q"]
+
+setTableSchemas:{
+  .proc.loadf[(src:$[`schemafile in key .proc.params;raze .proc.params`schemafile;"sym"]),".q"];
+  .schema.tablenames:tables[]where not tables[]in`logmsg`heartbeat;
+  {(set')[`$".schema.",/:string x;value each x]}.schema.tablenames;
+ };
+
+checkTableNumber:{
+  :(count .schema.tablenames)=count tables[]where not tables[]in`logmsg`heartbeat;
+ };
 
 \d . 
+
+.servers.CONNECTIONS:.dqe.connectiontypes;
 
 .lg.o[`init;"searching for servers"];
 .servers.startup[];
@@ -15,3 +30,7 @@ while[.dqe.notconnected[];
 	.os.sleep[.dqe.sleepintv];
 	.servers.startup[];
  ];
+
+.dqe.setTableSchemas[];
+system"l ",getenv[`KDBHDB];
+
