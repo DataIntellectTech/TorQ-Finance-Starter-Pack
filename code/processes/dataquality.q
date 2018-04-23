@@ -6,17 +6,18 @@ testvar:101;
 connectiontypes:@[value;`connectiontypes;`hdb];
 sleepintv:@[value;`sleepintv;10];
 notconnected:{[]0 = count select from .servers.SERVERS where proctype in .dqe.connectiontypes,not null w};
+hdbdir:@[value;`hdbdir;getenv[`KDBHDB];
 
-.proc.loadf[(src:$[`schemafile in key .proc.params;raze .proc.params`schemafile;"sym"]),".q"]
+getTableNames:{.Q.pt where not .Q.pt in `logmsg`heartbeat};
 
 setTableSchemas:{
   .proc.loadf[(src:$[`schemafile in key .proc.params;raze .proc.params`schemafile;"sym"]),".q"];
-  .schema.tablenames:tables[]where not tables[]in`logmsg`heartbeat;
+  .schema.tablenames:getTableNames[];
   {(set')[`$".schema.",/:string x;value each x]}.schema.tablenames;
  };
 
 checkTableNumber:{
-  $[result:(count .schema.tablenames)=count tables[]where not tables[]in`logmsg`heartbeat;
+  $[result:(count .schema.tablenames)=count getTableNames[];
     (.lg.o[`check;"The number of on-disk tables is correct"];:result);
     .lg.e[`check;"The number of on-disk tables is not correct"];
    ];
@@ -39,5 +40,6 @@ while[.dqe.notconnected[];
  ];
 
 .dqe.setTableSchemas[];
+
 system"l ",getenv[`KDBHDB];
 
