@@ -7,11 +7,13 @@ connectiontypes:@[value;`connectiontypes;`hdb];
 sleepintv:@[value;`sleepintv;10];
 notconnected:{[]0 = count select from .servers.SERVERS where proctype in .dqe.connectiontypes,not null w};
 hdbdir:@[value;`hdbdir;getenv[`KDBHDB]];
+schemaTables:@[value;`schemaTables;.Q.pt];
 
 getTableSchema:{
   .lg.o[`fileload;"Loading in table schema as .schema.tablename"];
   .proc.loadf[(src:$[`schemafile in key .proc.params;raze .proc.params`schemafile;"sym"]),".q"];
-  {(set')[`$".schema.",/:string x;value each x]}.schema.tablenames:.Q.pt;
+  /.dqe.schemaTables:`$".schema.",/:string .Q.pt;
+  {(set')[.dqe.schemaTables:`$".schema.",/:string x;value each x]}.Q.pt;
  };
 
 checkLogger:{[checkname;checkresult]
@@ -21,14 +23,18 @@ checkLogger:{[checkname;checkresult]
    ];
  };
   
-checkTableNumber:{checkLogger["tableNumber";(count .schema.tablenames)=count .Q.pt]};
+checkTableNumber:{checkLogger["tableNumber";(count .dqe.schemaTables)=count .Q.pt]};
 
-checkColumnNames:{checkLogger["columnNames";(cols each .Q.pt)~`date,'cols each `$".schema.",/:string .schema.tablenames]};
+checkColumnNames:{checkLogger["columnNames";(cols each .Q.pt)~`date,'cols each .dqe.schemaTables]};
 
 checkRecordCount:{[dates]
   :checkLogger["recordCount";
-    all {(abs avg[-1_x]-last x)<2*dev each flip -1_x}{[x;y]count select from x where date=y}'[.Q.pt;]'[dates]
-  ];
+    all {(abs avg[-1_x]-last x)<2*dev each flip -1_x}{[x;y]count select from x where date=y}'[.Q.pt;]'[dates]];
+ };
+
+checkColumnTypes:{
+  :checkLogger["recordCount";
+    all first each 1_all (meta each .Q.pt)=meta each .dqe.schemaTables];
  };
 
 \d . 
@@ -43,8 +49,18 @@ while[.dqe.notconnected[];
 	.servers.startup[];
  ];
 
+init:{
+  system"l ",.dqe.hdbdir;
+  .dqe.getTableSchema[];
+  system"l ",.dqe.hdbdir;
 
-system"l ",.dqe.hdbdir;
-.dqe.getTableSchema[];
-system"l ",.dqe.hdbdir;
+ };
 
+runChecks:{
+  0N!.dqe.checkTableNumber[];
+  0N!.dqe.checkColumnNames[];
+  0N!.dqe.checkRecordCount[date];
+  0N!.dqe.checkColumnTypes[];
+ };
+
+init[];
