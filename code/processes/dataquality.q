@@ -2,7 +2,6 @@
 
 \d .dqe
 
-testvar:101;
 connectiontypes:@[value;`connectiontypes;`hdb];
 sleepintv:@[value;`sleepintv;10];
 notconnected:{[]0 = count select from .servers.SERVERS where proctype in .dqe.connectiontypes,not null w};
@@ -34,26 +33,7 @@ checkRecordCount:{[dates]
 
 checkColumnTypes:{
   :checkLogger["recordCount";
-    all first each 1_all (meta each .Q.pt)=meta each .dqe.schemaTables];
- };
-
-\d . 
-
-.servers.CONNECTIONS:.dqe.connectiontypes;
-
-.lg.o[`init;"searching for servers"];
-.servers.startup[];
-
-while[.dqe.notconnected[];
-	.os.sleep[.dqe.sleepintv];
-	.servers.startup[];
- ];
-
-init:{
-  system"l ",.dqe.hdbdir;
-  .dqe.getTableSchema[];
-  system"l ",.dqe.hdbdir;
-
+    all first each 1_ all (meta each .Q.pt)=meta each .dqe.schemaTables];
  };
 
 runChecks:{
@@ -61,6 +41,26 @@ runChecks:{
   0N!.dqe.checkColumnNames[];
   0N!.dqe.checkRecordCount[date];
   0N!.dqe.checkColumnTypes[];
+ };
+
+\d . 
+
+.servers.CONNECTIONS:.dqe.connectiontypes;
+
+init:{
+  .lg.o[`init;"searching for servers"];
+  .servers.startup[];
+
+  while[.dqe.notconnected[];
+    .os.sleep[.dqe.sleepintv];
+    .servers.startup[];
+   ];
+
+  system"l ",.dqe.hdbdir;
+  .dqe.getTableSchema[];
+  system"l ",.dqe.hdbdir;
+
+  .timer.repeat["p"$.z.d+1;0W;1D;.dqe.runChecks;"run on-disk data checks"];
  };
 
 init[];
