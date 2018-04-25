@@ -20,28 +20,31 @@ checkLogger:{[checkname;result;detail]											/ function to add a log wrapper
  };
   
 checkTableNumber:{													 / function to check if the same number of tables are saved to disk as exist in the schema
-  missingTables:.Q.pt where 0=(tables`.schema=.Q.pt;
+  missingTables:.Q.pt where not (tables`.schema)=.Q.pt;
   :checkLogger["tableNumber";
-    0=count missingTables;
-    "The latest partition is missing the following tables: ",string missingTables]
+    not count missingTables;
+    "The latest partition is missing the following tables: ",", "sv string missingTables]
  };
 
 checkColumnNames:{													/ function to check if on-disk table column names match those of the schema
+  errTables:.Q.pt where not all each cols'[.Q.pt]=`date,/:cols each .dqe.schemaTables;
   :checkLogger["columnNames";
-    cols'[.Q.pt]~`date,/:cols each .dqe.schemaTables;
-    "Nonsense"]
+    not count errTables;
+    "The following tables' columns do not match the schema file: ",", "sv string errTables]
  };				
 
 checkRecordCount:{													/ function to check approximate record counts for each table, compares first date in list to average of other dates
+  errTables:.Q.pt where not {(abs avg[-1_x]-last x)<2*dev each flip -1_x}flip .Q.cn each value each .Q.pt;
   :checkLogger["recordCount";
-    all{(abs avg[-1_x]-last x)<2*dev each flip -1_x}flip .Q.cn each value each .Q.pt;					 / fails if any table counts differ from the average of the considered dates by twice the dev
-    "Nonsense"];
+    not count errTables;												 / fails if any table counts differ from the average of the considered dates by twice the dev
+    "The following tables have unexpected record counts: ",", "sv string errTables];
  };
 
-checkColumnTypes:{													/ function to check if on-disk column types match those of the schema
-  :checkLogger["recordCount";
-    all first each 1_ all meta'[.Q.pt]=meta each .dqe.schemaTables;
-    "Nonsense"];
+checkColumnTypes:{													 / function to check if on-disk column types match those of the schema
+  errTables:.Q.pt where not exec t from all each 1_'{select t from x}each meta'[.Q.pt]=meta each .dqe.schemaTables
+  :checkLogger["columnTypes";
+    not count errTables;
+    "The following tables do not have the correct column types: ",","sv string errTables];
  };
 
 alertMail:{[checkname;detail]
