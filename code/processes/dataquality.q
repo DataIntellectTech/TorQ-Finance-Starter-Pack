@@ -1,7 +1,15 @@
+opts:.Q.def[(enlist`us)!(enlist 0b)].Q.opt .z.x;
+
+usage:("";
+  "USAGE - Welcome to the Data Quality Engine"; 
+  "This process is built to run a series of checks periodically on on-disk data";
+  "Available checks can be found under the .dqe namespace";
+  "The checks are run periodically by the .timer TorQ functionality, by default daily at 0100";
+  "The checks can be run manually using the .dqe.runChecks function which takes a hdb partition as its argument");
+
 \d .dqe
 
-connectiontypes:@[value;`connectiontypes;`hdb];										/ symbol list of connection types 
-sleepintv:@[value;`sleepintv;10];											/ integer connection attempt sleep interval
+connectiontypes:@[value;`connectiontypes;`hdb];										/ symbol list of connection types
 notconnected:{[]0=count select from .servers.SERVERS where proctype in .dqe.connectiontypes,not null w};		/ boolean to signify if process is connected to required types
 hdbdir:@[value;`hdbdir;getenv`KDBHDB];											/ string path to HDB
 schemaTables:@[value;`schemaTables;.Q.pt];										/ symbol list of fully qualified .schema tables
@@ -18,6 +26,9 @@ checkLogger:{[checkname;result;detail]											/ function to add a log wrapper
     (.lg.e[`check;"The check ",checkname," has failed"];alertMail[checkname;detail]);					/ pass checkname and failure details to alertMail function upon failure
    ];
  };
+
+// Each of the following checks make use of the checkLogger function,
+// passing in the check name, the boolean result of the check, and the details of the failure
   
 checkTableNumber:{													/ function to check if the same number of tables are saved to disk as exist in the schema
   missingTables:.Q.pt where not (tables`.schema)=.Q.pt;									/ set list of tables that do not pass the check
@@ -47,34 +58,28 @@ checkColumnTypes:{													/ function to check if on-disk column types match
     "The following tables do not have the correct column types: ",","sv string errTables];
  };
 
-tabSelect:{[tabName;colName;dt] tempTab:select from tabName where date=dt; ?[tempTab;();();(enlist count;colName)]};
+
+tabSelect:{[tabName;colName;dt] tempTab:select from tabName where date=dt; ?[tempTab;();();(enlist count;colName)]};	/ function to extract a given column list from a given table on a given date
        
-colsCountTab:{[tabName;dt] tabSelect[tabName;;dt] each cols[tabName]};
+colsCountTab:{[tabName;dt] tabSelect[tabName;;dt] each cols[tabName]};							/ function to enerate a list of record counts for each column of a given table on a given date
 
-colsCheck:{[dt] {all not deltas[first x;x]} each {[dt] colsCountTab[;dt] each .Q.pt}[dt]};
-
-checkColumnCount:{[dt]
-  checkLogger["Equal Column Counts";all colsCheck[dt];
-  ("The following tables have failed the Equal Column Counts check on";string dt;": ";string .Q.pt where not colsCheck[dt])]
+checkColumnCount:{[dt]													/ function to check that column counts for each table are equal
+  errTables:.Q.pt where not {all not deltas[first x;x]} each {[dt] colsCountTab[;dt] each .Q.pt}[dt];			/ set list of tables that do not pass the check 
+  checkLogger["Equal Column Counts";									
+  not count errTables;
+  ("The following tables have failed the Equal Column Counts check on ";string dt;": ",", "sv string errTables)]
  };
 
-/checkColumnCount:{[dt]
-/  errTables:.Q.pt where not{all not deltas[first x;x]} each {[dt] colsCountTab[;dt] each .Q.pt}[dt]};
-/  checklogger["Equal Column Counts";all errTables;
-/  ("The following tables have failed the Equal Column Counts check on";string dt;": ",","sv string errTables)]
-                       
-attCheck:{[dt] {[tabName;dt] `p=attr .Q.par[`:.;dt;tabName]`sym}[;dt] each .Q.pt}
-
-checkAttributes:{[dt]
-  :checkLogger["Parted Attribute"; all attCheck[dt];
-  ("The following tables have failed the Parted Attribute check on";string dt;": ";string .Q.pt where not attCheck[dt])];
+checkAttributes:{[dt]													/ function to check that the parted attribute has been applied to each tables' sym column
+  errTables:.Q.pt where not {[tabName;dt]`p=attr .Q.par[`:.;dt;tabName]`sym}[;dt]each .Q.pt;				/ set list of tables that do not pass the check
+  :checkLogger["Parted Attribute"; 
+  not count errTables;
+  ("The following tables have failed the Parted Attribute check on";string dt;": ",", "sv string errTables)];
  };
 
-
-
-enumCheck:$[()~key hdbdir,"/sym";0b;1b] //
-checkEnumeration:{
-  :checkLogger["Top Level Enumeration File"; enumCheck;
+checkEnumeration:{													/ function to check if enumeration exists on the top level
+  :checkLogger["Top Level Enumeration File"; 
+  $[()~key hdbdir,"/sym";0b;1b];
   ("The sym-enumeration file is NOT currently located at the top level")];
  };
 
@@ -108,8 +113,8 @@ init:{                                                                          
   system"l ",.dqe.hdbdir;                                                                                               / map hdb into memory
 
   .email.connect`url`user`password`from`usessl`debug#.email;
-
-  .timer.repeat[(.z.d+1)+01:00;0W;1D;.dqe.runChecks[.z.d-1];"run on-disk data checks"];                                         / timer job to run on-disk checks daily, post rollover
+  .timer.repeat[(.z.d+1)+01:00;0W;1D;(.dqe.runChecks;[.z.d-1]);"run on-disk data checks"];                              / timer job to run on-disk checks daily, post rollover
+  if[opts[`us]=1b;show usage];
  };
 
 attemptSetup:{
