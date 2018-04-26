@@ -71,7 +71,9 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 - **1.5.0, January 2018**:
   * Added IEX feed
   * Added usage file for IEX functions
-
+- **2.0.0, April 2018**: 
+  * Improved the script underlying TorQ Dashboard 
+  * Added UnitTests for vizSum.q script 
 ## License Info
 
 Data provided for free by [IEX](https://iextrading.com/developer/)

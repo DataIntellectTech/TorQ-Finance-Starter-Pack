@@ -8,8 +8,33 @@ export KDBTOP=${PWD}/..
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 
-# run unit tests
-#q TorQ/torq.q -procname unittests1 -proctype unittests -load $KDBAPPCODE/iexfeed/iex.q -test TorQ-Finance-Starter-Pack/utests/testCSV -debug
-#rlwrap q TorQ/torq.q -procname unittests1 -proctype unittests -test TorQ-Finance-Starter-Pack/unitTesting/testCSV -debug
-#rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${KDBTORQFSP}/unitTesting/testCSV -debug
-q TorQ/torq.q -procname wap1 -proctype wap -load $KDBAPPCODE/processes/vtwap.q  -test TorQ-Finance-Starter-Pack/unitTesting/testCSV -debug
+echo "Select an option!" 
+echo""
+printf "%-15s | %-50s\n" "gateway" "test checkQuery function inside gateway.q"
+printf "%-15s | %-50s\n" "symbackup" "test symbackup functionality"
+printf "%-15s | %-50s\n" "dbmigration" "test data base migration"
+printf "%-15s | %-50s\n" "vizsum" "test the vizualisation script"
+printf "%-15s | %-50s\n" "Exit" "-"
+echo""
+printf "Input:"
+read -r inp
+
+inp=` echo $inp | tr '[:upper:]' '[:lower:]'` 
+case $inp in 
+  gateway)
+    rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${KDBTORQFSP}/unitTesting/testCSV/checkQGW.csv -debug;;
+  dbmigration)
+     echo "NOT YET IMPLEMENTED";;
+  symbackup)
+    rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${KDBTORQFSP}/unitTesting/testCSV -debug;;
+  vizsum)   
+    rlwrap q TorQ/torq.q -procname vizSum1 -proctype summary -load ${KDBTORQFSP}/code/vizSum/vizSum.q -test ${KDBTORQFSP}/unitTesting/testCSV/vizSum.csv -debug;;
+  exit) 
+    exit 1;; 
+  *)
+    echo "NOT YET IMPLEMENTED";;
+esac 
+
+
+
+

@@ -1,6 +1,7 @@
 action,ms,bytes,lang,code,repeat,minver,comment
 before,,,q,testQGW::get hsym`$ "/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/testQGW"),,,loading the test data 
 before,,,q,resQGW::get hsym `$"/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/resQGW"),,,loading the results dictionary 
+
 true,,,q,resQGW[`a]~.gw.checkQuery[testQGW[`a];testQGW[`s2]],,,checking query on HDB
 true,,,q,resQGW[`b]~.gw.checkQuery[testQGW[`b];testQGW[`s2]],,,checking query on HDB
 true,,,q,resQGW[`c]~.gw.checkQuery[testQGW[`c];testQGW[`s2]],,,checking query on HDB
