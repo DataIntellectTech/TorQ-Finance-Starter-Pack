@@ -191,6 +191,25 @@ The .pnl.recreate[pt] function can be called to recreate PnL records for histori
 for a given partition. This function calls the .pnl.staticcalc[tradetab;quotetab] 
 function on tables retrieved from the HDB.
 
+###Data Quality Engine (DQE)
+
+The DQE is set to run in the background every 24 hours. It performs a number of
+tests to ascertain the quality of last days on-disk table data.
+1)Equal Column Counts - For a given table, each column contains the same number
+                       of list elements
+2) Parted Attributes - The parted attribute has been applied to the sym column
+                      of each table
+3) Parted Attribute - An enumeration file exists at the top level of the hdb directory
+4) Column Names - The colmn names of the on-disk table data are consistent with
+                 those in the schema file
+5) Table Number - Number of on disk tables is consistent with the number of
+                 table schemas defined in the schema file
+6) Column Types - The column types of the on-disk tables are consistent with the
+                 column types defined in the schema file
+
+If any of the above checks fail, an email is sent to the user containing details
+of which tables have failed which tests on which date.
+
 What Advantages Does This Give Me?
 ----------------------------------
 
