@@ -23,4 +23,4 @@ localhost,{KDBBASEPORT}+20,checker,symcheck
 localhost,{KDBBASEPORT}+21,wap,wap1
 localhost,{KDBBASEPORT}+22,housekeeping,migrator1
 localhost,{KDBBASEPORT}+23,summary,summary1
-
+localhost,{KDBBASEPORT}+24,dqe,dqe1

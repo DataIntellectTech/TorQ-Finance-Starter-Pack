@@ -20,3 +20,4 @@ vtwap:pass
 summary:pass
 wap:pass
 unittests:pass
+dqe:pass
