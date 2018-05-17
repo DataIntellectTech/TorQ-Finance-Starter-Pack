@@ -1,6 +1,8 @@
-changetotab:{[t;x]flip cols[t]!x};                                                                                      / Flip list into correct table schema
+// changetotab:{[t;x]flip cols[t]!x};                                                                                      / Flip list into correct table schema
 
-upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                      / Replay Upd
+// upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                      / Replay Upd
+
+upd:insert;
 
 \d .rtsub
 
@@ -127,10 +129,17 @@ recreate:{[pt]                                                                  
 
 \d .
 
+// changetotab:{[t;x]flip cols[t]!x};                                                                                      / Flip list into correct table schema
+
+// upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                      / Replay Upd
+
+upd:insert;
+
 .servers.CONNECTIONS:distinct .servers.CONNECTIONS,`wdb,.rtsub.tickerplanttypes;
 .lg.o[`init;"searching for servers"]; 
 .servers.startup[];
 .rtsub.subscribe[];                                                                                                     / Subscribe to the tickerplant
+
 while[                                                                                                                  / Check if the tickerplant has connected, block the process until a connection is established
   .rtsub.notpconnected[];
   .os.sleep .rtsub.tpconnsleepintv;                                                                                     / While no connected make the process sleep for X seconds and then run the subscribe function again
@@ -143,15 +152,6 @@ upd:.rtsub.upd;
 .pnl.tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];                                                     / tph handle
 .timer.repeat["p"$.z.d+1;0W;1D;({{x set 0#value x}'[x]};`.pnl.shrttrade`.pnl.pnlsnap);"flush last trade value cache"]; 
 .timer.repeat[.z.p;0W;0D00:00:02;.pnl.refreshpnl;"refresh pnl"];                                                        / set refresh timer job
-.timer.repeat[.z.p+1000000000;0W;0D+`second$5;(.pnl`batchpost`pnlbatch);"batch mode calculation"];                 / set batch timer job                     
+.timer.repeat[.z.p+1000000000;0W;0D+`second$5;(.pnl`batchpost`pnlbatch);"batch mode calculation"];                      / set batch timer job                     
 update active:not active from `.timer.timer where (`$description)=`$"batch mode calculation";                           / make batch timer job inactive by default
-
-waps:{[syms;st;et]																																							/ Calculate time/volume weighted average price			
-  syms:(),syms; 
-  a:@'[x;i:{[x;y]x+til y-x}./:{[st;et;x]x bin (st;et)}[st;et;]each x:.wap.summary'[syms;`time]];
-  :([]sym:syms;
-    vwap:wavg'[@'[.wap.summary'[syms;`size];i];                                                 / Calculate vwap
-    @'[.wap.summary'[syms;`price];i]];twap:wavg'[(next'[a]-a);@'[.wap.summary'[syms;`price];i]] / Calculate twap
-  );
- };
 
