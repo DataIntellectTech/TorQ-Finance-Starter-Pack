@@ -74,7 +74,7 @@ buySellPressure:{
 HDBC:{
   hdbhand:exec first w from .sub.getsubscriptionhandles[.summary.hdbtypes;();()!()];
   a:(hdbhand("tables[]"))except .summary.ignorelist;
-  f:{[x]`date`table xkey update table:x from select cnt:count sym by date from select from x where date>=.z.d-7};break; 
+  f:{[x]`date`table xkey update table:x from select cnt:count sym by date from select from x where date>=.z.d-7}; 
   HDBCount::`date xasc raze {x uj y}\[{[h;func;x]h(func;x)}[hdbhand;f]'[a]]
  };
 
