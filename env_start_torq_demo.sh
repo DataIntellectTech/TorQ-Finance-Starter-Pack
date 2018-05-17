@@ -86,11 +86,11 @@ nohup q ${TORQHOME}/torq.q -load ${KDBTORQFSP}/code/processes/metrics.q ${KDBSTA
 
 # launch symcheck
 echo 'Starting symcheck...'
-#nohup q ${TORQHOME}/torq.q -load ${KDBAPPCODE}/checks/symcheck.q ${KDBSTACKID} -proctype checker -procname symcheck1 ${KDBAPPCONFIG}/passwords/accesslist.txt -localtime -g 1 -T 30 -.symcheck.tm1 0D00:00:15.000000000 -.symcheck.wn1 0D00:00:00.000000001 </dev/null >$KDBLOG/torqsymcheck.txt 2>&1 &
+nohup q ${TORQHOME}/torq.q -load ${KDBAPPCODE}/checks/symcheck.q ${KDBSTACKID} -proctype checker -procname symcheck1 ${KDBAPPCONFIG}/passwords/accesslist.txt -localtime -g 1 -T 30 -.symcheck.tm1 0D00:00:15.000000000 -.symcheck.wn1 0D00:00:00.000000001 </dev/null >$KDBLOG/torqsymcheck.txt 2>&1 &
 
 # launch eodsummary
 echo 'Starting eodsummary...'
-#nohup q ${TORQHOME}/torq.q -load ${KDBAPPCODE}/eodsummary/eodsummary.q ${KDBSTACKID} -proctype metrics -procname eodsummary1 ${KDBAPPCONFIG}/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqeodsummary.txt 2>&1 &
+nohup q ${TORQHOME}/torq.q -load ${KDBAPPCODE}/eodsummary/eodsummary.q ${KDBSTACKID} -proctype metrics -procname eodsummary1 ${KDBAPPCONFIG}/passwords/accesslist.txt -localtime -g 1 -T 30 </dev/null >$KDBLOG/torqeodsummary.txt 2>&1 &
 
 # launch vtwap
 echo 'Starting vtwap...'
