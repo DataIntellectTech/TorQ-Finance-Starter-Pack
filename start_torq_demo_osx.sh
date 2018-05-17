@@ -2,8 +2,6 @@
 . ./setenv.sh
 
 # sets the base port for a default TorQ Finance Starter Pack installation
-export KDBHDB=${TORQHOME}/hdb/database
-export KDBWDB=${TORQHOME}/wdbhdb
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m32 
 

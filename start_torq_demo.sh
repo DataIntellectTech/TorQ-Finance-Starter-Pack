@@ -2,8 +2,6 @@
 . ./setenv.sh
 
 # sets the base port for a default TorQ installation
-export KDBHDB=${TORQHOME}/hdb/database
-export KDBWDB=${TORQHOME}/wdbhdb
 export KDBSTACKID="-stackid ${KDBBASEPORT}"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l32
 
