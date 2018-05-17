@@ -1,9 +1,3 @@
-// changetotab:{[t;x]flip cols[t]!x};                                                                                      / Flip list into correct table schema
-
-// upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                      / Replay Upd
-
-upd:insert;
-
 \d .rtsub
 
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                                                               / List of tickerplant types to try and make a connection to
@@ -128,10 +122,6 @@ recreate:{[pt]                                                                  
  };
 
 \d .
-
-// changetotab:{[t;x]flip cols[t]!x};                                                                                      / Flip list into correct table schema
-
-// upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                      / Replay Upd
 
 upd:insert;
 
