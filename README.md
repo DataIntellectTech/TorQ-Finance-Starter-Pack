@@ -45,7 +45,7 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 ## Release Notes
 - **1.6.0, May 2018**:
   * Update process.csv for start stop script (torq.sh) in TorQ. All the process configuration is now at one place in $KDBAPPCONFIG/process.csv.
-  * Bug fix for kdb v3.6 where .Q.hg throws a domain error for symbol argument
+  * Tested with kdb+ 3.6 and TorQ 3.3.0
 - **1.5.0, January 2018**:
   * Added IEX feed
   * Added usage file for IEX functions
