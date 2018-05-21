@@ -43,7 +43,9 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
 ## Release Notes
-
+- **1.6.0, May 2018**:
+  * Update process.csv for start stop script (torq.sh) in TorQ. All the process configuration is now at one place in $KDBAPPCONFIG/process.csv.
+  * Bug fix for kdb v3.6 where .Q.hg throws a domain error for symbol argument
 - **1.5.0, January 2018**:
   * Added IEX feed
   * Added usage file for IEX functions
