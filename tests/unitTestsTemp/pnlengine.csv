@@ -1,0 +1,34 @@
+action,ms,bytes,lang,code,repeat,minver,comment
+
+before,0,0,,.proc.loadf "/"sv(getenv[`KDBTORQFSP];"unitTesting/config/pnlengine.q"),,,Load pnlengine config file
+before,0,0,,system" "sv(enlist"l";pnldatapath),,,Load pnl test data
+before,0,0,,sqs:sqsample;cts:ctsample,,,Bring sample data 
+before,0,0,,rdbcounts:.handle.rdb({count each value each x};(`pnltab;`pnlquote;`pnltrade)),,,Return current RDB counts
+before,0,0,,wdbcounts:.handle.wdb({count each value each x};(`pnltab;`pnlquote;`pnltrade)),,,Return current WDB counts
+before,0,0,,qrcounts:count each(quotepnltab;quotepnlquote;quotepnltrade),,,Count sample results for quote tick
+before,0,0,,trcounts:count each(tradepnltab;tradepnlquote;tradepnltrade),,,Count sample results for trade tick
+
+run,0,0,,.handle.pnl(`.pnl.updsrcquote;`srcquote;sqs),,,Process sample quote tick
+true,0,0,,(rdbcounts+qrcounts)~.handle.rdb({count each value each x};`pnltab`pnlquote`pnltrade),,,Check new RDB counts
+run,0,0,,.handle.pnl(`.pnl.updclienttrade;`clienttrade;cts),,,Process sample trade tick
+true,0,0,,(rdbcounts+trcounts)~.handle.rdb({count each value each x};`pnltab`pnlquote`pnltrade),,,Check new RDB counts
+true,0,0,,.handle.pnl({y~value x};`.pnlsnap;tradepnltab),,,Compare last value cache pnl to sample pnl results
+true,0,0,,.handle.pnl({y~value x};`.pnl.shrttrade;select by sym from tradepnltrade),,,Compare last value cache trade to sample trade results
+true,0,0,,.handle.pnl({y~value x};`.pnl.shrtquote;select by sym from tradepnlquote),,,Compare last value cache quote to sample quotee results
+
+run,0,0,,.handle.pnl".pnl.tickmode:0b",,,Switch tickmode flag
+run,0,0,,.handle.pnl(`.pnl.updclienttrade;`clienttrade;cts),,,Process sample trade tick
+true,0,0,,trcounts[0]-1~count.handle.pnl".pnl.pnlbatch",,,Count pnl batch record
+run,0,0,,.handle.pnl".pnl.tickmode:1b",,,Reset tickmode flag
+
+run,0,0,,.handle.pnl(`.pnl.modeswitch;[]),,,Run modeswitch function to switch to batch mode
+true,0,0,,(.pnl.tickmode~0b),,,Check tickmode flag has been switched
+true,0,0,,.handle.pnl"01b~-2#(0!.timer.timer)[`active]",,,Check .timer jobs have switched
+run,0,0,,.handle.pnl(`.pnl.setbatchtimer;30),,,Run set timer function
+true,0,0,,.handle.pnl"0D00:00:30.000000000=last(0!.timer.timer)[`period]",,,Check period for batch posting has updated
+run,0,0,,.handle.pnl".pnl.batchpost[.pnl.pnlbatch]",,,Manually run batch post function
+true,0,0,,.handle.pnl"0~count .pnl.pnlbatch",,,Check pnl batch record has emptied
+run,0,0,,.handle.pnl".pnl.recreate[.z.d-1]",,,Run post rollover recreation function on previous days data
+
+after,0,0,,.handle.rdb({{x set y#value x}'[x;y]};(`pnltab`pnlquote`pnltrade);rdbcounts),,,Remove test data from RDB
+after,0,0,,.handle.wdb({{x set y#value x}'[x;y]};(`pnltab`pnlquote`pnltrade);wdbcounts),,,Remove test data from WDB
