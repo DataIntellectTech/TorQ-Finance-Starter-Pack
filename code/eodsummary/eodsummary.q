@@ -48,6 +48,7 @@ metrics rdbhandle;
 createsummary:{
   update `$string bucket from `.eodsum.c;                                                       //change type from long to sym
   d:exec distinct bucket from .eodsum.c;                                                        //get all unique values to be used as column headers
+  break;
   twas:exec d#(bucket!twas) by sym:sym from .eodsum.c;                                          //pivot table
   `summarytab set 0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;twas);   
  };
