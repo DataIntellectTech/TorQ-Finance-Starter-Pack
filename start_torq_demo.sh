@@ -96,5 +96,9 @@ nohup q torq.q -load code/processes/vtwap.q ${KDBSTACKID} -proctype wap -procnam
 
 #launch vizScript
 echo 'Starting vizScript...'
-nohup q ${TORQHOME}/torq.q -load ${KDBTORQFSP}/code/vizSum/vizSum.q ${KDBSTACKID} -proctype summary -procname summary1 -U ${KDBAPPCONFIG}/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/vizScript.txt 2>&1 &
+nohup q torq.q -load code/vizSum/vizSum.q ${KDBSTACKID} -proctype summary -procname summary1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/vizScript.txt 2>&1 &
+
+echo 'Starting DQ Engine...'
+nohup q torq.q -load code/processes/dataquality.q -schemafile database ${KDBSTACKID} -proctype dqe -procname dqe1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqvtwap.txt 2>&1 &
+
 

@@ -19,7 +19,7 @@ localhost,{KDBBASEPORT}+16,sortslave,sortslave1
 localhost,{KDBBASEPORT}+17,sortslave,sortslave2
 localhost,{KDBBASEPORT}+18,metrics,metrics1
 localhost,{KDBBASEPORT}+19,iexfeed,iexfeed1
-localhost,{KDBBASEPORT}+20,checker,symcheck
+localhost,{KDBBASEPORT}+20,checker,symcheck1
 localhost,{KDBBASEPORT}+21,wap,wap1
 localhost,{KDBBASEPORT}+22,housekeeping,migrator1
 localhost,{KDBBASEPORT}+23,summary,summary1
