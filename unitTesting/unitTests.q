@@ -2,7 +2,7 @@
 def:.Q.def[`stackID`user`pass`testCSV`testData!(9000;`admin;`admin;`:utests/1iexfeed.csv;`:testData/)].Q.opt[.z.x] 
 
 //LOADING Q-SCRIPTS
-system"l ../../TorQ/tests/k4unit.q"; 
+system"l TorQ/tests/k4unit.q"; 
 
 //UTILITIES
 //get the right port to open handle 
@@ -35,7 +35,7 @@ init:{
        loadTest[];
        -1"LOADING TEST DATA... ";
        loadFl[system"ls testData/"]; /- this needs changed maybe a different function that adds the testData/
-       .vtwap.data:vtwap;
+       // .vtwap.data:vtwap;
        -1"OPENING HANDLES...";
        dH::()!(); 
        dH[`rdb]::opHandle[`rdb];

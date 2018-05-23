@@ -1,3 +1,0 @@
-k4unit.q
-setHandles.q
-runtests.q
