@@ -19,6 +19,19 @@ nordbconnected:{[]                                                              
   :0 = count select from .sub.SUBSCRIPTIONS where proctype in .eodsum.rdbtypes, active;
  };
 
+metrics:{[rdbhandle;quote;trade]
+  .eodsum.avgsprd:rdbhandle({select avgSpread:avg ask-bid by sym from x};`$quote);                    //query quote table for avgSpread
+  .eodsum.voltrd:rdbhandle({select volTraded:sum size, numTrades:count i by sym from x};`$trade);     //query trade table for vol+num traded
+  .eodsum.c:rdbhandle({select twas:avg ask-bid by sym,bucket:2 xbar time.hh from x};`$quote);         //query quote table for TWAS in 2 hour buckets
+ };
+
+createsummary:{
+  update `$string bucket from `.eodsum.c;                                                       //change type from long to sym
+  d:exec distinct bucket from .eodsum.c;                                                        //get all unique values to be used as column headers
+  twas:exec d#(bucket!twas) by sym:sym from .eodsum.c;                                          //pivot table
+  `summarytab set 0!uj/[.eodsum.voltrd;.eodsum.avgsprd;twas];
+ };
+
 \d .
 
 .servers.CONNECTIONS:distinct .servers.CONNECTIONS,.eodsum.rdbtypes;                            // make sure that the process will make a connection to any process of rdb type
@@ -34,28 +47,12 @@ while[
   .servers.startup[];                                                                           // run the servers startup code again (to make connection to discovery)
  ];
 
-
-rdbhandle:first exec w from .sub.getsubscriptionhandles[`rdb;();()!()];                         //open handle to the rdb
-
-metrics:{[rdbhandle]
-  .eodsum.avgsprd:rdbhandle"select avgSpread:avg ask-bid by sym from quote";                    //query quote table for avgSpread
-  .eodsum.voltrd:rdbhandle"select volTraded:sum size, numTrades:count i by sym from trade";     //query trade table for vol+num traded
-  .eodsum.c:rdbhandle"select twas:avg ask-bid by sym,bucket:2 xbar time.hh from quote";         //query quote table for TWAS in 2 hour buckets
+init:{
+  rdbhandle:.servers.gethandlebytype[`rdb;`any];                                                //open handle to the rdb
+  .eodsum.metrics[rdbhandle;"quote";"trade"];
+  .eodsum.createsummary[];
+  savepath:hsym`$getenv[`KDBHDB];
+  .Q.dpft[savepath;.z.D;`sym;`summarytab];
  };
 
-metrics rdbhandle;
-
-createsummary:{
-  update `$string bucket from `.eodsum.c;                                                       //change type from long to sym
-  d:exec distinct bucket from .eodsum.c;                                                        //get all unique values to be used as column headers
-  twas:exec d#(bucket!twas) by sym:sym from .eodsum.c;                                          //pivot table
-  `summarytab set 0!(uj/)(.eodsum.voltrd;.eodsum.avgsprd;twas);   
- };
-
-createsummary[];
-
-savepath:hsym `$":",getenv[`TORQHOME],"/hdb/database/";
-
-.Q.dpft[savepath;.z.D;`sym;`summarytab];
-
-exit 0                                                                                          //terminate q session once task is complete
+                                                                                          //terminate q session once task is complete

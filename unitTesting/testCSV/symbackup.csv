@@ -3,7 +3,7 @@ before,0,0,,.proc.loadf "/"sv(getenv[`KDBTORQFSP];"unitTesting/config/symbackup.
 before,0,0,,system" "sv(enlist"l";hdbpath),,,Load mock HDB
 before,0,0,,.proc.loadf hdbfuncpath,,,Load HDB functions
 before,0,0,,symrecs:symdatapath,,,Set location for test sym records
-before,0,0,,.os.ren[sympath;temppath],,,Rename active sym to simulate missing sym
+before,0,0,,if[`sym in `$system" "sv("ls";hdbpath);.os.ren[sympath;temppath]],,,Rename active sym to simulate missing sym
 before,0,0,,wdbh:hopen wdbh,,,Open handle to WDB
 
 run,0,0,,reload[],,,Test reload for missing sym on disk
@@ -15,4 +15,5 @@ run,0,0,,wdbh(`.wdb.savesym;1+last date;hsym`$hdbpath;hsym`$symrecs),,,Save down
 true,0,0,,in[`$""sv("sym";string 1+last date);key hsym`$symdatapath],,,Confirm save down of sym record
 
 after,0,0,,.os.del[sympath],,,Delete recovered sym
-after,0,0,,.os.ren[temppath;sympath],,,Rename original active sym 
+after,0,0,,.os.ren[temppath;sympath],,,Rename original active sym
+after,0,0,,.os.del[""sv(symdatapath;"/sym2018.04.17")],,,Delete new backup sym 
