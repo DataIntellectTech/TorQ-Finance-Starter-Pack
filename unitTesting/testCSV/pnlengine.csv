@@ -10,20 +10,20 @@ before,0,0,,wdbcounts:wdbh({count each value each x};(`pnltab;`pnlquote;`pnltrad
 before,0,0,,qrcounts:count each(quotepnltab;quotepnlquote;quotepnltrade),,,Count sample results for quote tick
 before,0,0,,trcounts:count each(tradepnltab;tradepnlquote;tradepnltrade),,,Count sample results for trade tick
 
-run,0,0,,.pnl.updsrcquote[`srcquote;sqs],,,Process sample quote tick
+true,0,0,,.pnl.updsrcquote[`srcquote;sqs];1b,,,Process sample quote tick ##runissue##
 true,0,0,,(rdbcounts+qrcounts)~rdbh({count each value each x};`pnltab`pnlquote`pnltrade),,,Check new RDB counts
-run,0,0,,.pnl.updclienttrade[`clienttrade;cts],,,Process sample trade tick
+true,0,0,,.pnl.updclienttrade[`clienttrade;cts];1b,,,Process sample trade tick ##runissue##
 true,0,0,,(rdbcounts+trcounts)~rdbh({count each value each x};`pnltab`pnlquote`pnltrade),,,Check new RDB counts
-true,0,0,,.pnl.pnlsnap~tradepnltab,,,Compare last value cache pnl to sample pnl results
-true,0,0,,.pnl.shrttrade~select by sym from tradepnltrade,,,Compare last value cache trade to sample trade results
-true,0,0,,.pnl.shrtquote~select by sym from tradepnlquote,,,Compare last value cache quote to sample quotee results
+true,0,0,,(`sym xkey .pnl.pnlsnap)~select by sym from tradepnltab,,,Compare last value cache pnl to sample pnl results
+true,0,0,,all all .pnl.shrttrade=select by sym from tradepnltrade,,,Compare last value cache trade to sample trade results
+true,0,0,,all all .pnl.shrtquote=select by sym from tradepnlquote,,,Compare last value cache quote to sample quotee results
 
 run,0,0,,.pnl.tickmode:0b,,,Switch tickmode flag
-run,0,0,,.pnl.updclienttrade[`clienttrade;cts],,,Process sample trade tick
-true,0,0,,trcounts[0]-1~count.pnl.pnlbatch,,,Count pnl batch record
+true,0,0,,.pnl.updclienttrade[`clienttrade;cts];1b,,,Process sample trade tick ##runissue##
+true,0,0,,(trcounts[0]-1)~count .pnl.pnlbatch,,,Count pnl batch record
 run,0,0,,.pnl.tickmode:1b,,,Reset tickmode flag
 
-run,0,0,,.pnl.modeswitch[],,,Run modeswitch function to switch to batch mode
+true,0,0,,.pnl.modeswitch[];1b,,,Run modeswitch function to switch to batch mode ##runissue##
 true,0,0,,(.pnl.tickmode~0b),,,Check tickmode flag has been switched
 true,0,0,,01b~-2#(0!.timer.timer)[`active],,,Check .timer jobs have switched
 run,0,0,,.pnl.setbatchtimer[30],,,Run set timer function

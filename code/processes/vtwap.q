@@ -1,7 +1,21 @@
+params:.Q.def[`init`tickmode!01b].Q.opt .z.x;                                                                          / Command line parameters
+
+us:{                                                                                                                   / Usage statement
+  -1"USAGE - This script is to be used with TorQ as a running process and is a real time TWAP,\n 
+  VWAP and PNL subscriber. This process will publish pnl tables to the TP.\n";
+  exit[0]
+ };
+
+if[`us in key params;us[]];
+
+changetotab:{[t;x]t insert x};                                                                                          / Flip list into correct table schema
+
+upd:{[t;x].rtsub.tabfuncs[t][t;changetotab[t;x]]};                                                                      / Replay Upd
+
 \d .rtsub
 
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                                                               / List of tickerplant types to try and make a connection to
-replaylog:@[value;`replaylog;1b];                                                                                       / Replay the tickerplant log file
+replaylog:@[value;`replaylog;0b];                                                                                       / Replay the tickerplant log file
 schema:@[value;`schema;1b];                                                                                             / Retrieve the schema from the tickerplant
 subscribeto:@[value;`subscribeto;`trade`trade_iex`srcquote`clienttrade];                                                / A list of tables to subscribe to, default (`) means all tables
 subscribesyms:@[value;`subscribesyms;`];                                                                                / A list of syms to subscribe for, (`) means all syms
@@ -38,7 +52,7 @@ waps:{[syms;st;et]                                                              
 
 \d .pnl
 
-tickmode:@[value;`tickmode;1b];                                                                                         / post mode
+tickmode:@[value;`tickmode;`.[`params]`tickmode];                                                                       / post mode
 ticktime:@[value;`ticktime;`timestamp$0];                                                                               / last tick time
 tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];                                                          / TP handle
 
@@ -68,11 +82,13 @@ updclienttrade:{[t;x]                                                           
  };
 
 updsrcquote:{[t;x]                                                                                                      / upd for srcquote table, calculates pnl
-  qsnap:update qid:.pnl.qidstp+i from x;                                                
+  qsnap:update qid:.pnl.qidstp+i from x;
   `.pnl.shrtquote upsert select by sym from qsnap;                                                                      / update last value cache quote table ###update to BBO book for release###
   tppostback[`pnlquote;qsnap];                                                                                          / post back quote table to TP with qid
   .pnl.qidstp+:count qsnap;
-  pnlcalc[shrttrade;shrtquote];                                                                                         / push data to pnl calculator
+  limit:select limit:2*avg ask-bid by sym from x;                                                                       / to be calculated using BBO
+  filter:select from lj[update spread:ask-bid from shrtquote;limit] where limit>spread;
+  pnlcalc[shrttrade;filter];                                                                                            / push data to pnl calculator
  };
 
 updbbo:{[t;x]                                                                                                           / placeholder function for BBO book upd
@@ -138,10 +154,8 @@ while[                                                                          
   ];
 
 upd:.rtsub.upd;
-
 .pnl.tph:@[value;`tph;.servers.gethandlebytype[`tickerplant;`any]];                                                     / tph handle
 .timer.repeat["p"$.z.d+1;0W;1D;({{x set 0#value x}'[x]};`.pnl.shrttrade`.pnl.pnlsnap);"flush last trade value cache"]; 
 .timer.repeat[.z.p;0W;0D00:00:02;.pnl.refreshpnl;"refresh pnl"];                                                        / set refresh timer job
 .timer.repeat[.z.p+1000000000;0W;0D+`second$5;(.pnl`batchpost`pnlbatch);"batch mode calculation"];                      / set batch timer job                     
 update active:not active from `.timer.timer where (`$description)=`$"batch mode calculation";                           / make batch timer job inactive by default
-
