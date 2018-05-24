@@ -2,15 +2,26 @@ action,ms,bytes,lang,code,repeat,minver,comment
 before,,,q,testQGW::get hsym`$ "/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/testQGW"),,,loading the test data 
 before,,,q,resQGW::get hsym `$"/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/resQGW"),,,loading the results dictionary 
 
-true,,,q,resQGW[`a]~.gw.checkQuery[testQGW[`a];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`b]~.gw.checkQuery[testQGW[`b];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`c]~.gw.checkQuery[testQGW[`c];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`d]~.gw.checkQuery[testQGW[`d];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`e]~.gw.checkQuery[testQGW[`e];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`f]~.gw.checkQuery[testQGW[`f];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`g]~.gw.checkQuery[testQGW[`g];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`h]~.gw.checkQuery[testQGW[`h];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`j]~.gw.checkQuery[testQGW[`j];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`k]~.gw.checkQuery[testQGW[`k];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`l]~.gw.checkQuery[testQGW[`l];testQGW[`s2]],,,checking query on HDB
-true,,,q,resQGW[`m]~.gw.checkQuery[testQGW[`m];testQGW[`s2]],,,checking query on HDB
+
+
+
+true,,,q,1~.gw.checkQuery["select from trade";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select from trade where date=2018.01.01";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["tables[]";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["?[`trade;enlist(=;`date;2018.03.21);0b;()]";`hdb],,,checking query on HDB
+true,,,q,1~.gw.checkQuery["?[`trade;();0b;()]";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select price by sym from trade where date=2018.03.21";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select price by sym from trade where date in 2018.03.21";`hdb],,,checking query on HDB
+true,,,q,1~.gw.checkQuery[(?;`trades;();0b;());`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery[`func;`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery[(?;`trade;enlist(in;`date;2018.03.25);(enlist`sym)!enlist`sym;(enlist`price)!enlist(avg;`price));`hdb],,,checking query on HDB
+true,,,q,1~.gw.checkQuery[(?;`trade;enlist((in;`sym;enlist`IBM);(=;`date;2018.03.21));0b;());`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery[(?;`trade;enlist((=;`date;2018.03.25);(in;`sym;enlist`IBM));0b;());`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["?[`trade;enlist((=;`date;2018.03.25);(in;`sym;enlist`IBM));0b;()]";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery[(?;`trades;enlist((within;`date;(enlist;2014.04.21;2014.04.23));(in;`sym;enlist `IBM));0b;());`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select from trades where date=.z.D-3";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select from trades where date in (2018.04.16+til 3)";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select sum size from trades where date=2018.01.01";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select from trades where date within(.z.D-3;.z.D)";`hdb],,,checking query on HDB
+true,,,q,0~.gw.checkQuery["select from trades where date within(2018.05.20;2018.05.23)";`hdb],,,checking query on HDB
+
