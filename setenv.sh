@@ -6,11 +6,16 @@ export KDBCODE=${TORQHOME}/code
 export KDBLOG=${TORQHOME}/logs
 export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
+export KDBHDB=${TORQHOME}/hdb/database
+export KDBWDB=${TORQHOME}/wdbhdb
 
-#Sets the application specific configuration directory
+# set the application specific configuration directory
 export KDBAPPCONFIG=${TORQHOME}/appconfig
-#set KDBBASEPORT to the default value for a TorQ Installation
+export KDBAPPCODE=${TORQHOME}/code
+# set KDBBASEPORT to the default value for a TorQ Installation
 export KDBBASEPORT=6000
+# set TORQPROCESSES to the default process csv
+export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
 # if using the email facility, modify the library path for the email lib depending on OS
 # e.g. linux:
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l[32|64]
