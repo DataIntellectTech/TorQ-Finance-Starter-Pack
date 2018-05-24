@@ -3,7 +3,7 @@ before,0,0,,.proc.loadf "/"sv(getenv[`KDBTORQFSP];"unitTesting/config/symbackup.
 before,0,0,,system" "sv(enlist"l";hdbpath),,,Load mock HDB
 before,0,0,,.proc.loadf hdbfuncpath,,,Load HDB functions
 before,0,0,,symrecs:symdatapath,,,Set location for test sym records
-before,0,0,,if[`sym in `$'system" "sv("ls";hdbpath);.os.ren[sympath;temppath]],,,Rename active sym to simulate missing sym
+before,0,0,,if[`sym in `$system" "sv("ls";hdbpath);.os.ren[sympath;temppath]],,,Rename active sym to simulate missing sym
 before,0,0,,wdbh:hopen wdbh,,,Open handle to WDB
 
 run,0,0,,reload[],,,Test reload for missing sym on disk
