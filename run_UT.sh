@@ -24,17 +24,17 @@ read -r inp
 inp=` echo $inp | tr '[:upper:]' '[:lower:]'` 
 case $inp in 
   eodsummary)
-     rlwrap q TorQ/torq.q -procname summary2 -proctype summary -load ${KDBAPPCODE}/eodsummary/eodsummary.q -test ${KDBTORQFSP}/unitTesting/testCSV/eodsummary.csv -debug;;
+     rlwrap q TorQ/torq.q -procname summary2 -proctype summary -load ${KDBAPPCODE}/eodsummary/eodsummary.q -test ${TORQAPPHOME}/unitTesting/testCSV/eodsummary.csv -debug;;
   gateway)
-    rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${KDBTORQFSP}/unitTesting/testCSV/checkQGW.csv -debug;;
+    rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${TORQAPPHOME}/unitTesting/testCSV/checkQGW.csv -debug;;
   dbmigration)
      echo "NOT YET IMPLEMENTED";;
   symbackup)
-    rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${KDBTORQFSP}/unitTesting/testCSV/symbackup.csv -debug;;
+    rlwrap q TorQ/torq.q -procname gateway2 -proctype gateway -load ${TORQHOME}/code/processes/gateway.q -test ${TORQAPPHOME}/unitTesting/testCSV/symbackup.csv -debug;;
   vizsum)   
-    rlwrap q TorQ/torq.q -procname vizSum1 -proctype summary -load ${KDBTORQFSP}/code/vizSum/vizSum.q -test ${KDBTORQFSP}/unitTesting/testCSV/vizSum.csv -debug;;
+    rlwrap q TorQ/torq.q -procname vizSum1 -proctype summary -load ${TORQAPPHOME}/code/vizSum/vizSum.q -test ${TORQAPPHOME}/unitTesting/testCSV/vizSum.csv -debug;;
   pnl)
-    rlwrap q TorQ/torq.q -procname vwap2 -proctype wap -load ${KDBTORQFSP}/code/processes/vtwap.q -test ${KDBTORQFSP}/unitTesting/testCSV/pnlengine.csv -debug;;
+    rlwrap q TorQ/torq.q -procname vwap2 -proctype wap -load ${TORQAPPHOME}/code/processes/vtwap.q -test ${TORQAPPHOME}/unitTesting/testCSV/pnlengine.csv -debug;;
   exit) 
     exit 1;; 
   *)

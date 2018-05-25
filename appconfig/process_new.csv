@@ -1,7 +1,0 @@
-host,port,proctype,procname,U,localtime,g,T,w,load,startwithall,extras,qcmd
-localhost,{KDBBASEPORT}+1,discovery,discovery1,config/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/discovery.q,1,,q
-localhost,{KDBBASEPORT},tickerplant,tickerplant1,config/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/tickerplant.q,1,-schemafile database -tplogdir ${TORQHOME}/../hdb,q
-localhost,{KDBBASEPORT}+2,rdb,rdb1,config/passwords/accesslist.txt,1,1,3,,${KDBCODE}/processes/rdb.q,1,,q
-localhost,{KDBBASEPORT}+3,hdb,hdb1,config/passwords/accesslist.txt,1,1,60,4000,${KDBHDB},1,,q
-localhost,{KDBBASEPORT}+4,oresp,oresp1,config/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/oresp.q,1,,q
-localhost,{KDBBASEPORT}+5,feed,feed1,,1,0,,,${KDBAPPCODE}/tick/feed.q,1,,q

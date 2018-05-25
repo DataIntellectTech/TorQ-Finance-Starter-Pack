@@ -1,8 +1,8 @@
 action,ms,bytes,lang,code,repeat,minver,comment
-before,,,q,clienttrade::get hsym`$ "/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/vizSum/clienttrade"),,,loading test data for clienttrade 
-before,,,q,srcquote::get hsym`$ "/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/vizSum/srcquote"),,,loadin
+before,,,q,clienttrade::get hsym`$ "/"sv(getenv[`TORQAPPHOME];"/unitTesting/data/vizSum/clienttrade"),,,loading test data for clienttrade 
+before,,,q,srcquote::get hsym`$ "/"sv(getenv[`TORQAPPHOME];"/unitTesting/data/vizSum/srcquote"),,,loadin
 g test data for srcquote
-before,,,q,resDict::get hsym`$ "/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/vizSum/resDict"),,,loading results dictionary 
+before,,,q,resDict::get hsym`$ "/"sv(getenv[`TORQAPPHOME];"/unitTesting/data/vizSum/resDict"),,,loading results dictionary 
 before,,,q,upd:{[t;x]},,,cut feed 
 
 true,,,q,resDict[`last10TQclienttrade]~last10TQ[`clienttrade],,,check last10TQ function for clienttrade 

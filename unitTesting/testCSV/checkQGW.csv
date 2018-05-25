@@ -1,6 +1,6 @@
 action,ms,bytes,lang,code,repeat,minver,comment
-before,,,q,testQGW::get hsym`$ "/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/testQGW"),,,loading the test data 
-before,,,q,resQGW::get hsym `$"/"sv(getenv[`KDBTORQFSP];"/unitTesting/data/resQGW"),,,loading the results dictionary 
+before,,,q,testQGW::get hsym`$ "/"sv(getenv[`TORQAPPHOME];"/unitTesting/data/testQGW"),,,loading the test data 
+before,,,q,resQGW::get hsym `$"/"sv(getenv[`TORQAPPHOME];"/unitTesting/data/resQGW"),,,loading the results dictionary 
 
 
 

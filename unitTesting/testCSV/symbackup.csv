@@ -1,5 +1,5 @@
 action,ms,bytes,lang,code,repeat,minver,comment
-before,0,0,,.proc.loadf "/"sv(getenv[`KDBTORQFSP];"unitTesting/config/symbackup.q"),,,Load symbackup config file
+before,0,0,,.proc.loadf "/"sv(getenv[`TORQAPPHOME];"unitTesting/config/symbackup.q"),,,Load symbackup config file
 before,0,0,,system" "sv(enlist"l";hdbpath),,,Load mock HDB
 before,0,0,,.proc.loadf hdbfuncpath,,,Load HDB functions
 before,0,0,,symrecs:symdatapath,,,Set location for test sym records

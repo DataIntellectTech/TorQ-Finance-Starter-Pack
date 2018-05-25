@@ -1,6 +1,6 @@
 action,ms,bytes,lang,code,repeat,minver,comment
 
-before,0,0,,.proc.loadf "/"sv(getenv[`KDBTORQFSP];"unitTesting/config/pnlengine.q"),,,Load pnlengine config file
+before,0,0,,.proc.loadf "/"sv(getenv[`TORQAPPHOME];"unitTesting/config/pnlengine.q"),,,Load pnlengine config file
 before,0,0,,system" "sv(enlist"l";pnldatapath),,,Load pnl test data
 before,0,0,,rdbh:.servers.gethandlebytype[`rdb;`any],,,Assign rdb handle for checking results
 before,0,0,,wdbh:.servers.gethandlebytype[`wdb;`any],,,Assign wdb handle for removing test data

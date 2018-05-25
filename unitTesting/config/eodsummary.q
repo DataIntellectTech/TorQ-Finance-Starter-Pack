@@ -1,2 +1,2 @@
-datapath:getenv[`KDBTORQFSP],"/unitTesting/data/eodsummary/database/";
+datapath:getenv[`TORQAPPHOME],"/unitTesting/data/eodsummary/database/";
 iexsyms:`CAT`DOG;

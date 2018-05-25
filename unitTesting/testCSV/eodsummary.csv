@@ -1,6 +1,6 @@
 action,ms,bytes,lang,code,repeat,minver,comment
 
-before,0,0,,.proc.loadf"/"sv(getenv[`KDBTORQFSP];"unitTesting/config/eodsummary.q"),,,Load eodsummary config file
+before,0,0,,.proc.loadf"/"sv(getenv[`TORQAPPHOME];"unitTesting/config/eodsummary.q"),,,Load eodsummary config file
 before,0,0,,rdbhandle:.servers.gethandlebytype[`rdb;`any],,,set RDB handle
 before,0,0,,rdbhandle({system" "sv(enlist "l";x)};datapath),,,Load test data in RDB
 
