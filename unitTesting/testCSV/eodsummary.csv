@@ -6,7 +6,7 @@ before,0,0,,rdbhandle({system" "sv(enlist "l";x)};datapath),,,Load test data in 
 
 run,0,0,,.eodsum.metrics[rdbhandle;"quotetest";"tradetest"],,,Test table calculations
 true,0,0,,all{1~count x}each(.eodsum.c;.eodsum.avgsprd;.eodsum.voltrd),,,Check population of tables
-true,0,0,,`ssfsfsij~`$raze{(0!meta x)`t}each(.eodsum.c;.eodsum.avgsprd;.eodsum.voltrd),,,Check typing of data
+true,0,0,,`sjfsfsij~`$raze{(0!meta x)`t}each(.eodsum.c;.eodsum.avgsprd;.eodsum.voltrd),,,Check typing of data
 run,0,0,,.eodsum.createsummary[],,,Check createsummary function with good data
 true,0,0,,1~count summarytab,,,Check summary table has been populated
 
