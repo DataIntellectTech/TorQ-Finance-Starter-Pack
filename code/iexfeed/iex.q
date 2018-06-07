@@ -1,6 +1,5 @@
 \d .iex
 
-mainurl:@[value;`mainurl;"https://api.iextrading.com"];
 convertepoch:@[value;`convertepoch;{{"p"$1970.01.01D+1000000j*x}}];
 reqtype:@[value;`reqtype;`both];
 syms:@[value;`syms;`CAT`DOG];
@@ -18,8 +17,11 @@ nullq:@[value;`nullq;qcols!(0f;0f;0i;0i;" ";" ")];
 tcols:@[value;`tcols;`price`size`stop`cond`ex];
 nullt:@[value;`nullt;tcols!(0f;0i;"B"$();" ";" ")];
 
+mainurl:{
+  raze"https://",(.j.k .Q.hg[`$":https://dns.google.com/resolve?name=api.iextrading.com"])[`Answer][`data]
+ }
+
 init:{[x]
-  if[`mainurl in key x;.iex.mainurl:x`main_url];
   if[`quotesuffix in key x;.iex.quotesuffix:x`quotesuffix];
   if[`tradesuffix in key x;.iex.tradesuffix:x`tradesuffix];
   if[`syms in key x;.iex.syms:upper x`syms];
@@ -31,7 +33,7 @@ init:{[x]
   .iex.timer:$[not .iex.reqtype in key .iex.timer_dict;'`timer;.iex.timer_dict .iex.reqtype];
  };
 
-getdata:{[main_url;suffix].Q.hg`$mainurl,suffix};
+getdata:{[suffix].Q.hg`$.iex.mainurl[],suffix};
 
 getlasttrade:{
   tab:{[syms]
@@ -39,7 +41,7 @@ getlasttrade:{
     syms:$[1<count x;","sv;]x:string upper syms,();
     / Construct the GET request
     / Parse json response and put into table. Trade data from https://iextrading.com/developer/
-    data:.j.k .iex.getdata[.iex.mainurl;.iex.tradesuffix syms];
+    data:.j.k .iex.getdata[.iex.tradesuffix syms];
     :createtable[`.iex.dtrd;data];
    }[.iex.syms];
   tab:checkdup[;;`.iex.lvct;tcols;nullt]/[0#tab;tab];
@@ -50,7 +52,7 @@ getquote:{
   tab:raze{[sym]
     suffix:.iex.quotesuffix string upper sym;
     / Parse json response and put into table
-    data:enlist .j.k .iex.getdata[.iex.mainurl;suffix];
+    data:enlist .j.k .iex.getdata[suffix];
     :createtable[`.iex.dqte;data];
    }'[.iex.syms,()];
   / Check for duplicate data
@@ -83,5 +85,9 @@ loadcsv:{("SSC";enlist",")0:x};
 dtrd:@[loadcsv;first hsym .proc.getconfigfile"trade_iex.csv";{.lg.e[`iexloadcsv;"Failed to load config file: ",x]}];
 dqte:@[loadcsv;first hsym .proc.getconfigfile"quote_iex.csv";{.lg.e[`iexloadcsv;"Failed to load config file: ",x]}];
 
+checkTimer:{
+  a:exec active from .timer.timer where funcparam in enlist`.iex.timer`; 
+  if[not first a;update active:1b from`.timer.timer where funcparam in enlist`.iex.timer`]; 
+ }
 
 \d . 
