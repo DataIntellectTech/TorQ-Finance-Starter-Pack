@@ -7,6 +7,12 @@ latest:([sym:`u#`symbol$()] time:`timestamp$(); sumssize:`int$(); sumsps:`float$
 / load settings
 windows:@[value;`windows;0D00:01 0D00:05 0D01];
 enableallday:@[value;`enableallday;1b];
+tickerplanttypes:@[value;`tickerplanttypes;`tickerplant]; 
+rdbtypes:@[value;`rdbtypes;`rdb];
+tpconsleep:@[value;`tpconsleep;10]; 
+requiredprocs:@[value;`tickerplant;{value@'`rdbtypes`tickerplanttypes}]; 
+cycles:@[value;`cycles;5]; 
+rdbconnsleep:@[value;`rdbconnsleep;10];
 
 \d .
 
@@ -36,16 +42,14 @@ metrics:{[syms]
    if[.metrics.enableallday;
     if[not all syms in key .metrics.start;.metrics.start::exec first time by sym from sumstab];
     t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms];
-
-   t
-  
+   t  
  }
 
 \d .metrics 
 
 / check for TP connection
 notpconnected:{[]
-	0 = count select from .sub.SUBSCRIPTIONS where proctype in ((),`tickerplant), active}
+	0 = count select from .sub.SUBSCRIPTIONS where proctype in tickerplanttypes,active}
 
 / get handle for TP & subscribe
 subscribe:{
@@ -60,21 +64,13 @@ subscribe:{
 init:{
   r:subscribe[];
 
-  / make sure connection to TP was successful, or else wait
-  while[notpconnected[];
-   / wait 10 seconds
-   .os.sleep[10];
-   / try again to connect to discovery
-   .servers.startup[];
-   / try again to subscribe to TP
-   r:subscribe[]];
+  // Block process until all required processes are connected
+  r:.servers.startupdependent[requiredprocs;tpconsleep;cycles;string[subscribe];`metrics]; 
 
   / check if updates have already been sent from TP, if so recover from RDB
   if[r[`icounts][`trade] > 0;
-   / make sure connection is made to RDB
-   while[not count s:.sub.getsubscriptionhandles[`rdb;();()!()];.os.sleep[10]];
    / get handle for RDB
-   h:exec first w from s;
+   h:exec first w from s:.sub.getsubscriptionhandles[`rdb;();()!()];
    .lg.o[`recovery;"recovering ",(string r[`icounts][`trade])," records from trade table on ",string first s`procname];
    / query data from before subscription from RDB
    t:h"select time,sym,size,price from trade where i<",string r[`icounts][`trade];
