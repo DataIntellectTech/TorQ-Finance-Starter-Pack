@@ -8,7 +8,6 @@ else
 fi
 
 export TORQHOME=$(dirname $dirpath)
-export BASEDIR=${TORQHOME}
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
 export KDBLOG=${TORQHOME}/logs
