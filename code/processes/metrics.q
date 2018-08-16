@@ -52,12 +52,13 @@ notpconnected:{[]
 
 / get handle for TP & subscribe
 subscribe:{
-  / get handle
-  if[count s:.sub.getsubscriptionhandles[`tickerplant;();()!()];
-  subproc:first s;
-  / if got handle successfully, subsribe to trade table
-  .lg.o[`subscribe;"subscribing to ", string subproc`procname];
-  :.sub.subscribe[`trade;`;0b;0b;subproc]]};
+   / get handle
+   if[count s:.sub.getsubscriptionhandles[`tickerplant;();()!()];
+     subproc:first s;
+     / if got handle successfully, subsribe to trade table
+     .lg.o[`subscribe;"subscribing to ", string subproc`procname];
+     :.sub.subscribe[`trade;`;0b;0b;subproc]]
+ };
 
 / get subscribed to TP, recover up until now from RDB
 init:{
