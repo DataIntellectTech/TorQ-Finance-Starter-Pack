@@ -65,15 +65,15 @@ init:{
   r:subscribe[];
 
   // Block process until all required processes are connected
-  r:.servers.startupdependent[requiredprocs;tpconsleep;cycles;string[subscribe];`metrics]; 
+  r:.servers.startupdependent[requiredprocs;tpconsleep;cycles;string subscribe;`metrics]; 
 
   / check if updates have already been sent from TP, if so recover from RDB
-  if[r[`icounts][`trade] > 0;
+  if[r[`icounts]`trade >0;
    / get handle for RDB
    h:exec first w from s:.sub.getsubscriptionhandles[`rdb;();()!()];
-   .lg.o[`recovery;"recovering ",(string r[`icounts][`trade])," records from trade table on ",string first s`procname];
+   .lg.o[`recovery;"recovering ",(a:string r[`icounts]`trade)," records from trade table on ",string first s`procname];
    / query data from before subscription from RDB
-   t:h"select time,sym,size,price from trade where i<",string r[`icounts][`trade];
+   t:h"select time,sym,size,price from trade where i<",a;
    .lg.o[`recovery;"recovered ",(string count t)," records"];
    / insert data recovered from RDB into relevant tables
    t:select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
