@@ -41,8 +41,7 @@ metrics:{[syms]
    / add allday window
    if[.metrics.enableallday;
     if[not all syms in key .metrics.start;.metrics.start::exec first time by sym from sumstab];
-    t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms];
-   t  
+    t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms];t  
  }
 
 \d .metrics 
