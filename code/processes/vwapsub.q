@@ -10,7 +10,7 @@ replaysts:@[value;`replaysts;2015.01.07D01:00:00.00];                           
 replayets:@[value;`replayets;2015.01.08D17:00:00.00];                           // end time of data to retrieve from hdb
 requiredprocs:@[value;`requiredprocs;
               {value(`hdbtypes`tickerplanttypes)realtime}];                     // required processes  
-cycles:@[value;`cycles;5];                                                      // cycles
+tpcheckcycles:@[value;`cycles;5];                                               // specify the number of times the process will check for requiredprocs
 tpconnsleep:@[value;`tpconnsleep;10];                                           // number of seconds between attempts to connect to the source tickerplant
 
 // Add hdb and tickerplant to connections list for TorQ
@@ -37,7 +37,7 @@ datareplay:{[]
   system"t 0";
 
   // Block process until all required processes are connected
-  .servers.startupdependent[requiredprocs;tpconnsleep;cycles;();`vwapsub1]
+  .servers.startupdependent[requiredprocs;tpconnsleep;tpcheckcycles];
 
   // Retrieve handle to hdb from TorQ serverlist
   h:first exec w from .servers.SERVERS where proctype in .vwapsub.hdbtypes;
@@ -65,7 +65,7 @@ logvwap:{`vwaptimes insert `time`vwap!(x;.vwapsub.calcvwap[])};
 // subscribe to tickerplant types
 subscribe:{[]
   // Block process until all required processes are connected
-  .servers.startupdependent[requiredprocs;tpconnsleep;cycles;();`vwapsub2]
+  .servers.startupdependent[requiredprocs;tpconnsleep;tpcheckcycles]; 
 
   if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];;
     .lg.o[`subscribe;"found available tickerplant, attempting to subscribe"];

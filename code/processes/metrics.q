@@ -40,8 +40,10 @@ metrics:{[syms]
 
    / add allday window
    if[.metrics.enableallday;
-    if[not all syms in key .metrics.start;.metrics.start::exec first time by sym from sumstab];
-    t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms];t  
+     if[not all syms in key .metrics.start;.metrics.start::exec first time by sym from sumstab];
+     t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms
+   ]; 
+   :t;  
  }
 
 \d .metrics 
@@ -63,12 +65,12 @@ subscribe:{
 / get subscribed to TP, recover up until now from RDB
 init:{
   r:subscribe[];
-
+ 
   // Block process until all required processes are connected
-  r:.servers.startupdependent[requiredprocs;tpconsleep;cycles;string subscribe;`metrics]; 
-
+  .servers.startupdependent[requiredprocs;tpconsleep;cycles]; 
+  r:subscribe[]; 
   / check if updates have already been sent from TP, if so recover from RDB
-  if[r[`icounts]`trade >0;
+  if[0<r[`icounts]`trade;
    / get handle for RDB
    h:exec first w from s:.sub.getsubscriptionhandles[`rdb;();()!()];
    .lg.o[`recovery;"recovering ",(a:string r[`icounts]`trade)," records from trade table on ",string first s`procname];
