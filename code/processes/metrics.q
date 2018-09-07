@@ -11,7 +11,7 @@ tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];
 rdbtypes:@[value;`rdbtypes;`rdb];
 tpconsleep:@[value;`tpconsleep;10]; 
 requiredprocs:@[value;`tickerplant;{value@'`rdbtypes`tickerplanttypes}]; 
-cycles:@[value;`cycles;5]; 
+tpcheckcycles:@[value;`tpcheckcycles;0W]; 
 rdbconnsleep:@[value;`rdbconnsleep;10];
 
 \d .
@@ -67,7 +67,7 @@ init:{
   r:subscribe[];
  
   // Block process until all required processes are connected
-  .servers.startupdependent[requiredprocs;tpconsleep;cycles]; 
+  .servers.startupdepcycles[requiredprocs;tpconsleep;tpcheckcycles]; 
   r:subscribe[]; 
   / check if updates have already been sent from TP, if so recover from RDB
   if[0<r[`icounts]`trade;
