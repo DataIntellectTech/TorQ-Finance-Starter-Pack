@@ -37,7 +37,7 @@ datareplay:{[]
   system"t 0";
 
   // Block process until all required processes are connected
-  .servers.startupdependent[requiredprocs;tpconnsleep;tpcheckcycles];
+  .servers.startupdepcycles[requiredprocs;tpconnsleep;tpcheckcycles];
 
   // Retrieve handle to hdb from TorQ serverlist
   h:first exec w from .servers.SERVERS where proctype in .vwapsub.hdbtypes;
