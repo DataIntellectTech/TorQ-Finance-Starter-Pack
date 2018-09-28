@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # load env script
 . ./setenv.sh
 

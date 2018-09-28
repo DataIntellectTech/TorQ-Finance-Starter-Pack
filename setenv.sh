@@ -1,13 +1,16 @@
+#!/bin/bash
+
 # if running the kdb+tick example, change these to full paths
 # some of the kdb+tick processes will change directory, and these will no longer be valid
 
+# get absolute path to setenv.sh directory
 if [ "-bash" = $0 ]; then
-    dirpath="${BASH_SOURCE[0]}"
+  dirpath="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 else
-    dirpath="$0"
+  dirpath="$(cd "$(dirname "$0")" && pwd)"
 fi
 
-export TORQHOME=$(dirname $dirpath)
+export TORQHOME=${dirpath}
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
 export KDBLOG=${TORQHOME}/logs
@@ -29,12 +32,13 @@ export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
 # e.g. osx:
 # export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m[32|64]
 
-touch $KDBLOG/torqsslcert.txt
+TORQSSLCERT=${KDBLOG}/torqsslcert.txt
+touch ${TORQSSLCERT}
 if [ -z "${SSL_CA_CERT_FILE}" ]; then
-	mkdir ${TORQHOME}/certs
-	curl -s  https://curl.haxx.se/ca/cacert.pm > ${TORQHOME}/certs/cabundle.pem
-	echo "`date`    The SSL securiity certificate has been downloaded to ${TORQHOME}/certs/cabundle.pem" </dev/null >>$KDBLOG/torqsslcert.txt 
-	export SSL_CA_CERT_FILE=${TORQHOME}/certs/cabundle.pem
+  mkdir ${TORQHOME}/certs
+  curl -s  https://curl.haxx.se/ca/cacert.pm > ${TORQHOME}/certs/cabundle.pem
+  echo "`date`    The SSL securiity certificate has been downloaded to ${TORQHOME}/certs/cabundle.pem" </dev/null >>$TORQSSLCERT
+  export SSL_CA_CERT_FILE=${TORQHOME}/certs/cabundle.pem
 else
-	echo "`date`    The SSL security certificate already exists. If https requests fail it may be because of inappropriate certification." </dev/null >>$KDBLOG/torqsslcert.txt 
+  echo "`date`    The SSL security certificate already exists. If https requests fail it may be because of inappropriate certification." </dev/null >>$TORQSSLCERT
 fi
