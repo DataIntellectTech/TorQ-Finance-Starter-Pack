@@ -19,7 +19,7 @@ export KDBLIB=${TORQHOME}/lib
 export KDBHDB=${TORQHOME}/hdb/database
 export KDBWDB=${TORQHOME}/wdbhdb
 
-# set rlwrap and qcon paths
+# set rlwrap and qcon paths for use in torq.sh qcon flag functions
 export RLWRAP=/usr/bin/rlwrap
 export QCON=/opt/kdb/qcon
 
