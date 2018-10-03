@@ -20,7 +20,7 @@ export KDBHDB=${TORQHOME}/hdb/database
 export KDBWDB=${TORQHOME}/wdbhdb
 
 # set rlwrap and qcon paths
-export RLWRAP=QCON=/usr/bin/rlwrap
+export RLWRAP=/usr/bin/rlwrap
 export QCON=/opt/kdb/qcon
 
 # set the application specific configuration directory
