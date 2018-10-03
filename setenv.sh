@@ -19,6 +19,10 @@ export KDBLIB=${TORQHOME}/lib
 export KDBHDB=${TORQHOME}/hdb/database
 export KDBWDB=${TORQHOME}/wdbhdb
 
+# set rlwrap and qcon paths
+export RLWRAP=QCON=/usr/bin/rlwrap
+export QCON=/opt/kdb/qcon
+
 # set the application specific configuration directory
 export KDBAPPCONFIG=${TORQHOME}/appconfig
 export KDBAPPCODE=${TORQHOME}/code
