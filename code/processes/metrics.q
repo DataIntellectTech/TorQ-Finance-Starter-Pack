@@ -10,7 +10,7 @@ enableallday:@[value;`enableallday;1b];
 tickerplanttypes:@[value;`tickerplanttypes;`tickerplant]; 
 rdbtypes:@[value;`rdbtypes;`rdb];
 tpconsleep:@[value;`tpconsleep;10]; 
-requiredprocs:@[value;`tickerplant;{value@'`rdbtypes`tickerplanttypes}]; 
+requiredprocs:rdbtypes,tickerplanttypes; 
 tpcheckcycles:@[value;`tpcheckcycles;0W]; 
 rdbconnsleep:@[value;`rdbconnsleep;10];
 
