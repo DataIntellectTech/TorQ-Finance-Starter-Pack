@@ -27,7 +27,7 @@ timeout 2
 
 REM launch the tickerplant, rdb, hdb
 start "tickerplant" q torq.q -load code/processes/tickerplant.q -schemafile database -tplogdir %TORQHOME%/hdb -proctype tickerplant -procname tickerplant1 -U appconfig/passwords/accesslist.txt -localtime 
-start "rdb" q torq.q -load code/processes/rdb.q -proctype rdb -procname rdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1
+start "rdb" q torq.q -load code/processes/rdb.q -proctype rdb -procname rdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -T 180
 start "chainedtp" q torq.q -load code/processes/chainedtp.q -proctype chainedtp -procname chainedtp1 -U appconfig/passwords/accesslist.txt -localtime
 start "hdb1" q torq.q -load %KDBHDB% -proctype hdb -procname hdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -w 4000
 start "hdb2" q torq.q -load %KDBHDB% -proctype hdb -procname hdb2 -U appconfig/passwords/accesslist.txt -localtime -g 1 -w 4000
