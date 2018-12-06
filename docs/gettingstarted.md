@@ -99,7 +99,7 @@ start in the background but can be seen using a ps command, such as
     aquaq    4810 16777  0 15:56 pts/34   00:00:00 grep torq\|tickerplant
     aquaq   25465     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/discovery.q -stackid 6000 -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime
     aquaq   25466     1  0 13:05 pts/34   00:00:29 q tickerplant.q database hdb -stackid 6000 -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime
-    aquaq   25478     1  0 13:05 pts/34   00:00:17 q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1  -U config/passwords/accesslist.txt -localtime -g 1 -T 30
+    aquaq   25478     1  0 13:05 pts/34   00:00:17 q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1  -U config/passwords/accesslist.txt -localtime -g 1 -T 180
     aquaq   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb/database -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
     aquaq   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb/database -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
     aquaq   25481     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/gateway.q -stackid 6000 -proctype gateway -procname gateway1 -U config/passwords/accesslist.txt -localtime -g 1 -w 4000
@@ -194,7 +194,7 @@ stop at the error, -trap will cause it to trap it and continue loading.
 An example is below. This query should be run from within the directory
 you have extracted TorQ and the TorQ Finance Starter Pack to.
 
-    q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30 -debug -stop
+    q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 180 -debug -stop
 
 File Structure
 --------------
