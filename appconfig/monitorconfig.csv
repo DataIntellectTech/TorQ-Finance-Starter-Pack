@@ -1,0 +1,8 @@
+family|metric|process|query|resultchecker|params|period|runtime
+datacount|tradecount|rdb1|{count trade}|checkcount|`varname`count`cond!(`trade;10;`morethan)|0D00:01|0D00:00:01
+datacount|quotecount|rdb1|{count quote}|checkcount|`varname`count`cond!(`quote;1000000000;`morethan)|0D00:01|0D00:00:01
+memorycheck|heapcheck|rdb1|{.Q.w[]`heap}|checkcount|`varname`count`cond!(`heapcheck;2323842323413;`lessthan)|0D00:01|0D00:00:01
+memorycheck|heapcheck|hdb1|{.Q.w[]`heap}|checkcount|`varname`count`cond!(`heapcheck;23213;`lessthan)|0D00:01|0D00:00:00.0000001
+memorycheck|symcheck|rdb1|{.Q.w[]`symw}|checkcount|`varname`count`cond!(`symcheck;23213423423;`lessthan)|0D00:01|0D00:00:00.00000001
+memorycheck|symcheck|hdb1|{.Q.w[]`symw}|checkcount|`varname`count`cond!(`symcheck;23213;`lessthan)|0D00:01|0D00:00:01
+connections|queuecheck|tickerplant1|{.z.W}|queuecheck|(enlist `count)!enlist 35|0D00:00:30|0D00:00:00.5
