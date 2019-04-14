@@ -39,7 +39,7 @@ export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
 TORQSSLCERT=${KDBLOG}/torqsslcert.txt
 touch ${TORQSSLCERT}
 if [ -z "${SSL_CA_CERT_FILE}" ]; then
-  mkdir ${TORQHOME}/certs
+  mkdir -p ${TORQHOME}/certs
   curl -s  https://curl.haxx.se/ca/cacert.pm > ${TORQHOME}/certs/cabundle.pem
   echo "`date`    The SSL securiity certificate has been downloaded to ${TORQHOME}/certs/cabundle.pem" </dev/null >>$TORQSSLCERT
   export SSL_CA_CERT_FILE=${TORQHOME}/certs/cabundle.pem
