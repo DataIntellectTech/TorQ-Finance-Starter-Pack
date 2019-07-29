@@ -74,14 +74,11 @@ feedm:{h$[rand 2;
  (".u.upd";`quote;(enlist a#x),q a:1+rand qpt*maxn)];}
 
 init:{
- o:"p"$9e5*floor (.z.P-3600000)%9e5;
- d:.z.P-o;
- len:floor d%113;
- feedm each `timestamp$o+asc len?d;}
+ feedm each `timestamp$.z.P+asc 500?"n"$2000;}
 
 /- use the discovery service to find the tickerplant to publish data to
 .servers.startup[]
 h:.servers.gethandlebytype[`tickerplant;`any]
 
-/ init 0
+init 0
 .timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];
