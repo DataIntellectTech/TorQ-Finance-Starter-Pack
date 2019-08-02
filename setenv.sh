@@ -39,7 +39,7 @@ export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
 # Please input the API token obtained from IEX here
 export IEX_PUBLIC_TOKEN=""
 
-TORQSSLCER=T${KDBLOG}/torqsslcert.txt
+TORQSSLCERT=${KDBLOG}/torqsslcert.txt
 touch ${TORQSSLCERT}
 if [ -z "${SSL_CA_CERT_FILE}" ]; then
   mkdir -p ${TORQHOME}/certs
