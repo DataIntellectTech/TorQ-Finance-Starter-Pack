@@ -37,7 +37,7 @@ get_last_trade:{tab:{[syms]
    / Construct the GET request
    suffix:.iex.trade_suffix[syms];
    / Parse json response and put into table. Trade data from https://iextrading.com/developer/
-   data:.j.k .iex.get_data[suffix];   
+   data:.j.k .iex.get_data[suffix];
    tab:select sym:`$symbol, price:`float$price, size:`int$size, stop:(count data)#0b, cond:(count data)#`char$(), ex:(count data)#`char$(), srctime:.iex.convert_epoch time from data
    }[.iex.syms]; .iex.upd[`trade_iex;tab]
    }
