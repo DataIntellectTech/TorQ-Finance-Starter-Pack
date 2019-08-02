@@ -36,7 +36,10 @@ export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
 # e.g. osx:
 # export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m[32|64]
 
-TORQSSLCERT=${KDBLOG}/torqsslcert.txt
+# Please input the API token obtained from IEX here
+export IEX_PUBLIC_TOKEN=""
+
+TORQSSLCER=T${KDBLOG}/torqsslcert.txt
 touch ${TORQSSLCERT}
 if [ -z "${SSL_CA_CERT_FILE}" ]; then
   mkdir -p ${TORQHOME}/certs
