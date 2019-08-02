@@ -13,10 +13,17 @@ Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.
 
 For more information on how to configure and get started, go to [this site](https://aquaqanalytics.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system. 
 
-## Further Information
+## IEX API Information
 
-The [IEX API](https://iextrading.com/developer/docs/) provides free data that currently does not require authentication to access. Any changes to the API will be reflected in this TorQ pack.
-[IEX Terms of Service](https://iextrading.com/api-exhibit-a/)
+The [IEX API](https://intercom.help/iexcloud/en) provides free data. It has recently changed and now requires an API Token to access the datafeed. To utilize the IEX feed provided by this Starter Pack, follow the instruction below.
+
+To obtain a token, you must first create an [IEX Cloud Account](https://iexcloud.io/cloud-login#/register). Your token will be stored on [this page](https://iexcloud.io/console/token). Click on API Tokens to find your token.
+
+Input your token to the IEX_PUBLIC_TOKEN variable in the file setenv.sh. Your token is now available to use as an enviroment variable.
+
+Any changes to the API will be reflected in this TorQ pack.
+
+[IEX Cloud Services Agreement](https://iexcloud.io/terms/https://iexcloud.io/terms/)
 
 ## Updating the Documentation with Mkdocs
 
