@@ -17,5 +17,5 @@ localhost,{KDBBASEPORT}+14,feed,feed1,,1,0,,,${KDBAPPCODE}/tick/feed.q,1,,q
 localhost,{KDBBASEPORT}+15,chainedtp,chainedtp1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/chainedtp.q,1,,q
 localhost,{KDBBASEPORT}+16,sortslave,sortslave1,,1,1,,,${KDBCODE}/processes/wdb.q,1,,q
 localhost,{KDBBASEPORT}+17,sortslave,sortslave2,,1,1,,,${KDBCODE}/processes/wdb.q,1,,q
-localhost,{KDBBASEPORT}+18,metrics,metrics1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/metrics.q,1,,q
-localhost,{KDBBASEPORT}+19,iexfeed,iexfeed1,,1,0,,,${KDBCODE}/processes/iexfeed.q,1,,q
+localhost,{KDBBASEPORT}+18,metrics,metrics1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBAPPCODE}/processes/metrics.q,1,,q
+localhost,{KDBBASEPORT}+19,iexfeed,iexfeed1,,1,0,,,${KDBAPPCODE}/processes/iexfeed.q,1,,q
