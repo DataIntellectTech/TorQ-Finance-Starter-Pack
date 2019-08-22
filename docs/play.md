@@ -6,7 +6,7 @@ Gateway
 
 ### Queries
 
-Some example queries have been implemented on the RDB an HDB processes.
+Some example queries have been implemented on the RDB and HDB processes.
 These are defined in $KDBCODE/rdb/examplequeries.q and
 $KDBCODE/hdb/examplequeries.q. These can be run directly on the
 processes themselves, or from the gateway which will join the results if
@@ -100,7 +100,7 @@ average time will increase.
 Assuming the environment variables are set up, a new HDB process can be
 started like this:
 
-    q torq.q -load hdb/database -p 31302 -U config/passwords/accesslist.txt -o 0 -proctype hdb -procname temphdb -debug
+    q torq.q -load hdb/database -p 31302 -U appconfig/passwords/accesslist.txt -o 0 -proctype hdb -procname temphdb -debug
 
 This will automatically connect to the gateway, and allow more queries
 to be run in parallel.
@@ -151,10 +151,11 @@ Access Control
 ### Adding Users
 
 For simplicity each process is password protected using the file
-$KDBCONFIG/passwords/accesslist.txt file. This can be modified to have
+$KDBAPPCONFIG/passwords/accesslist.txt file. This can be modified to have
 different access lists for each process. To add a new user, add their
-user:password combination to the file and either restart the process or
-execute
+user:password combination to the file and either restart the process
+(remembering to stop the stack and source setenv.sh before restarting the stack)
+, or execute
 
     q)\u
 
