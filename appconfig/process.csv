@@ -9,7 +9,7 @@ localhost,{KDBBASEPORT}+6,sort,sort1,${TORQHOME}/appconfig/passwords/accesslist.
 localhost,{KDBBASEPORT}+7,gateway,gateway1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,,4000,${KDBCODE}/processes/gateway.q,1,,q
 localhost,{KDBBASEPORT}+8,kill,killtick,,1,0,,,${KDBCODE}/processes/kill.q,0,,q
 localhost,{KDBBASEPORT}+9,monitor,monitor1,,1,0,,,${KDBCODE}/processes/monitor.q,1,,q
-localhost,{KDBBASEPORT}+10,tickerlogreplay,tpreplay1,,1,0,,,,0,,q
+localhost,{KDBBASEPORT}+10,tickerlogreplay,tpreplay1,,1,0,,,${KDBCODE}/processes/tickerlogreplay.q,0,,q
 localhost,{KDBBASEPORT}+11,housekeeping,housekeeping1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/housekeeping.q,1,,q
 localhost,{KDBBASEPORT}+12,reporter,reporter1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/reporter.q,1,,q
 localhost,{KDBBASEPORT}+13,compression,compression1,,1,0,,,${KDBCODE}/processes/compression.q,1,,q
