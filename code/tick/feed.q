@@ -18,6 +18,7 @@ p:33 27 84 12 20 72 36 51 42 29 / price
 m:" ABHILNORYZ" / mode
 c:" 89ABCEGJKLNOPRTWZ" / cond
 e:"NONNONONNN" / ex
+src:`BARX`GETGO`SUN`DB
 
 / init.q
 
@@ -63,7 +64,7 @@ t:{
 q:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;p:qp n;qn+:x;
- (s i;p-qb n;p+qa n;`long$vol x;`long$vol x;x?m;e i)}
+ (s i;p-qb n;p+qa n;`long$vol x;`long$vol x;x?m;e i;x?src)}
 
 feed:{h$[rand 2;
  (".u.upd";`trade;t 1+rand maxn);
