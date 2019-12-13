@@ -18,6 +18,7 @@ export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
 export KDBHDB=${TORQHOME}/hdb/database
 export KDBWDB=${TORQHOME}/wdbhdb
+export KDBDQEDB=${TORQHOME}/dqedb/database
 
 # set rlwrap and qcon paths for use in torq.sh qcon flag functions
 export RLWRAP="rlwrap"
