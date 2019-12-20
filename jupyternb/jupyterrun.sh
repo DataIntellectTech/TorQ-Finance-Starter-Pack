@@ -1,10 +1,11 @@
 #!/bin/bash
 
+#set user email variable
+JUPYTEREMAIL="putyouremailhere@example.com"
+
 #must source setenv.sh from TORQHOME as setenv uses dirpath
 cd ..
 source setenv.sh
-#check TORQHOME is set correctly - should point to /path/to/TorQ
-echo $TORQHOME
 
 #set TORQJUPYTER variable path
 TORQJUPYTER=${TORQHOME}/jupyternb
@@ -19,9 +20,6 @@ fi
 
 #set jupyter notebook variable
 JNOTEBOOK=${TORQJUPYTER}/jnbchecks.ipynb
-
-#set user email variable
-JUPYTEREMAIL="putyouremailhere@example.com"
 
 #set variable for jupyter-nbconvert command path
 JUPYTERLOC=/home/$USER/.local/bin/jupyter-nbconvert
