@@ -22,7 +22,7 @@ fi
 JNOTEBOOK=${TORQJUPYTER}/jnbchecks.ipynb
 
 #set variable for jupyter-nbconvert command path
-JUPYTERLOC=/home/$USER/.local/bin/jupyter-nbconvert
+JUPYTERLOC=$HOME/.local/bin/jupyter-nbconvert
 
 #set variable for HTML version of jupyter notebook
 JUPYTERHTML=${TORQJUPYTER}/jnbchecks.html
@@ -31,9 +31,6 @@ JUPYTERHTML=${TORQJUPYTER}/jnbchecks.html
 #this generates the commands to execute the notebook, 
 #convert to html and mail to the required user email
 echo "#!/bin/bash
-
-#Check TORQHOME is set in the correct directory
-echo $TORQHOME
 
 #Convert jupyter notebook to HTML version
 ${JUPYTERLOC} --execute --to html ${JNOTEBOOK}
