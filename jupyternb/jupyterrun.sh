@@ -3,10 +3,6 @@
 #set user email variable
 JUPYTEREMAIL="putyouremailhere@example.com"
 
-#must source setenv.sh from TORQHOME as setenv uses dirpath
-cd ..
-source setenv.sh
-
 #set TORQJUPYTER variable path
 TORQJUPYTER=${TORQHOME}/jupyternb
 
@@ -41,12 +37,19 @@ echo \"New Jupyter Notebook Generated\" | mail -A ${JUPYTERHTML} -s \"New Jupyte
 #Remove most recent notebook, so previous notebooks are not sent
 rm ${JUPYTERHTML}" > ${JNBCRONSCRIPT}
 
-#generate the line to be run in crontab itself
-if crontab -l | grep -q 'jnbcron';then
-        echo "Crontab exists"
+#User prompt to whether they wish to create a crontab or schedule it themselves
+read -p "Would you like to create a crontab job to e-mail the notebook.html everyday at 9 [y/n]?" answer
+
+if [[ "$answer" = "y" ]] ; then
+        #generate the line to be run in crontab itself
+        if crontab -l | grep -q 'jnbcron';then
+                echo "Crontab exists"
+        else
+                echo "Crontab does not exist. Creating crontab..."
+                (crontab -l; echo -e " BASH=/bin/bash\n TORQHOME=${TORQHOME}\n * 9 * * * cd ${TORQHOME}; bash ${JNBCRONSCRIPT}") | crontab -
+        fi
 else
-        echo "Crontab does not exist. Creating crontab..."
-        (crontab -l; echo -e " BASH=/bin/bash\n TORQHOME=${TORQHOME}\n */5 * * * * cd ${TORQHOME}; bash ${JNBCRONSCRIPT}") | crontab -
+        echo "User has decided not to create a crontab"
 
 fi
 
