@@ -8,7 +8,8 @@ set KDBLOG=%TORQHOME%\logs
 set KDBHTML=%TORQHOME%\html
 set KDBLIB=%TORQHOME%\lib
 set KDBBASEPORT=6000
-set KDBHDB=%TORQHOME%/hdb/database
+set KDBHDB=%TORQHOME%/hdb
+set KDBTPLOG=%TORQHOME%/tplogs
 
 REM App specific configuration directory
 set KDBAPPCONFIG=%TORQHOME%\appconfig
