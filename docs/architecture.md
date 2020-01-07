@@ -97,7 +97,7 @@ The process has been configured like so:
 
     zip,{KDBLOG}/,*.log,,10
     rm,{KDBLOG}/,*.gz,,30
-    zip,{KDBHDB}/,database20*,,1
+    zip,{KDBTPLOG}/,database20*,,1
 
 The first line can be translated to mean ’Compress the files in the
 KDBLOG/ path, matching the \*.log pattern, excluding no files and
