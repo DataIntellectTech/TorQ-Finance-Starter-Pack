@@ -3,6 +3,9 @@
 #set user email variable
 JUPYTEREMAIL="putyouremailhere@example.com"
 
+#set variable for jupyter-nbconvert command path
+JUPYTERLOC=$HOME/jupyter/jupyter_torq/bin/jupyter-nbconvert
+
 #set TORQJUPYTER variable path
 TORQJUPYTER=${TORQHOME}/jupyternb
 
@@ -16,9 +19,6 @@ fi
 
 #set jupyter notebook variable
 JNOTEBOOK=${TORQJUPYTER}/jnbchecks.ipynb
-
-#set variable for jupyter-nbconvert command path
-JUPYTERLOC=$HOME/.local/bin/jupyter-nbconvert
 
 #set variable for HTML version of jupyter notebook
 JUPYTERHTML=${TORQJUPYTER}/jnbchecks.html
