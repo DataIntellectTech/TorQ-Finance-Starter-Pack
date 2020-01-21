@@ -11,19 +11,21 @@ This Jupyter Notebook set-up is intended for use with a linux system.
 ## Installing Ubuntu on Virtual Machine   
    Follow the installation instructions for Ubuntu [here.](https://theholmesoffice.com/installing-ubuntu-in-vmware-player-on-windows/)
 
-## Setting up Jupyter Notebooks with Python3 on Ubuntu  
-
+## Setting up Jupyter Notebooks with Python3 on Ubuntu   
  <!---
    [comment]:(Not completely correct atm)
    -->
-
    * Install Python3 
    For versions of Ubuntu 17.10 and above, Python3.6 is installed by default.    
-   For other operating systems, follow installation steps for Python3 [here.](https://realpython.com/installing-python/)   
+   Check Python3 is installed with   
+   `$ python3 --version`   
+   To install Python3 for other operating systems, follow installation steps [here.](https://docs.python-guide.org/starting/installation/)   
    
    * Install appropriate Python package installer    
-   Pip3 is recommended for Python package installation.   
-   `sudo apt install python3-pip`
+   Pip3 is recommended for Python package installation, it should already be installed if Python 3 >= 3.4 is installed.   
+   To upgrade pip for Linux      
+   `pip3 install -U pip`   
+   `sudo apt install python3-pip`   
    <!---
    [comment]:(Not 100% sure if pip/pip3 is best for this set-up)
    -->
@@ -106,7 +108,9 @@ This Jupyter Notebook set-up is intended for use with a linux system.
 ## Install modules for Jupyter Notebook  
   As there are a number of ways for installing python modules, there is a `jnbrequirements.txt` file provided which details the required modules for this notebook to run.   
   It is recommended to run the following   
-   `pip3 install -r jnbrequirements.txt --user`   
+  `pip3 install -U pip`   
+  `sudo python3 -m pip install --force-reinstall pip==9.0.1`   
+  `pip3 install -r jnbrequirements.txt --user`   
    As Python modules are frequently modified, there is no guarantee that the module versions used at the time jnbrequirements.txt was written will work at a later time.    
 ***
 ## User Credentials   
@@ -120,10 +124,13 @@ i.e host,username,password
    To set up the conversion of Jupyter Notebooks to HTML and send them to a specified e-mail(s)   
    - Edit the `JUPYTEREMAIL` and `JUPYTERLOC` path variables in the `jupyterrun.sh` script            
    - To find where the jupyter-nbconvert command is run from, run `$ which jupyter-nbconvert` from the command line, copy the output and set is as the `JUPYTERLOC` variable   
-   The path to `jupyter-nbconvert` needs to be manually added, as the location of the file may change based on what installer is used    
+   The path to `jupyter-nbconvert` needs to be manually added, as the location of the file may change based on what installer is used  
+   Mailutils will also have to be installed, to do this run   
+   `$ apt-get install mailutils`   
+   
    - Bash the `jupyterrun.sh` script      
    
-   This will send an e-mail containing HTML version of the notebook checks everyday at 9am.   
+   If the user agrees to setting up a cronjob, an e-mail containing the HTML version of the notebook checks, will be sent everyday at 9am.
    For more information on how to set up crontabs, check out: [This link.](https://crontab.guru/)   
    A `no crontab for test1` output may show, in this case type `$ crontab -e` and select an editor. The cronjob should appear when the editor opens. Save and exit the file.
 ***
