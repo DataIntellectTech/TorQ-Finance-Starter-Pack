@@ -239,12 +239,24 @@ The file structure can be seen below.
     |   |   |-- accesslist.txt  <- list of user:pass who can connect to proccesses
     |   |   `-- feed.txt        <- password file used by feed for connections
     |   |-- process.csv     <- definition of type/name of each process
-    |   `-- reporter.csv        <- modified config for reporter
+    |   |-- reporter.csv        <- modified config for reporter
+    |   |-- dqcconfig.csv       <- modified config for dqc
+    |   `-- dqedetail.csv       <- csv explaining function in the dqc
+    |   |-- dqengineconfig.csv       <- modified config for dqe
     |-- hdb             <- example hdb data
     |   `-- database
     |       |-- 2015.01.07
     |       |-- 2015.01.08
     |       `-- sym
+    |-- dqe
+    |   `-- dqcdb       <- example dqc data
+    |       |-- database
+                |-- 2020.03.16
+                `-- sym
+    |   `-- dqedb       <- example dqe data
+    |       |-- database
+                |-- 2020.03.16
+                `-- sym
     |-- setenv.sh           <- set environment variables
     |-- start_torq_demo.bat     <- start and stop scripts
     |-- start_torq_demo.sh
