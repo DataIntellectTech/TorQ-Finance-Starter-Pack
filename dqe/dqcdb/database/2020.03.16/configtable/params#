@@ -1,1 +1,0 @@
-`comp`vars!(0b;(`quote;5;`minute))`comp`vars!(0b;1000000)`comp`vars!(0b;(`quote;5;`minute))`comp`vars!(0b;(`quote;`table))`comp`vars!(0b;(`quote;`s`g;`time`sym))`comp`vars!(0b;(`quote;`time`sym`bid`ask`bsize`asize`mode`ex`src;"psffjjccs";`````````;`s`g```````))`comp`vars!(0b;"select from trade where date=2020.01.02")(`comp`vars!(0b;(.dqe.hdbdir;`sym)))`comp`vars!(0b;(`quote))
