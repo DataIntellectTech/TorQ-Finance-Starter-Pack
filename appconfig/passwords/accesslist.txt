@@ -15,4 +15,8 @@ chainedtp:pass
 sortslave:pass
 metrics:pass
 vwapsub:pass
+dqc:pass
+dqcdb:pass
+dqe:pass
+dqedb:pass
 admin:admin
