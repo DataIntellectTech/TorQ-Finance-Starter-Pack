@@ -100,7 +100,7 @@ average time will increase.
 Assuming the environment variables are set up, a new HDB process can be
 started like this:
 
-    q torq.q -load hdb/database -p 31302 -U appconfig/passwords/accesslist.txt -o 0 -proctype hdb -procname temphdb -debug
+    q torq.q -load hdb -p 31302 -U appconfig/passwords/accesslist.txt -o 0 -proctype hdb -procname temphdb -debug
 
 This will automatically connect to the gateway, and allow more queries
 to be run in parallel.

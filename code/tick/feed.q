@@ -19,6 +19,7 @@ m:" ABHILNORYZ" / mode
 c:" 89ABCEGJKLNOPRTWZ" / cond
 e:"NONNONONNN" / ex
 src:`BARX`GETGO`SUN`DB
+side:`buy`sell
 
 / init.q
 
@@ -59,7 +60,7 @@ qpt:5   / avg quotes per trade
 t:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;qn+:x;
- (s i;qp n;`int$x?99;1=x?20;x?c;e i)}
+ (s i;qp n;`int$x?99;1=x?20;x?c;e i;x?side)}
 
 q:{
  if[not (qn+x)<count qx;batch len];

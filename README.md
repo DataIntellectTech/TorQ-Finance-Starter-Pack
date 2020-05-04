@@ -1,5 +1,5 @@
 # TorQ-Finance-Starter-Pack
-An example production ready market data capture system, using randomly generated financial data along with market data pulled from the IEX.  This is installed on top of the base TorQ package, and includes a version of [kdb+tick](http://code.kx.com/wsvn/code/kx/kdb+tick). This work was inspired by [Himanshu Gupta](http://www.enlistq.com/qkdb-api-getting-market-financial-data-iex/).
+An example production ready market data capture system, using randomly generated financial data along with market data pulled from the IEX. The IEX feed was inspired by [Himanshu Gupta](http://www.enlistq.com/qkdb-api-getting-market-financial-data-iex/).
 
 ## Set Up 
 
