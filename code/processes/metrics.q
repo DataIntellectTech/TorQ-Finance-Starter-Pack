@@ -13,7 +13,7 @@ enableallday:@[value;`enableallday;1b];
 / define upd to keep running sums
 upd:{[t;x]
    / join latest to x, maintaining time col from x, then calc running sums
-   r:ungroup select time,sym,sumssize:(0^sumssize)+sums size,sumsps:(0^sumsps)+sum price*size,sumspricetimediff:(0^sumspricetimediff)+sums price*0^deltas[first lt;time] by sym from x lj delete time from update lt:time from latest;
+   r:ungroup select time,sumssize:(0^sumssize)+sums size,sumsps:(0^sumsps)+sum price*size,sumspricetimediff:(0^sumspricetimediff)+sums price*0^deltas[first lt;time] by sym from x lj delete time from update lt:time from latest;
    / add latest values for each sym from r to latest
    latest,::select by sym from r;
    / add records to sumstab for all records in update message
