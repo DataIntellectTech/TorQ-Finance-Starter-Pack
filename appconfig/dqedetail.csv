@@ -5,7 +5,7 @@ name,public,descrip,params,return
 .dqc.tablecount,0,Checks a table count against a number. This can be a check of > = or <,[tab: symbol;operator: > = <;chkvalue: long],Boolean and the count of the table
 .dqc.tablehasrecords,0,A projection of .dqe.tablecount that is used to check if a table has records,[tab: symbol],Boolean and the count of the table
 .dqc.attrcheck,0,Checks if a table's schema matches expectation,[tab;attribute;col],Boolean and if attribute matches
-.dqc.anomalychk,0,Checks percentage of anomalies in list of columns of table,[t;colslist;thres],Table with percentage of anomalies per column and if it is below threshold
+.dqc.infinitychk,0,Checks percentage of infinities in list of columns of table,[t;colslist;thres],Table with percentage of infinities per column and if it is below threshold
 .dqc.freeform,0,Checks if query has passsed correctly,[query],Boolean and whether query passed
 .dqc.schemacheck,0,Checks if meta of table matches expectation,[tab;colname;types;forkeys;attribute],Boolean and if schema matches
 .dqc.datechk,0,Checks that date vector contains latest date in an hdb,[dirname],1b if dates match else returns 0b if dates do not match or if directory is not partitioned or if date is not a partition field
