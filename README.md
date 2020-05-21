@@ -50,6 +50,10 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
 ## Release Notes
+- **1.8.0, May 2020**
+  * Add Data Quality System configuration files.
+  * Add DataDog configuration files.
+  * Minor fixes.
 - **1.7.0, Dec 2018**
   * Added Basic configuration for integration of Monit for monitoring TorQ.
   * TORQHOME variable changed from relative path to absolute path in setenv.sh.
