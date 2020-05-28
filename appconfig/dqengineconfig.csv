@@ -6,4 +6,3 @@ infinitycount,(`quote;`ask),`hdb1,table,09:00:00.000000000
 infinitycount,(`quote;`),`hdb1,table,09:00:00.000000000
 nullcount,(`quote;`ask),`hdb1,table,09:00:00.000000000
 nullcount,(`quote;`),`hdb1,table,09:00:00.000000000
-
