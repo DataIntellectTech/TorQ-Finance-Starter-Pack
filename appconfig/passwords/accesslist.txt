@@ -19,4 +19,5 @@ dqc:pass
 dqcdb:pass
 dqe:pass
 dqedb:pass
+segmentedtp:pass
 admin:admin
