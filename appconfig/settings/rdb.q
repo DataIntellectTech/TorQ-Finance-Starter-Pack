@@ -7,5 +7,8 @@ reloadenabled:1b		//if true, the RDB will not save when .u.end is called but
 
 hdbtypes:()			//connection to HDB not needed
 
+subfiltered:1b
+subcsv:hsym first .proc.getconfigfile["rdbsub.csv"]
+
 \d .servers
 CONNECTIONS:enlist `tickerplant
