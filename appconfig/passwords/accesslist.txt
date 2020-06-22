@@ -19,5 +19,5 @@ dqc:pass
 dqcdb:pass
 dqe:pass
 dqedb:pass
-segmentedtp:pass
+segmentedtickerplant:pass
 admin:admin
