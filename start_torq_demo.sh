@@ -70,13 +70,13 @@ nohup q torq.q -load code/tick/feed.q ${KDBSTACKID} -proctype feed -procname fee
 echo 'Starting iexfeed...'
 nohup q torq.q -load code/processes/iexfeed.q ${KDBSTACKID} -proctype iexfeed -procname iexfeed1 -localtime </dev/null >$KDBLOG/torqfeed.txt 2>&1 &
 
-# launch sort slave 1
-echo 'Starting sort slave-1...'
-nohup q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortslave -procname sortslave1 -localtime -g 1 </dev/null >$KDBLOG/torqsortslave1.txt 2>&1 &
+# launch sort worker 1
+echo 'Starting sort worker-1...'
+nohup q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortworker -procname sortworker1 -localtime -g 1 </dev/null >$KDBLOG/torqsortworker1.txt 2>&1 &
 
-# launch sort slave 2
-echo 'Starting sort slave-2...'
-nohup q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortslave -procname sortslave2 -localtime -g 1 </dev/null >$KDBLOG/torqsortslave2.txt 2>&1 &
+# launch sort worker 2
+echo 'Starting sort worker-2...'
+nohup q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortworker -procname sortworker2 -localtime -g 1 </dev/null >$KDBLOG/torqsortworker2.txt 2>&1 &
 
 # launch metrics
 echo 'Stating metrics...'

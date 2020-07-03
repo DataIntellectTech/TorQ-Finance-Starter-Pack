@@ -78,7 +78,7 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 - **1.2.1, September 2016**:
   * REQUIRES TORQ 2.6.2
   * added broadcast functionality to u.q
-  * added sortslave functionality
+  * added sortworker functionality
 - **1.2.0, April 2016**:
   * REQUIRES TORQ 2.5.0
   * Removed u.q
