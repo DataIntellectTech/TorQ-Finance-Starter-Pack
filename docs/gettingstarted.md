@@ -49,8 +49,8 @@ If you wish to generate emails from the system you will additionally
 have to:
 
 1.  Modify DEMOEMAILRECEIVER environment variable at the top of
-    start\_torq\_demo.sh, start\_torq\_demo\_osx.sh or
-    start\_torq\_demo.bat
+    start\_torq\_demo\_osx.sh or start\_torq\_demo.bat. Linux users will 
+    need to add DEMOEMAILRECEIVER to setenv.sh
 
 2.  Add the email server details in config/settings/default.q. You will
     need to specify the email server URL, username and password. An
@@ -88,11 +88,9 @@ versions of Linux/OSX).
 
 ### Linux and OSX
 
-Linux users should use start\_torq\_demo.sh to start the system, and
-stop\_torq\_demo.sh to stop it. OSX users should use
-start\_torq\_demo\_osx.sh to start the system, and stop\_torq\_demo.sh
-to stop it. The only difference between the respective start scripts is
-how the library path environment variable is set. The processes will
+Linux users should use torq.sh to start and stop the system. OSX users should use
+start\_torq\_demo\_osx.sh to start the system, and stop\_torq\_demo\_osx.sh
+to stop it. The processes will
 start in the background but can be seen using a ps command, such as
 
     aquaq> ps -ef | grep 'torq\|tickerplant' 
@@ -262,10 +260,9 @@ The file structure can be seen below.
     |   `-- sym
     |-- setenv.sh           <- set environment variables
     |-- start_torq_demo.bat     <- start and stop scripts
-    |-- start_torq_demo.sh
     |-- start_torq_demo_osx.sh
     |-- stop_torq_demo.bat
-    `-- stop_torq_demo.sh
+    `-- stop_torq_demo_osx.sh
 
 The Demo Pack consists of:
 
