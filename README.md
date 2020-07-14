@@ -9,7 +9,7 @@ Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.
 2. Download a zip of [this starter pack](https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/archive/master.zip)
 3. Unzip TorQ
 4. Unzip the starter pack over the top (this will replace some files)
-5. Run the appropriate starts script: start_torq_demo.bat for Windows, torq.sh for Linux and start_torq_demo_osx.sh for Mac OS X.
+5. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo_mac.sh for macOS, and torq.sh with the command line argument start all for Linux.
 
 For more information on how to configure and get started, go to [this site](https://aquaqanalytics.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system.
 
