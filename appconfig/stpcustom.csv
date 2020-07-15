@@ -3,3 +3,4 @@ trade,periodic
 trade_iex,periodic
 quote,tabular
 quote_iex,tabular
+heartbeat,tabperiod
