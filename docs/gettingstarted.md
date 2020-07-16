@@ -4,7 +4,7 @@ Getting Started
 Requirements
 ------------
 
-The TorQ Finance Starter Pack will run on Windows, Linux or OSX. It
+The TorQ Finance Starter Pack will run on Windows, Linux or macOS. It
 contains a small initial database of 130MB. As the system runs, data is
 fed in and written out to disk. We recommend that it is installed with
 at least 2GB of free disk space, on a system with at least 4GB of RAM.
@@ -49,8 +49,8 @@ If you wish to generate emails from the system you will additionally
 have to:
 
 1.  Modify DEMOEMAILRECEIVER environment variable at the top of
-    start\_torq\_demo.sh, start\_torq\_demo\_osx.sh or
-    start\_torq\_demo.bat
+    start\_torq\_demo\_mac.sh or start\_torq\_demo.bat. Linux users will 
+    need to add DEMOEMAILRECEIVER to setenv.sh
 
 2.  Add the email server details in config/settings/default.q. You will
     need to specify the email server URL, username and password. An
@@ -84,15 +84,14 @@ connection timeouts not being executed correctly. During testing, we
 obsverved this behaviour on two different windows installations though
 could not narrow it down to a specific hardware/windows/kdb+ version
 issue. Most versions of windows ran correctly every time (as did all
-versions of Linux/OSX).
+versions of Linux/macOS).
 
-### Linux and OSX
+### Linux and macOS
 
-Linux users should use start\_torq\_demo.sh to start the system, and
-stop\_torq\_demo.sh to stop it. OSX users should use
-start\_torq\_demo\_osx.sh to start the system, and stop\_torq\_demo.sh
-to stop it. The only difference between the respective start scripts is
-how the library path environment variable is set. The processes will
+To start and stop the system, Linux users should use torq.sh with the appropriate 
+flags (start all, and stop all). macOS users should use
+start\_torq\_demo\_mac.sh to start the system, and stop\_torq\_demo\_mac.sh
+to stop it. The processes will
 start in the background but can be seen using a ps command, such as
 
     aquaq> ps -ef | grep 'torq\|tickerplant' 
@@ -183,7 +182,7 @@ remotely). Check these log files for errors.
 The easiest way to debug a process is to run it in the foreground. By
 default, TorQ will redirect standard out and standard error to log files
 on disk. To debug a process, start it on the command line (either the
-command prompt on Windows, or a terminal session on Linux or OSX) using
+command prompt on Windows, or a terminal session on Linux or macOS) using
 the start up line from the appropriate launch script. Supply the -debug
 command line parameter to stop it redirecting output to log files on
 disk.
@@ -262,10 +261,9 @@ The file structure can be seen below.
     |   `-- sym
     |-- setenv.sh           <- set environment variables
     |-- start_torq_demo.bat     <- start and stop scripts
-    |-- start_torq_demo.sh
-    |-- start_torq_demo_osx.sh
+    |-- start_torq_demo_mac.sh
     |-- stop_torq_demo.bat
-    `-- stop_torq_demo.sh
+    `-- stop_torq_demo_mac.sh
 
 The Demo Pack consists of:
 
