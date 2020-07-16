@@ -19,3 +19,4 @@ name,public,descrip,params,return
 .dqc.symfilegrowth,0,Checks whether the sym file has grown more than a certain percentage,[ndays;pct;weekends],Boolean and whether the symfile has grown pass the percentage
 .dqc.refdatacheck,0,Checks whether the referenced column of a table is in another column of another table,[tablea;tableb;cola;colb],Boolean and if false(0b) - what data doesnt exist in the table
 .dqc.timediff,0,Checks whether differences between time columns are greater than a certain timespan,[tn;ca;cb;pt;tl],Boolean, and description on whether there is a major problem with data flow
+.dqc.tablecomp,0,Check used to show the count of a particular table meant to be used to compare two tables from two processes,[tab],list containing a boolean(1b as it is always true) a string showing the count of the table and a long value of count of the table
