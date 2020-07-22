@@ -7,7 +7,7 @@ reloadenabled:1b		//if true, the RDB will not save when .u.end is called but
 
 tickerplanttypes:`segmentedtickerplant
 gatewatypes:`none
-replaylog:0b
+replaylog:1b
 
 hdbtypes:()			//connection to HDB not needed
 
