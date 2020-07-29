@@ -1,4 +1,5 @@
 query,params,proc,querytype,starttime
+datecheck,`quote,`hdb1,table,09:00:00.000000000
 bycount,(`quote;`sym),`hdb1,table,09:00:00.000000000
 bycount,(`quote;`sym`ex),`hdb1,table,09:00:00.000000000
 groupcount,(`quote;`sym;`AAPL),`hdb1,table,09:00:00.000000000
