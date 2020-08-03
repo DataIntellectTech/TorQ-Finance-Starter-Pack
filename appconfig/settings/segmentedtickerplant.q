@@ -5,7 +5,7 @@ multilogperiod:0D01;
 errmode:1b;
 batchmode:`defaultbatch;  // [autobatch|defaultbatch|immediate]
 customcsv:hsym first .proc.getconfigfile["stpcustom.csv"];
-replayperiod:`day         // [period|day|none]
+replayperiod:`day         // [period|day|prior]
 
 \d .proc
 
