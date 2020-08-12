@@ -1,6 +1,6 @@
 \d .fa
 
-decodepcaps:0b                   // Whether to parse PCAPs found by filealerter (causes connection to tp)
+tickerplanttype:`tickerplant					// Type of tickerplant to connect to
 
 \d .servers
 
