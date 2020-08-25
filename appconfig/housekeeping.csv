@@ -1,5 +1,5 @@
-function,path,match,exclude,age
-zip,{KDBLOG}/,*.log,,10
-rm,{KDBLOG}/,*.gz,,30
-zip,{KDBTPLOG}/,database20*,*.gz,1
-tardir,{KDBSTPLOG}/,database20*,,1
+function,path,match,exclude,age,agemin,checkfordirectory
+zip,{KDBLOG}/,*.log,,10,,
+rm,{KDBLOG}/,*.gz,,30,,
+zip,{KDBTPLOG}/,database20*,*.gz,1,,
+tardir,{KDBSTPLOG}/,database20*,,1,,1
