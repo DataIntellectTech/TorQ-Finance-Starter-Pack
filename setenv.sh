@@ -15,6 +15,7 @@ export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
 export KDBLOG=${TORQHOME}/logs
 export KDBSTPLOG=${TORQHOME}/stplogs
+export KDBSCTPLOG=${TORQHOME}/sctplogs
 export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
 export KDBHDB=${TORQHOME}/hdb
