@@ -21,3 +21,4 @@ advancedsymdtd,`comp`vars!(0b;(`advancedres;`bycount;`sym)),`dqedb1,repeat,09:00
 advancedperdtd,`comp`vars!(0b;(`advancedres;`bycount;`sym;25)),`dqedb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
 advancedsymdtd,`comp`vars!(0b;(`advancedres;`bycount;`sym.ex)),`dqedb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
 advancedperdtd,`comp`vars!(0b;(`advancedres;`bycount;`sym.ex;25)),`dqedb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
+medianfunc,`comp`vars!(0b;(`advancedres;`bycount;`sym;5;25)),`dqedb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
