@@ -50,7 +50,7 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
 ## Release Notes
-- **1.9.0, May 2020**
+- **1.9.0, Sept 2020**
   * Inclusive language
   * A Fix for CTP in start .stop script and other minor fixes
   * Addition of the pcap decoder
