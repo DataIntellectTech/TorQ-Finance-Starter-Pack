@@ -1,11 +1,10 @@
 chainedtp:1b;           /- differentiates between stp and sctp codebases
 tickerplantname:`stp1;	/- list of tickerplant names to try and make a connection to
-createlogs:1b;             	/- create a log file
+createlogs:0b;             	/- create a log file
 subscribeto:`;                	/- list of tables to subscribe for
 subscribesyms:`;              	/- list of syms to subscription to
 replay:0b;                    	/- replay the tickerplant log file
 schema:1b;                    	/- retrieve schema from tickerplant
-chainedstpmode:1b               /- lets sctp subscribe to stp
 
 \d .stplg
 
