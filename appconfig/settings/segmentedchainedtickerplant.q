@@ -1,4 +1,4 @@
-chainedtp:1b;           /- differentiates between stp and sctp codebases
+.sctp.chainedtp:1b;           /- differentiates between stp and sctp codebases
 tickerplantname:`stp1;	/- list of tickerplant names to try and make a connection to
 createlogs:0b;             	/- create a log file
 subscribeto:`;                	/- list of tables to subscribe for
