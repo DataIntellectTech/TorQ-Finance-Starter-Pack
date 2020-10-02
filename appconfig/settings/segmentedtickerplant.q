@@ -1,5 +1,6 @@
-.sctp.chainedtp:0b;
-createlogs:1b;             	/- create a logs   
+\d .
+
+createlogs:1b;             	/- create a logs
 
 \d .stplg
 
