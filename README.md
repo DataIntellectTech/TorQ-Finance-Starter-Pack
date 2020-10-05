@@ -7,7 +7,7 @@ Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.
 
 1.  Download and install kdb+ from [Kx Systems](http://kx.com)
 
-2.  Download the Install script in the dirctory where you want the TorQ to be installed using:
+2.  Download the install script in the directory where you want the TorQ to be installed using:
 
     `wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/master/installlatest.sh`
     
