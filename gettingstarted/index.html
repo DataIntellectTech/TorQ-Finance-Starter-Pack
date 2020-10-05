@@ -1,17 +1,38 @@
 
-<!DOCTYPE html>
-<html class="no-js">
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
   <head>
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
       
       
-        <link rel="shortcut icon" href="../graphics/favicon.ico">
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
       
-      <meta name="generator" content="mkdocs+mkdocs-material#1.0.2">
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
     
     
       
@@ -19,132 +40,174 @@
       
     
     
-      <script src="../assets/javascripts/modernizr-facb31f4a3.js"></script>
+      <link rel="stylesheet" href="../assets/stylesheets/application.1b62728e.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.268332fc.js"></script>
     
     
       
-        
-        
-        
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application-1b8b9fdf68.css">
+    
       
-        <link rel="stylesheet" href="../assets/stylesheets/application-02ce7adcc2.palette.css">
-      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-51911331-4", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
       
     
     
   </head>
   
-  
-  
-  
-    <body data-md-color-primary="indigo" data-md-color-accent="green">
+    <body dir="ltr">
   
     <svg class="md-svg">
       <defs>
         
         
-          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
         
       </defs>
     </svg>
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
-    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <header class="md-header">
+      <a href="#getting-started" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href=".." title="Finance Starter Pack" class=" md-logo  md-header-nav__button">
+        <a href=".." title="Finance Starter Pack" class="md-header-nav__button md-logo">
           
-            <img src="../graphics/TorQ-logo.png" width="24" height="24">
+            <i class="md-icon"></i>
           
         </a>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
-        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
-        <span class="md-flex__ellipsis md-header-nav__title">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
-            
+            <span class="md-header-nav__topic">
+              Finance Starter Pack
+            </span>
+            <span class="md-header-nav__topic">
               
-            
-            Getting Started
+                Getting Started
+              
+            </span>
           
-        </span>
+        </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
           
-<div class="md-search" data-md-component="search">
-  <div class="md-search__overlay"></div>
-  <div class="md-search__inner">
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
-      <label class="md-icon md-search__icon" for="search"></label>
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result"></div>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
       </div>
     </div>
   </div>
 </div>
         
       </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
           <div class="md-header-nav__source">
             
-              
 
 
   
 
-
-  <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      GitHub
+<a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
     </div>
-  </a>
-
-            
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
           </div>
-      </div>
+        </div>
+      
     </div>
   </nav>
 </header>
     
     <div class="md-container">
-      <main class="md-main">
+      
+        
+      
+      
+      <main class="md-main" role="main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
               <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    <nav class="md-nav md-nav--primary">
-  <label class="md-nav__title md-nav__title--site" for="drawer">
-    <i class=" md-logo  md-nav__button">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="Finance Starter Pack" class="md-nav__button md-logo">
       
-        <img src="../graphics/TorQ-logo.png">
+        <i class="md-icon"></i>
       
-    </i>
+    </a>
     Finance Starter Pack
   </label>
   
@@ -154,45 +217,49 @@
 
   
 
-
-  <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      GitHub
+<a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
     </div>
-  </a>
-
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
     </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href=".." title="Home" class="md-nav__link">
-        Home
-      </a>
-    
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
   </li>
 
     
       
       
-  <li class="md-nav__item">
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
     
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
       
     
     
-      <label class="md-nav__link md-nav__link--active" for="toc">
+      <label class="md-nav__link md-nav__link--active" for="__toc">
         Getting Started
       </label>
     
@@ -207,18 +274,18 @@
     
   
   
-    <label class="md-nav__title" for="toc">Table of contents</label>
+    <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#requirements" title="Requirements" class="md-nav__link">
+  <a href="#requirements" class="md-nav__link">
     Requirements
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation-and-configuration" title="Installation and Configuration" class="md-nav__link">
+  <a href="#installation-and-configuration" class="md-nav__link">
     Installation and Configuration
   </a>
   
@@ -226,14 +293,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#installation" title="Installation" class="md-nav__link">
+  <a href="#installation" class="md-nav__link">
     Installation
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#configuration" title="Configuration" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     Configuration
   </a>
   
@@ -245,7 +312,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-up" title="Start Up" class="md-nav__link">
+  <a href="#start-up" class="md-nav__link">
     Start Up
   </a>
   
@@ -253,35 +320,35 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#windows" title="Windows" class="md-nav__link">
+  <a href="#windows" class="md-nav__link">
     Windows
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#linux-and-osx" title="Linux and OSX" class="md-nav__link">
-    Linux and OSX
+  <a href="#linux-and-macos" class="md-nav__link">
+    Linux and macOS
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#check-if-the-system-is-running" title="Check If the System Is Running" class="md-nav__link">
+  <a href="#check-if-the-system-is-running" class="md-nav__link">
     Check If the System Is Running
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#connecting-to-a-running-process" title="Connecting To A Running Process" class="md-nav__link">
+  <a href="#connecting-to-a-running-process" class="md-nav__link">
     Connecting To A Running Process
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#testing-emails" title="Testing Emails" class="md-nav__link">
+  <a href="#testing-emails" class="md-nav__link">
     Testing Emails
   </a>
   
@@ -293,7 +360,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#trouble-shooting" title="Trouble Shooting" class="md-nav__link">
+  <a href="#trouble-shooting" class="md-nav__link">
     Trouble Shooting
   </a>
   
@@ -301,7 +368,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debugging" title="Debugging" class="md-nav__link">
+  <a href="#debugging" class="md-nav__link">
     Debugging
   </a>
   
@@ -313,18 +380,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#file-structure" title="File Structure" class="md-nav__link">
+  <a href="#file-structure" class="md-nav__link">
     File Structure
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#make-it-your-own" title="Make It Your Own" class="md-nav__link">
+  <a href="#make-it-your-own" class="md-nav__link">
     Make It Your Own
   </a>
   
 </li>
+      
+      
+      
+      
       
     </ul>
   
@@ -335,34 +406,37 @@
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href="../architecture/" title="Architecture" class="md-nav__link">
-        Architecture
-      </a>
-    
+    <a href="../architecture/" title="Architecture" class="md-nav__link">
+      Architecture
+    </a>
   </li>
 
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href="../play/" title="Have a Play" class="md-nav__link">
-        Have a Play
-      </a>
-    
+    <a href="../play/" title="Have a Play" class="md-nav__link">
+      Have a Play
+    </a>
   </li>
 
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href="../iex/" title="IEX" class="md-nav__link">
-        IEX
-      </a>
-    
+    <a href="../iex/" title="IEX" class="md-nav__link">
+      IEX
+    </a>
   </li>
 
     
@@ -383,18 +457,18 @@
     
   
   
-    <label class="md-nav__title" for="toc">Table of contents</label>
+    <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#requirements" title="Requirements" class="md-nav__link">
+  <a href="#requirements" class="md-nav__link">
     Requirements
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation-and-configuration" title="Installation and Configuration" class="md-nav__link">
+  <a href="#installation-and-configuration" class="md-nav__link">
     Installation and Configuration
   </a>
   
@@ -402,14 +476,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#installation" title="Installation" class="md-nav__link">
+  <a href="#installation" class="md-nav__link">
     Installation
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#configuration" title="Configuration" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     Configuration
   </a>
   
@@ -421,7 +495,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#start-up" title="Start Up" class="md-nav__link">
+  <a href="#start-up" class="md-nav__link">
     Start Up
   </a>
   
@@ -429,35 +503,35 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#windows" title="Windows" class="md-nav__link">
+  <a href="#windows" class="md-nav__link">
     Windows
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#linux-and-osx" title="Linux and OSX" class="md-nav__link">
-    Linux and OSX
+  <a href="#linux-and-macos" class="md-nav__link">
+    Linux and macOS
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#check-if-the-system-is-running" title="Check If the System Is Running" class="md-nav__link">
+  <a href="#check-if-the-system-is-running" class="md-nav__link">
     Check If the System Is Running
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#connecting-to-a-running-process" title="Connecting To A Running Process" class="md-nav__link">
+  <a href="#connecting-to-a-running-process" class="md-nav__link">
     Connecting To A Running Process
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#testing-emails" title="Testing Emails" class="md-nav__link">
+  <a href="#testing-emails" class="md-nav__link">
     Testing Emails
   </a>
   
@@ -469,7 +543,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#trouble-shooting" title="Trouble Shooting" class="md-nav__link">
+  <a href="#trouble-shooting" class="md-nav__link">
     Trouble Shooting
   </a>
   
@@ -477,7 +551,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#debugging" title="Debugging" class="md-nav__link">
+  <a href="#debugging" class="md-nav__link">
     Debugging
   </a>
   
@@ -489,18 +563,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#file-structure" title="File Structure" class="md-nav__link">
+  <a href="#file-structure" class="md-nav__link">
     File Structure
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#make-it-your-own" title="Make It Your Own" class="md-nav__link">
+  <a href="#make-it-your-own" class="md-nav__link">
     Make It Your Own
   </a>
   
 </li>
+      
+      
+      
+      
       
     </ul>
   
@@ -512,14 +590,14 @@
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
-               
-                 <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/edit/master/docs/gettingstarted.md" title="Edit this page" class="md-icon md-content__edit">edit</a>
-               
               
+                
+                  <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/edit/master/docs/gettingstarted.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
                 
                 <h1 id="getting-started">Getting Started</h1>
 <h2 id="requirements">Requirements</h2>
-<p>The TorQ Finance Starter Pack will run on Windows, Linux or OSX. It
+<p>The TorQ Finance Starter Pack will run on Windows, Linux or macOS. It
 contains a small initial database of 130MB. As the system runs, data is
 fed in and written out to disk. We recommend that it is installed with
 at least 2GB of free disk space, on a system with at least 4GB of RAM.
@@ -534,18 +612,11 @@ same way on both the 32-bit and 64-bit versions of kdb+.</p>
 <p>Download and install kdb+ from <a href="http://kx.com">Kx Systems</a></p>
 </li>
 <li>
-<p>Download the main TorQ codebase from
-    <a href="https://github.com/AquaQAnalytics/TorQ/archive/master.zip">here</a></p>
+<p>Download the Install script in the dirctory where you want the TorQ to be installed using:</p>
+<p><code>wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/master/installlatest.sh</code></p>
 </li>
 <li>
-<p>Download the TorQ Finance Starter Pack from
-    <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/archive/master.zip">here</a>[</p>
-</li>
-<li>
-<p>Unzip the TorQ package</p>
-</li>
-<li>
-<p>Unzip the Demo Pack over the top of the main TorQ package</p>
+<p>bash installlatest.sh</p>
 </li>
 </ol>
 <h3 id="configuration">Configuration</h3>
@@ -566,8 +637,8 @@ have to:</p>
 <ol>
 <li>
 <p>Modify DEMOEMAILRECEIVER environment variable at the top of
-    start_torq_demo.sh, start_torq_demo_osx.sh or
-    start_torq_demo.bat</p>
+    start_torq_demo_mac.sh or start_torq_demo.bat. Linux users will 
+    need to add DEMOEMAILRECEIVER to setenv.sh</p>
 </li>
 <li>
 <p>Add the email server details in config/settings/default.q. You will
@@ -597,21 +668,20 @@ connection timeouts not being executed correctly. During testing, we
 obsverved this behaviour on two different windows installations though
 could not narrow it down to a specific hardware/windows/kdb+ version
 issue. Most versions of windows ran correctly every time (as did all
-versions of Linux/OSX).</p>
-<h3 id="linux-and-osx">Linux and OSX</h3>
-<p>Linux users should use start_torq_demo.sh to start the system, and
-stop_torq_demo.sh to stop it. OSX users should use
-start_torq_demo_osx.sh to start the system, and stop_torq_demo.sh
-to stop it. The only difference between the respective start scripts is
-how the library path environment variable is set. The processes will
+versions of Linux/macOS).</p>
+<h3 id="linux-and-macos">Linux and macOS</h3>
+<p>To start and stop the system, Linux users should use torq.sh with the appropriate 
+flags (start all, and stop all). macOS users should use
+start_torq_demo_mac.sh to start the system, and stop_torq_demo_mac.sh
+to stop it. The processes will
 start in the background but can be seen using a ps command, such as</p>
 <pre><code>aquaq&gt; ps -ef | grep 'torq\|tickerplant' 
 aquaq    4810 16777  0 15:56 pts/34   00:00:00 grep torq\|tickerplant
 aquaq   25465     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/discovery.q -stackid 6000 -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime
-aquaq   25466     1  0 13:05 pts/34   00:00:29 q tickerplant.q database hdb -stackid 6000 -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime
+aquaq   25466     1  0 13:05 pts/34   00:00:29 q tickerplant.q database tplogs -stackid 6000 -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime
 aquaq   25478     1  0 13:05 pts/34   00:00:17 q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1  -U config/passwords/accesslist.txt -localtime -g 1 -T 180
-aquaq   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb/database -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
-aquaq   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb/database -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
+aquaq   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
+aquaq   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
 aquaq   25481     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/gateway.q -stackid 6000 -proctype gateway -procname gateway1 -U config/passwords/accesslist.txt -localtime -g 1 -w 4000
 aquaq   25482     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/monitor.q -stackid 6000 -proctype monitor -procname monitor1 -localtime
 aquaq   25483     1  0 13:05 pts/34   00:00:07 q torq.q -load code/processes/reporter.q -stackid 6000 -proctype reporter -procname reporter1 -U config/passwords/accesslist.txt -localtime
@@ -683,7 +753,7 @@ remotely). Check these log files for errors.</p>
 <p>The easiest way to debug a process is to run it in the foreground. By
 default, TorQ will redirect standard out and standard error to log files
 on disk. To debug a process, start it on the command line (either the
-command prompt on Windows, or a terminal session on Linux or OSX) using
+command prompt on Windows, or a terminal session on Linux or macOS) using
 the start up line from the appropriate launch script. Supply the -debug
 command line parameter to stop it redirecting output to log files on
 disk.</p>
@@ -734,18 +804,32 @@ you have extracted TorQ and the TorQ Finance Starter Pack to.</p>
 |   |   |-- accesslist.txt  &lt;- list of user:pass who can connect to proccesses
 |   |   `-- feed.txt        &lt;- password file used by feed for connections
 |   |-- process.csv     &lt;- definition of type/name of each process
-|   `-- reporter.csv        &lt;- modified config for reporter
+|   |-- reporter.csv        &lt;- modified config for reporter
+|   |-- dqcconfig.csv       &lt;- modified config for dqc
+|   `-- dqedetail.csv       &lt;- csv explaining function in the dqc
+|   |-- dqengineconfig.csv       &lt;- modified config for dqe
 |-- hdb             &lt;- example hdb data
 |   `-- database
 |       |-- 2015.01.07
 |       |-- 2015.01.08
 |       `-- sym
+|-- dqe
+|   `-- dqcdb       &lt;- example dqc data
+|       |-- database
+            |-- 2020.03.16
+            `-- sym
+|   `-- dqedb       &lt;- example dqe data
+|       |-- database
+            |-- 2020.03.16
+            `-- sym
+|   |-- 2015.01.07
+|   |-- 2015.01.08
+|   `-- sym
 |-- setenv.sh           &lt;- set environment variables
 |-- start_torq_demo.bat     &lt;- start and stop scripts
-|-- start_torq_demo.sh
-|-- start_torq_demo_osx.sh
+|-- start_torq_demo_mac.sh
 |-- stop_torq_demo.bat
-`-- stop_torq_demo.sh
+`-- stop_torq_demo_mac.sh
 </code></pre>
 <p>The Demo Pack consists of:</p>
 <ul>
@@ -769,6 +853,15 @@ you have extracted TorQ and the TorQ Finance Starter Pack to.</p>
 <p>The system is production ready. To customize it for a specific data set,
 modify the schema file and replace the feed process with a feed of data
 from a live system.</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
               
             </article>
           </div>
@@ -822,13 +915,11 @@ from a live system.</p>
           </div>
         
         powered by
-        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        <a href="https://www.mkdocs.org">MkDocs</a>
         and
-        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+        <a href="https://squidfunk.github.io/mkdocs-material/">
           Material for MkDocs</a>
       </div>
-      
-        
       
     </div>
   </div>
@@ -836,13 +927,9 @@ from a live system.</p>
       
     </div>
     
-      <script src="../assets/javascripts/application-16f434a21a.js"></script>
-      <script>var config={url:{base:".."}},app=new Application(config);app.initialize()</script>
+      <script src="../assets/javascripts/application.808e90bb.js"></script>
       
-    
-    
-      
-      <script>!function(e,t,a,n,o,c,i){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,c=t.createElement(a),i=t.getElementsByTagName(a)[0],c.async=1,c.src=n,i.parentNode.insertBefore(c,i)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-51911331-4","auto"),ga("set","anonymizeIp",!0),ga("send","pageview");var links=document.getElementsByTagName("a");Array.prototype.map.call(links,function(e){e.host!=document.location.host&&e.addEventListener("click",function(){var t=e.getAttribute("data-md-action")||"follow";ga("send","event","outbound",t,e.href)})});var query=document.forms.search.query;query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
     
   </body>

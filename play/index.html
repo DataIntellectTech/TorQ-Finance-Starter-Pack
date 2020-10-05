@@ -1,17 +1,38 @@
 
-<!DOCTYPE html>
-<html class="no-js">
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
   <head>
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
       
       
-        <link rel="shortcut icon" href="../graphics/favicon.ico">
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
       
-      <meta name="generator" content="mkdocs+mkdocs-material#1.0.2">
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
     
     
       
@@ -19,132 +40,174 @@
       
     
     
-      <script src="../assets/javascripts/modernizr-facb31f4a3.js"></script>
+      <link rel="stylesheet" href="../assets/stylesheets/application.1b62728e.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.268332fc.js"></script>
     
     
       
-        
-        
-        
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application-1b8b9fdf68.css">
+    
       
-        <link rel="stylesheet" href="../assets/stylesheets/application-02ce7adcc2.palette.css">
-      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-51911331-4", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
       
     
     
   </head>
   
-  
-  
-  
-    <body data-md-color-primary="indigo" data-md-color-accent="green">
+    <body dir="ltr">
   
     <svg class="md-svg">
       <defs>
         
         
-          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
         
       </defs>
     </svg>
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
-    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <header class="md-header">
+      <a href="#have-a-play" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href=".." title="Finance Starter Pack" class=" md-logo  md-header-nav__button">
+        <a href=".." title="Finance Starter Pack" class="md-header-nav__button md-logo">
           
-            <img src="../graphics/TorQ-logo.png" width="24" height="24">
+            <i class="md-icon"></i>
           
         </a>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
-        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
-        <span class="md-flex__ellipsis md-header-nav__title">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
-            
+            <span class="md-header-nav__topic">
+              Finance Starter Pack
+            </span>
+            <span class="md-header-nav__topic">
               
-            
-            Have a Play
+                Have a Play
+              
+            </span>
           
-        </span>
+        </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
           
-<div class="md-search" data-md-component="search">
-  <div class="md-search__overlay"></div>
-  <div class="md-search__inner">
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false">
-      <label class="md-icon md-search__icon" for="search"></label>
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result"></div>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
       </div>
     </div>
   </div>
 </div>
         
       </div>
-      <div class="md-flex__cell md-flex__cell--shrink">
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
           <div class="md-header-nav__source">
             
-              
 
 
   
 
-
-  <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      GitHub
+<a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
     </div>
-  </a>
-
-            
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
           </div>
-      </div>
+        </div>
+      
     </div>
   </nav>
 </header>
     
     <div class="md-container">
-      <main class="md-main">
+      
+        
+      
+      
+      <main class="md-main" role="main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
               <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    <nav class="md-nav md-nav--primary">
-  <label class="md-nav__title md-nav__title--site" for="drawer">
-    <i class=" md-logo  md-nav__button">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="Finance Starter Pack" class="md-nav__button md-logo">
       
-        <img src="../graphics/TorQ-logo.png">
+        <i class="md-icon"></i>
       
-    </i>
+    </a>
     Finance Starter Pack
   </label>
   
@@ -154,67 +217,73 @@
 
   
 
-
-  <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack" title="Go to repository" class="md-source" data-md-source="github">
-    
-      <div class="md-source__icon">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <use xlink:href="#github" width="24" height="24"></use>
-        </svg>
-      </div>
-    
-    <div class="md-source__repository">
-      GitHub
+<a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
     </div>
-  </a>
-
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
     </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href=".." title="Home" class="md-nav__link">
-        Home
-      </a>
-    
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
   </li>
 
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href="../gettingstarted/" title="Getting Started" class="md-nav__link">
-        Getting Started
-      </a>
-    
+    <a href="../gettingstarted/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
   </li>
 
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href="../architecture/" title="Architecture" class="md-nav__link">
-        Architecture
-      </a>
-    
+    <a href="../architecture/" title="Architecture" class="md-nav__link">
+      Architecture
+    </a>
   </li>
 
     
       
       
-  <li class="md-nav__item">
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
     
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
       
     
     
-      <label class="md-nav__link md-nav__link--active" for="toc">
+      <label class="md-nav__link md-nav__link--active" for="__toc">
         Have a Play
       </label>
     
@@ -229,11 +298,11 @@
     
   
   
-    <label class="md-nav__title" for="toc">Table of contents</label>
+    <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gateway" title="Gateway" class="md-nav__link">
+  <a href="#gateway" class="md-nav__link">
     Gateway
   </a>
   
@@ -241,21 +310,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#queries" title="Queries" class="md-nav__link">
+  <a href="#queries" class="md-nav__link">
     Queries
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#resilience" title="Resilience" class="md-nav__link">
+  <a href="#resilience" class="md-nav__link">
     Resilience
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#load-balancing" title="Load Balancing" class="md-nav__link">
+  <a href="#load-balancing" class="md-nav__link">
     Load Balancing
   </a>
   
@@ -267,21 +336,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#examine-the-logs" title="Examine the Logs" class="md-nav__link">
+  <a href="#examine-the-logs" class="md-nav__link">
     Examine the Logs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#reports" title="Reports" class="md-nav__link">
+  <a href="#reports" class="md-nav__link">
     Reports
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#access-control" title="Access Control" class="md-nav__link">
+  <a href="#access-control" class="md-nav__link">
     Access Control
   </a>
   
@@ -289,14 +358,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adding-users" title="Adding Users" class="md-nav__link">
+  <a href="#adding-users" class="md-nav__link">
     Adding Users
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-privileges" title="User Privileges" class="md-nav__link">
+  <a href="#user-privileges" class="md-nav__link">
     User Privileges
   </a>
   
@@ -307,6 +376,10 @@
   
 </li>
       
+      
+      
+      
+      
     </ul>
   
 </nav>
@@ -316,12 +389,13 @@
     
       
       
+      
+
+
   <li class="md-nav__item">
-    
-      <a href="../iex/" title="IEX" class="md-nav__link">
-        IEX
-      </a>
-    
+    <a href="../iex/" title="IEX" class="md-nav__link">
+      IEX
+    </a>
   </li>
 
     
@@ -342,11 +416,11 @@
     
   
   
-    <label class="md-nav__title" for="toc">Table of contents</label>
+    <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gateway" title="Gateway" class="md-nav__link">
+  <a href="#gateway" class="md-nav__link">
     Gateway
   </a>
   
@@ -354,21 +428,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#queries" title="Queries" class="md-nav__link">
+  <a href="#queries" class="md-nav__link">
     Queries
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#resilience" title="Resilience" class="md-nav__link">
+  <a href="#resilience" class="md-nav__link">
     Resilience
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#load-balancing" title="Load Balancing" class="md-nav__link">
+  <a href="#load-balancing" class="md-nav__link">
     Load Balancing
   </a>
   
@@ -380,21 +454,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#examine-the-logs" title="Examine the Logs" class="md-nav__link">
+  <a href="#examine-the-logs" class="md-nav__link">
     Examine the Logs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#reports" title="Reports" class="md-nav__link">
+  <a href="#reports" class="md-nav__link">
     Reports
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#access-control" title="Access Control" class="md-nav__link">
+  <a href="#access-control" class="md-nav__link">
     Access Control
   </a>
   
@@ -402,14 +476,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adding-users" title="Adding Users" class="md-nav__link">
+  <a href="#adding-users" class="md-nav__link">
     Adding Users
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-privileges" title="User Privileges" class="md-nav__link">
+  <a href="#user-privileges" class="md-nav__link">
     User Privileges
   </a>
   
@@ -419,6 +493,10 @@
     </nav>
   
 </li>
+      
+      
+      
+      
       
     </ul>
   
@@ -430,15 +508,15 @@
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
-               
-                 <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/edit/master/docs/play.md" title="Edit this page" class="md-icon md-content__edit">edit</a>
-               
               
+                
+                  <a href="https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/edit/master/docs/play.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
                 
                 <h1 id="have-a-play">Have a Play</h1>
 <h2 id="gateway">Gateway</h2>
 <h3 id="queries">Queries</h3>
-<p>Some example queries have been implemented on the RDB an HDB processes.
+<p>Some example queries have been implemented on the RDB and HDB processes.
 These are defined in $KDBCODE/rdb/examplequeries.q and
 $KDBCODE/hdb/examplequeries.q. These can be run directly on the
 processes themselves, or from the gateway which will join the results if
@@ -530,7 +608,7 @@ depending on arrival time. As the number of clients increases, the
 average time will increase.</p>
 <p>Assuming the environment variables are set up, a new HDB process can be
 started like this:</p>
-<pre><code>q torq.q -load hdb/database -p 31302 -U config/passwords/accesslist.txt -o 0 -proctype hdb -procname temphdb -debug
+<pre><code>q torq.q -load hdb -p 31302 -U appconfig/passwords/accesslist.txt -o 0 -proctype hdb -procname temphdb -debug
 </code></pre>
 <p>This will automatically connect to the gateway, and allow more queries
 to be run in parallel.</p>
@@ -577,10 +655,11 @@ to be restarted to load the new configuration.</p>
 <h2 id="access-control">Access Control</h2>
 <h3 id="adding-users">Adding Users</h3>
 <p>For simplicity each process is password protected using the file
-$KDBCONFIG/passwords/accesslist.txt file. This can be modified to have
+$KDBAPPCONFIG/passwords/accesslist.txt file. This can be modified to have
 different access lists for each process. To add a new user, add their
-user:password combination to the file and either restart the process or
-execute</p>
+user:password combination to the file and either restart the process
+(remembering to stop the stack and source setenv.sh before restarting the stack)
+, or execute</p>
 <pre><code>q)\u
 </code></pre>
 <p>within the process.</p>
@@ -589,6 +668,15 @@ execute</p>
 different user identities with different access levels. For more
 information on how to configure this, see the “Message Handlers” section
 in the main TorQ document.</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
               
             </article>
           </div>
@@ -642,13 +730,11 @@ in the main TorQ document.</p>
           </div>
         
         powered by
-        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        <a href="https://www.mkdocs.org">MkDocs</a>
         and
-        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+        <a href="https://squidfunk.github.io/mkdocs-material/">
           Material for MkDocs</a>
       </div>
-      
-        
       
     </div>
   </div>
@@ -656,13 +742,9 @@ in the main TorQ document.</p>
       
     </div>
     
-      <script src="../assets/javascripts/application-16f434a21a.js"></script>
-      <script>var config={url:{base:".."}},app=new Application(config);app.initialize()</script>
+      <script src="../assets/javascripts/application.808e90bb.js"></script>
       
-    
-    
-      
-      <script>!function(e,t,a,n,o,c,i){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,c=t.createElement(a),i=t.getElementsByTagName(a)[0],c.async=1,c.src=n,i.parentNode.insertBefore(c,i)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-51911331-4","auto"),ga("set","anonymizeIp",!0),ga("send","pageview");var links=document.getElementsByTagName("a");Array.prototype.map.call(links,function(e){e.host!=document.location.host&&e.addEventListener("click",function(){var t=e.getAttribute("data-md-action")||"follow";ga("send","event","outbound",t,e.href)})});var query=document.forms.search.query;query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
     
   </body>
