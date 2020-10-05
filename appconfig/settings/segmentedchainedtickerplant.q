@@ -1,24 +1,24 @@
 \d .
 
-createlogs:0b;             	/- create a log file
+createlogs:0b;                  // create a log file
 
 \d .sctp
 
-chainedtp:1b;                  /- differentiates between stp and sctp codebases
-tickerplantname:`stp1;         /- list of tickerplant names to try and make a connection to
-subscribeto:`;                	/- list of tables to subscribe for
-subscribesyms:`;              	/- list of syms to subscription to
-replay:0b;                    	/- replay the tickerplant log file
-schema:1b;                    	/- retrieve schema from tickerplant
+chainedtp:1b;                   // differentiates between stp and sctp codebases
+tickerplantname:`stp1;          // list of tickerplant names to try and make a connection to
+subscribeto:`;                  // list of tables to subscribe for
+subscribesyms:`;                // list of syms to subscription to
+replay:0b;                      // replay the tickerplant log file
+schema:1b;                      // retrieve schema from tickerplant
 
 \d .stplg
 
-multilog:`tabperiod;      // [tabperiod|none|periodic|tabular|custom]
+multilog:`tabperiod;            // [tabperiod|none|periodic|tabular|custom]
 multilogperiod:0D01;
 errmode:1b;
-batchmode:`defaultbatch;  // [autobatch|defaultbatch|immediate]
+batchmode:`defaultbatch;        // [autobatch|defaultbatch|immediate]
 customcsv:hsym first .proc.getconfigfile["stpcustom.csv"];
-replayperiod:`day         // [period|day|prior]
+replayperiod:`day               // [period|day|prior]
 
 \d .proc
 
@@ -27,10 +27,10 @@ loadprocesscode:1b;
 
 \d .timer
 
-enabled:1b;              //enable timer
+enabled:1b;                     // enable timer
 
 \d .subcut
-enabled:1b                   /- switch on subscribercutoff
+enabled:1b                      // switch on subscribercutoff
 
 \d .servers
 CONNECTIONS,:`segmentedtickerplant
