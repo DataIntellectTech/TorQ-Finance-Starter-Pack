@@ -21,7 +21,7 @@ Installation and Configuration
 
 1.  Download and install kdb+ from [Kx Systems](http://kx.com)
 
-2.  Download the Install script in the dirctory where you want the TorQ to be installed using:
+2.  Download the install script in the directory where you want the TorQ to be installed using:
 
     `wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/master/installlatest.sh`
     
@@ -280,4 +280,3 @@ Make It Your Own
 The system is production ready. To customize it for a specific data set,
 modify the schema file and replace the feed process with a feed of data
 from a live system.
-
