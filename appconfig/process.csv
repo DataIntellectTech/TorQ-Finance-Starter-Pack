@@ -1,6 +1,6 @@
 host,port,proctype,procname,U,localtime,g,T,w,load,startwithall,extras,qcmd
 localhost,{KDBBASEPORT}+1,discovery,discovery1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/discovery.q,1,,q
-localhost,{KDBBASEPORT},tickerplant,tickerplant1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/tickerplant.q,1,-schemafile ${TORQHOME}/database -tplogdir ${KDBTPLOG},q
+localhost,{KDBBASEPORT},segmentedtickerplant,stp1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/segmentedtickerplant.q,1,-schemafile ${TORQHOME}/database.q -tplogdir ${KDBTPLOG},q
 localhost,{KDBBASEPORT}+2,rdb,rdb1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,180,,${KDBCODE}/processes/rdb.q,1,,q
 localhost,{KDBBASEPORT}+3,hdb,hdb1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBHDB},1,,q
 localhost,{KDBBASEPORT}+4,hdb,hdb2,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBHDB},1,,q
@@ -13,7 +13,7 @@ localhost,{KDBBASEPORT}+10,tickerlogreplay,tpreplay1,,1,0,,,${KDBCODE}/processes
 localhost,{KDBBASEPORT}+11,housekeeping,housekeeping1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/housekeeping.q,1,,q
 localhost,{KDBBASEPORT}+12,reporter,reporter1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/reporter.q,1,,q
 localhost,{KDBBASEPORT}+14,feed,feed1,,1,0,,,${KDBAPPCODE}/tick/feed.q,1,,q
-localhost,{KDBBASEPORT}+15,chainedtp,chainedtp1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/chainedtp.q,1,,q
+localhost,{KDBBASEPORT}+15,segmentedchainedtickerplant,sctp1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/segmentedtickerplant.q,1,-parentproctype segmentedtickerplant,q
 localhost,{KDBBASEPORT}+16,sortslave,sortslave1,,1,1,,,${KDBCODE}/processes/wdb.q,1,,q
 localhost,{KDBBASEPORT}+17,sortslave,sortslave2,,1,1,,,${KDBCODE}/processes/wdb.q,1,,q
 localhost,{KDBBASEPORT}+18,metrics,metrics1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBAPPCODE}/processes/metrics.q,1,,q
@@ -22,5 +22,3 @@ localhost,{KDBBASEPORT}+20,dqc,dqc1,${TORQHOME}/appconfig/passwords/accesslist.t
 localhost,{KDBBASEPORT}+21,dqcdb,dqcdb1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBDQCDB},1,,q
 localhost,{KDBBASEPORT}+22,dqe,dqe1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBAPPCODE}/processes/dqe.q,1,-parentproctype dqcommon,q
 localhost,{KDBBASEPORT}+23,dqedb,dqedb1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBDQEDB},1,,q
-localhost,{KDBBASEPORT}+24,segmentedtickerplant,stp1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/segmentedtickerplant.q,1,-schemafile ${TORQHOME}/database.q,q
-localhost,{KDBBASEPORT}+25,segmentedchainedtickerplant,sctp1,${TORQHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/segmentedtickerplant.q,1,-parentproctype segmentedtickerplant,q

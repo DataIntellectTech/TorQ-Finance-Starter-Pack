@@ -1,10 +1,11 @@
 \d .
 
-createlogs:0b;                  // create a log file
+createlogs:0b;                  // create an stp log file (off in SCTP as createlogs does not control SCTP logging)
 
 \d .sctp
 
-chainedtp:1b;                   // differentiates between stp and sctp codebases
+chainedtp:1b;                   // switched between STP and SCTP codebases
+loggingmode:`none;              // [none|create|parent]
 tickerplantname:`stp1;          // list of tickerplant names to try and make a connection to
 subscribeto:`;                  // list of tables to subscribe for
 subscribesyms:`;                // list of syms to subscription to

@@ -83,7 +83,7 @@ init:{
 
 /- use the discovery service to find the tickerplant to publish data to
 .servers.startup[]
-h:.servers.gethandlebytype[`tickerplant;`any]
+h:.servers.gethandlebytype[`segmentedtickerplant;`any]
 
 / init 0
 .timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];

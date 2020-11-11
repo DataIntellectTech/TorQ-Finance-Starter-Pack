@@ -15,4 +15,4 @@ subfiltered:0b
 subcsv:hsym first .proc.getconfigfile["rdbsub.csv"]
 
 \d .servers
-CONNECTIONS:enlist `tickerplant
+CONNECTIONS:enlist `segmentedtickerplant

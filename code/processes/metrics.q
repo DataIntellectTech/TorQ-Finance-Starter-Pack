@@ -45,7 +45,7 @@ metrics:{[syms]
 
 / check for TP connection
 notpconnected:{[]
-	0 = count select from .sub.SUBSCRIPTIONS where proctype in ((),`tickerplant), active}
+	0 = count select from .sub.SUBSCRIPTIONS where proctype in ((),`segmentedtickerplant), active}
 
 / get handle for TP & subscribe
 subscribe:{
