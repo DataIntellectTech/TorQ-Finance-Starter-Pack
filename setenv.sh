@@ -13,6 +13,7 @@ fi
 export TORQHOME=${dirpath}
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
+export KDBTESTS=${TORQHOME}/tests
 export KDBLOG=${TORQHOME}/logs
 export KDBSTPLOG=${TORQHOME}/stplogs
 export KDBHTML=${TORQHOME}/html
