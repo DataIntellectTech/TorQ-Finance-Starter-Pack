@@ -15,4 +15,8 @@ name,public,descrip,params,return
 .dqc.dfilechk,0,Checks the .d file in latest date matches previous date values,[tname;dirname],1b if files match or if there is only one partition else returns 0b if files do not match or if directory is not partitioned or if there are no two files for the table
 .dqc.rangechk,0,Checks whether values of columns from prespecified list are within the range,[t;colslist;tlower;tupper;thres],Table with percentage of values within range per column and if it is below threshold
 .dqc.tablecountcomp,0,Counts the number of rows in a table. Used for table count comparisons,[tab],Number of rows in the table
-.dqc.pctAvgDailyChange,0,Checks if a funciton applied to table is within the threshold limits of an n day average,[fname;tabname;rt;ndays;thres],list containing a boolean (whether the check passed) and a string (detailing how it passed or failed)
+.dqc.pctAvgDailyChange,0,Checks if a function applied to table is within the threshold limits of an n day average,[fname;tabname;rt;ndays;thres],list containing a boolean (whether the check passed) and a string (detailing how it passed or failed)
+.dqc.symfilegrowth,0,Checks whether the sym file has grown more than a certain percentage,[ndays;pct;weekends],Boolean and whether the symfile has grown pass the percentage
+.dqc.refdatacheck,0,Checks whether the referenced column of a table is in another column of another table,[tablea;tableb;cola;colb],Boolean and if false(0b) - what data doesnt exist in the table
+.dqc.timediff,0,Checks whether differences between time columns are greater than a certain timespan,[tn;ca;cb;pt;tl],Boolean and description on whether there is a major problem with data flow
+.dqc.tablecomp,0,Check used to show the count of a particular table meant to be used to compare two tables from two processes,[tab],list containing a boolean(1b as it is always true) a string showing the count of the table and a long value of count of the table

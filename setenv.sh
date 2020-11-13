@@ -11,26 +11,30 @@ else
 fi
 
 export TORQHOME=${dirpath}
+export TORQAPPHOME=${TORQHOME}
+export TORQDATAHOME=${TORQHOME}
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
 export KDBTESTS=${TORQHOME}/tests
-export KDBLOG=${TORQHOME}/logs
-export KDBSTPLOG=${TORQHOME}/stplogs
+export KDBSTPLOG=${TORQDATAHOME}/stplogs
+export KDBLOG=${TORQDATAHOME}/logs
 export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
-export KDBHDB=${TORQHOME}/hdb
-export KDBWDB=${TORQHOME}/wdbhdb
-export KDBDQCDB=${TORQHOME}/dqe/dqcdb/database
-export KDBDQEDB=${TORQHOME}/dqe/dqedb/database
-export KDBTPLOG=${TORQHOME}/tplogs
+export KDBHDB=${TORQDATAHOME}/hdb
+export KDBWDB=${TORQDATAHOME}/wdbhdb
+export KDBDQCDB=${TORQDATAHOME}/dqe/dqcdb/database
+export KDBDQEDB=${TORQDATAHOME}/dqe/dqedb/database
+export KDBTPLOG=${TORQDATAHOME}/tplogs
+export KDBTESTS=${TORQHOME}/tests
+export KDBPCAPS=${TORQAPPHOME}/pcaps
 
 # set rlwrap and qcon paths for use in torq.sh qcon flag functions
 export RLWRAP="rlwrap"
 export QCON="qcon"
 
 # set the application specific configuration directory
-export KDBAPPCONFIG=${TORQHOME}/appconfig
-export KDBAPPCODE=${TORQHOME}/code
+export KDBAPPCONFIG=${TORQAPPHOME}/appconfig
+export KDBAPPCODE=${TORQAPPHOME}/code
 
 # set KDBBASEPORT to the default value for a TorQ Installation
 export KDBBASEPORT=6000
@@ -44,7 +48,7 @@ export DOGSTATSD_PORT=8125
 # if using the email facility, modify the library path for the email lib depending on OS
 # e.g. linux:
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l[32|64]
-# e.g. osx:
+# e.g. macOS:
 # export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m[32|64]
 
 # Please input the API token obtained from IEX here
