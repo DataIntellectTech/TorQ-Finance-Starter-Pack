@@ -17,5 +17,5 @@ loadprocesscode:1b;
 
 \d .eodtime
 
-datatimezone:`$"Etc/GMT-1";
-rolltimezone:`$"Etc/GMT-1";
+datatimezone:`$"GMT";
+rolltimezone:`$"GMT";
