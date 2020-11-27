@@ -41,6 +41,10 @@ metrics:{[syms]
   
  }
 
+// Define top-level functions for receiving messages from an STP
+endofperiod:{[currp;nextp;data] .lg.o[`endofperiod;"Received endofperiod. currentperiod, nextperiod and data are ",(string currp),", ", (string nextp),", ", .Q.s1 data]};
+endofday:{[dt;data] .lg.o[`endofday;"Received endofday for ",string dt]};
+
 \d .metrics 
 
 / check for TP connection
