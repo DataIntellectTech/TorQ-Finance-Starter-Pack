@@ -15,6 +15,7 @@ export TORQAPPHOME=${TORQHOME}
 export TORQDATAHOME=${TORQHOME}
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
+export KDBTESTS=${TORQHOME}/tests
 export KDBLOG=${TORQDATAHOME}/logs
 export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
