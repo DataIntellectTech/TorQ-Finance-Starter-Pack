@@ -19,5 +19,6 @@ dqc:pass
 dqcdb:pass
 dqe:pass
 dqedb:pass
+segmentedtickerplant:pass
 filealerter:pass
 admin:admin

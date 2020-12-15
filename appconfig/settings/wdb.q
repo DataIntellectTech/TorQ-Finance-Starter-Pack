@@ -6,4 +6,4 @@ hdbdir:hsym`$getenv[`KDBHDB]            // move wdb database to different locati
 sortworkertypes:()			// WDB doesn't need to connect to sortworkers
 
 \d .servers
-CONNECTIONS:`tickerplant`sort`gateway`rdb`hdb
+CONNECTIONS:`segmentedtickerplant`sort`gateway`rdb`hdb

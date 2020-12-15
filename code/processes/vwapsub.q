@@ -1,6 +1,6 @@
 \d .vwapsub // enter vwapsub namespace
 
-tickerplanttypes:@[value;`tickerplanttypes;`tickerplant]; // tickerplant types to subscribe to
+tickerplanttypes:@[value;`tickerplanttypes;`segmentedtickerplant]; // tickerplant types to subscribe to
 hdbtypes:@[value;`hdbtypes;`hdb];                         // hdbtypes to connect to
 
 // datareplay settings

@@ -1,6 +1,6 @@
 host,port,proctype,procname,U,localtime,g,T,w,load,startwithall,extras,qcmd
 localhost,{KDBBASEPORT}+1,discovery,discovery1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/discovery.q,1,,q
-localhost,{KDBBASEPORT},tickerplant,tickerplant1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/tickerplant.q,1,-schemafile ${TORQAPPHOME}/database -tplogdir ${KDBTPLOG},q
+localhost,{KDBBASEPORT},segmentedtickerplant,stp1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/segmentedtickerplant.q,1,-schemafile ${TORQHOME}/database.q -tplogdir ${KDBTPLOG},q
 localhost,{KDBBASEPORT}+2,rdb,rdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,180,,${KDBCODE}/processes/rdb.q,1,,q
 localhost,{KDBBASEPORT}+3,hdb,hdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBHDB},1,,q
 localhost,{KDBBASEPORT}+4,hdb,hdb2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBHDB},1,,q
@@ -14,7 +14,7 @@ localhost,{KDBBASEPORT}+11,housekeeping,housekeeping1,${TORQAPPHOME}/appconfig/p
 localhost,{KDBBASEPORT}+12,reporter,reporter1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/reporter.q,1,,q
 localhost,{KDBBASEPORT}+13,filealerter,filealerter1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/filealerter.q,1,,q
 localhost,{KDBBASEPORT}+14,feed,feed1,,1,0,,,${KDBAPPCODE}/tick/feed.q,1,,q
-localhost,{KDBBASEPORT}+15,chainedtp,chainedtp1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/chainedtp.q,1,,q
+localhost,{KDBBASEPORT}+15,segmentedchainedtickerplant,sctp1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/segmentedtickerplant.q,1,-parentproctype segmentedtickerplant,q
 localhost,{KDBBASEPORT}+16,sortworker,sortworker1,,1,1,,,${KDBCODE}/processes/wdb.q,1,,q
 localhost,{KDBBASEPORT}+17,sortworker,sortworker2,,1,1,,,${KDBCODE}/processes/wdb.q,1,,q
 localhost,{KDBBASEPORT}+18,metrics,metrics1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBAPPCODE}/processes/metrics.q,1,,q
