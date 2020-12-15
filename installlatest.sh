@@ -11,7 +11,7 @@ wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ/master/installtorqapp
 
 torq_latest=`get_latest_release "AquaQAnalytics/TorQ"`
 
-if [[  $torq_latest == *?.?.? ]] || [[  $torq_latest == *?.??.?? ]];
+if [[  $torq_latest == *?.?.? ]] || [[  $torq_latest == *?.??.?? ]] || [[  $torq_latest == *?.?.?? ]] || [[  $torq_latest == *?.??.? ]];
 then
         echo "============================================================="
 	echo "Latest TorQ release"
@@ -48,7 +48,7 @@ echo $torq_fsp_latest
 echo "Getting the latest TorQ-FSP .tar.gz file"
 echo "============================================================="
 
-if [[  $torq_fsp_latest == *?.?.? ]] || [[  $torq_fsp_latest == *?.??.?? ]];
+if [[  $torq_fsp_latest == *?.?.? ]] || [[  $torq_fsp_latest == *?.??.?? ]] || [[  $torq_fsp_latest == *?.??.? ]] || [[  $torq_fsp_latest == *?.?.?? ]];
 then
 	echo "============================================================="
 	echo "Latest TorQ-FSP release"
