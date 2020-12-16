@@ -34,12 +34,28 @@ vol:{10+`int$x?90}
 / randomize[]
 \S 235721
 
+/ ========================================================
+/ generate weights
+
+wght:0.03 0.06 0.18 0.11 0.12 0.16 0.09 0.04 0.07 0.14 / sum to 1
+volwght:s!-10?wght*10
+bidwght:s!-10?wght*10
+askwght:s!-10?wght*10
+
+weightedlist:{[wghts;items] raze (#) .' wghts,' neg[count items]?items}
+
+sidewght:raze 2#enlist {x,10-x}'[1+til 5]
+sidemap:s!weightedlist[;`buy`sell] each sidewght
+
+srcwght:1 2 3 4
+srcmap:s!weightedlist[srcwght;] each cnt#enlist src
+
 / =========================================================
 / generate a batch of prices
 / qx index, qb/qa margins, qp price, qn position
 batch:{
  d:gen x;
- qx::x?cnt;
+ qx::x?weightedlist[`int$wght*x;til cnt];
  qb::rnd x?1.0;
  qa::rnd x?1.0;
  n:where each qx=/:til cnt;
@@ -60,12 +76,12 @@ qpt:5   / avg quotes per trade
 t:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;qn+:x;
- (s i;qp n;`int$x?99;1=x?20;x?c;e i;x?side)}
+ (s i;qp n;`int$volwght[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
 
 q:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;p:qp n;qn+:x;
- (s i;p-qb n;p+qa n;`long$vol x;`long$vol x;x?m;e i;x?src)}
+ (s i;p-qb n;p+qa n;`long$bidwght[s i]*vol x;`long$askwght[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
 
 feed:{h$[rand 2;
  (".u.upd";`trade;t 1+rand maxn);
