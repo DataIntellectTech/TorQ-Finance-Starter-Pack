@@ -31,31 +31,37 @@ randomize:{value "\\S ",string "i"$0.8*.z.p%1000000000}
 rnd:{0.01*floor 0.5+x*100}
 vol:{10+`int$x?90}
 
-/ randomize[]
-\S 235721
+randomize[]
+/ \S 235721
 
-/ ========================================================
-/ generate weights
+/ ================================================================================
+/ generate weights to stop even distribution of counts and sizes
 
-wght:0.03 0.06 0.18 0.11 0.12 0.16 0.09 0.04 0.07 0.14 / sum to 1
-volwght:s!-10?wght*10
-bidwght:s!-10?wght*10
-askwght:s!-10?wght*10
+wght:0.3 0.6 1.8 1.1 1.2 1.6 0.9 0.4 0.7 1.4
 
-weightedlist:{[wghts;items] raze (#) .' wghts,' neg[count items]?items}
+/ assign multipliers to skew size columns
+volmap:s!-10?wght
+bidmap:s!-10?wght
+askmap:s!-10?wght
 
-sidewght:raze 2#enlist {x,10-x}'[1+til 5]
-sidemap:s!weightedlist[;`buy`sell] each sidewght
+/ returns list where count of each item is given by random permutation of weights
+skewitems:{[wghts;items] raze (#) .' wghts,' neg[count items]?items}
 
+/ skew sym counts with weighted list of indices
+weightedsyms:skewitems[`long$wght*10;til cnt] / 100 weighted indices when cnt=10
+
+/ assign skewed side and src lists to determine probabilities of appearing
+sidewght:cnt?{x,cnt-x}'[1+til 4]
+sidemap:s!skewitems[;side] each sidewght
 srcwght:1 2 3 4
-srcmap:s!weightedlist[srcwght;] each cnt#enlist src
+srcmap:s!skewitems[srcwght;] each cnt#enlist src
 
-/ =========================================================
+/ ================================================================================
 / generate a batch of prices
 / qx index, qb/qa margins, qp price, qn position
 batch:{
  d:gen x;
- qx::x?weightedlist[`int$wght*x;til cnt];
+ qx::x?weightedsyms;
  qb::rnd x?1.0;
  qa::rnd x?1.0;
  n:where each qx=/:til cnt;
@@ -72,16 +78,16 @@ batch len
 maxn:15 / max trades per tick
 qpt:5   / avg quotes per trade
 
-/ =========================================================
+/ ================================================================================
 t:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;qn+:x;
- (s i;qp n;`int$volwght[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
+ (s i;qp n;`int$volmap[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
 
 q:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;p:qp n;qn+:x;
- (s i;p-qb n;p+qa n;`long$bidwght[s i]*vol x;`long$askwght[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
+ (s i;p-qb n;p+qa n;`long$bidmap[s i]*vol x;`long$askmap[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
 
 feed:{h$[rand 2;
  (".u.upd";`trade;t 1+rand maxn);
