@@ -34,29 +34,29 @@ vol:{10+`int$x?90}
 randomize[]
 / \S 235721
 
-/ ================================================================================
+/ =========================================================================================
 / generate weights to stop even distribution of counts and sizes
 
-wght:0.3 0.6 1.8 1.1 1.2 1.6 0.9 0.4 0.7 1.4
+weight:0.3 0.6 1.8 1.1 1.2 1.6 0.9 0.4 0.7 1.4
 
 / assign multipliers to skew size columns
-volmap:s!-10?wght
-bidmap:s!-10?wght
-askmap:s!-10?wght
+volmap:s!-10?weight
+bidmap:s!-10?weight
+askmap:s!-10?weight
 
-/ returns list where count of each item is given by random permutation of weights
-skewitems:{[wghts;items] raze (#) .' wghts,' neg[count items]?items}
+/ returns list where count of each item is given by random permutation of integer weights
+skewitems:{[weights;items] raze (#) .' weights,' neg[count items]?items}
 
 / skew sym counts with weighted list of indices
-weightedsyms:skewitems[`long$wght*10;til cnt] / 100 weighted indices when cnt=10
+weightedsyms:skewitems[`long$weight*10;til cnt] / 100 weighted indices when cnt=10
 
 / assign skewed side and src lists to determine probabilities of appearing
-sidewght:cnt?{x,cnt-x}'[1+til 4]
-sidemap:s!skewitems[;side] each sidewght
-srcwght:1 2 3 4
-srcmap:s!skewitems[srcwght;] each cnt#enlist src
+sideweight:cnt?{x,cnt-x}'[1+til 4]
+sidemap:s!skewitems[;side] each sideweight
+srcweight:1 2 3 4
+srcmap:s!skewitems[srcweight;] each cnt#enlist src
 
-/ ================================================================================
+/ =========================================================================================
 / generate a batch of prices
 / qx index, qb/qa margins, qp price, qn position
 batch:{
@@ -78,7 +78,7 @@ batch len
 maxn:15 / max trades per tick
 qpt:5   / avg quotes per trade
 
-/ ================================================================================
+/ =========================================================================================
 t:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;qn+:x;
