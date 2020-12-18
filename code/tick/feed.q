@@ -32,28 +32,27 @@ rnd:{0.01*floor 0.5+x*100}
 vol:{10+`int$x?90}
 
 randomize[]
-/ \S 235721
 
 / =========================================================================================
 / generate weights to stop even distribution of counts and sizes
 
-weight:0.3 0.6 1.8 1.1 1.2 1.6 0.9 0.4 0.7 1.4
+weight:0.1*neg[cnt]?2*cnt
 
 / assign multipliers to skew size columns
-volmap:s!-10?weight
-bidmap:s!-10?weight
-askmap:s!-10?weight
+volmap:s!neg[cnt]?weight
+bidmap:s!neg[cnt]?weight
+askmap:s!neg[cnt]?weight
 
 / returns list where count of each item is given by random permutation of integer weights
-skewitems:{[weights;items] raze (#) .' weights,' neg[count items]?items}
+skewitems:{[weights;items] raze weights#'neg[count items]?items}
 
 / skew sym counts with weighted list of indices
-weightedsyms:skewitems[`long$weight*10;til cnt] / 100 weighted indices when cnt=10
+weightedsyms:skewitems[`long$weight*10;til cnt]
 
 / assign skewed side and src lists to determine probabilities of appearing
-sideweight:cnt?{x,cnt-x}'[1+til 4]
+sideweight:cnt?{x,cnt-x}'[1+til `int$-1+cnt%2]
 sidemap:s!skewitems[;side] each sideweight
-srcweight:1 2 3 4
+srcweight:1+til count src
 srcmap:s!skewitems[srcweight;] each cnt#enlist src
 
 / =========================================================================================
