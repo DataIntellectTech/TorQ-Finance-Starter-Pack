@@ -35,7 +35,7 @@ randomize[]
 
 / =========================================================================================
 / generate weights to stop even distribution of counts and sizes
-weight:0.1*neg[cnt]?2*cnt
+weight:0.1*1+neg[cnt]?2*cnt
 
 / assign multipliers to skew size columns
 volmap:s!neg[cnt]?weight
