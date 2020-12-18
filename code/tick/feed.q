@@ -35,7 +35,6 @@ randomize[]
 
 / =========================================================================================
 / generate weights to stop even distribution of counts and sizes
-
 weight:0.1*neg[cnt]?2*cnt
 
 / assign multipliers to skew size columns
@@ -44,13 +43,13 @@ bidmap:s!neg[cnt]?weight
 askmap:s!neg[cnt]?weight
 
 / returns list where count of each item is given by random permutation of integer weights
-skewitems:{[weights;items] raze weights#'neg[count items]?items}
+skewitems:{[weights;items]raze weights#'neg[count items]?items}
 
 / skew sym counts with weighted list of indices
 weightedsyms:skewitems[`long$weight*10;til cnt]
 
 / assign skewed side and src lists to determine probabilities of appearing
-sideweight:cnt?{x,cnt-x}'[1+til `int$-1+cnt%2]
+sideweight:cnt?{x,cnt-x}'[1+til cnt-1]
 sidemap:s!skewitems[;side] each sideweight
 srcweight:1+til count src
 srcmap:s!skewitems[srcweight;] each cnt#enlist src
