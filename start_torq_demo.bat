@@ -60,8 +60,8 @@ REM launch iexfeed
 start "iexfeed" q torq.q -load code/processes/iexfeed.q -proctype iexfeed -procname iexfeed1 -U appconfig/passwords/accesslist.txt -localtime
 
 REM launch sort worker process
-start "sortworker1" q torq.q -load code/processes/wdb.q -proctype sortworker -procname workersort1 -localtime -g 1 
-start "sortworker2" q torq.q -load code/processes/wdb.q -proctype sortworker -procname workersort2 -localtime -g 1
+start "sortworker1" q torq.q -load code/processes/wdb.q -proctype sortworker -procname sortworker1 -localtime -g 1
+start "sortworker2" q torq.q -load code/processes/wdb.q -proctype sortworker -procname sortworker2 -localtime -g 1
 
 REM launch metrics
 start "metrics" q torq.q -load code/processes/metrics.q -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1
