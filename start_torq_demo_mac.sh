@@ -69,9 +69,9 @@ q torq.q -load code/processes/iexfeed.q ${KDBSTACKID} -proctype iexfeed -procnam
 
 # launch sort worker processes
 echo 'Starting sortworker1...'
-q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortworker -procname sortworker1 -localtime -g 1 </dev/null >$KDBLOG/torqsortworker1.txt 2>&1 & # sortworker1 process
+q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortworker -procname sortworker1 -localtime -g 1 </dev/null >$KDBLOG/torqsortworker1.txt 2>&1 &
 echo 'Starting sortworker2...'
-q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortworker -procname sortworker2 -localtime -g 1 </dev/null >$KDBLOG/torqsortworker2.txt 2>&1 & # sortworker2 process
+q torq.q -load code/processes/wdb.q ${KDBSTACKID} -proctype sortworker -procname sortworker2 -localtime -g 1 </dev/null >$KDBLOG/torqsortworker2.txt 2>&1 &
 
 # launch metrics
 q torq.q -load code/processes/metrics.q ${KDBSTACKID} -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1 </dev/null >$KDBLOG/torqcompress1.txt 2>&1 &  # compression process
