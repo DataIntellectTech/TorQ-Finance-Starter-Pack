@@ -29,7 +29,7 @@ timeout 2
 REM launch the tickerplant, rdb, hdb
 start "segmentedtickerplant" q torq.q -load code/processes/segmentedtickerplant.q -schemafile database.q -tplogdir %KDBTPLOG% -proctype segmentedtickerplant -procname stp1 -U appconfig/passwords/accesslist.txt -localtime
 start "rdb" q torq.q -load code/processes/rdb.q -proctype rdb -procname rdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -T 180
-start "segmentedchainedtickerplant" q torq.q -load code/processes/segmentedtickerplannt.q -proctype sctp -procname sctp1 -U appconfig/passwords/accesslist.txt -localtime -parentproctype segmentedtickerplant
+start "segmentedchainedtickerplant" q torq.q -load code/processes/segmentedtickerplannt.q -proctype segmentedchainedtickerplant -procname sctp1 -U appconfig/passwords/accesslist.txt -localtime -parentproctype segmentedtickerplant
 start "hdb1" q torq.q -load %KDBHDB% -proctype hdb -procname hdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -w 4000
 start "hdb2" q torq.q -load %KDBHDB% -proctype hdb -procname hdb2 -U appconfig/passwords/accesslist.txt -localtime -g 1 -w 4000
 
