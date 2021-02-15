@@ -17,14 +17,14 @@ echo 'Starting discovery proc...'
 q torq.q -load code/processes/discovery.q ${KDBSTACKID} -proctype discovery -procname discovery1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqdiscovery.txt 2>&1 &
 
 # launch the tickerplant, rdb, ctp, hdb
-echo 'Starting tp...'
-q torq.q -load code/processes/tickerplant.q -schemafile database -tplogdir ${KDBTPLOG} ${KDBSTACKID} -proctype tickerplant -procname tickerplant1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqtp.txt 2>&1 &
+echo 'Starting segmentedtp...'
+q torq.q -load code/processes/segmentedtickerplant.q -schemafile database.q -tplogdir ${KDBTPLOG} ${KDBSTACKID} -proctype segmentedtickerplant -procname stp1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqtp.txt 2>&1 &
 
 echo 'Starting rdb...'
 q torq.q -load code/processes/rdb.q ${KDBSTACKID} -proctype rdb -procname rdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -T 180 </dev/null >$KDBLOG/torqrdb.txt 2>&1 &
 
-echo 'Starting ctp...'
-q torq.q -load code/processes/chainedtp.q ${KDBSTACKID} -proctype chainedtp -procname chainedtp1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqchainedtp.txt 2>&1 &
+echo 'Starting segmentedctp...'
+q torq.q -load code/processes/segmentedtickerplant.q ${KDBSTACKID} -proctype segmentedchainedtickerplant -procname sctp1 -U appconfig/passwords/accesslist.txt -localtime -parentproctype segmentedtickerplant </dev/null >$KDBLOG/torqchainedtp.txt 2>&1 &
 
 echo 'Starting hdb1...'
 q torq.q -load ${KDBHDB} ${KDBSTACKID} -proctype hdb -procname hdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000 </dev/null >$KDBLOG/torqhdb1.txt 2>&1 &

@@ -27,9 +27,9 @@ start "discovery" q torq.q -load code/processes/discovery.q -proctype discovery 
 timeout 2
 
 REM launch the tickerplant, rdb, hdb
-start "tickerplant" q torq.q -load code/processes/tickerplant.q -schemafile database -tplogdir %KDBTPLOG% -proctype tickerplant -procname tickerplant1 -U appconfig/passwords/accesslist.txt -localtime 
+start "segmentedtickerplant" q torq.q -load code/processes/segmentedtickerplant.q -schemafile database.q -tplogdir %KDBTPLOG% -proctype segmentedtickerplant -procname stp1 -U appconfig/passwords/accesslist.txt -localtime
 start "rdb" q torq.q -load code/processes/rdb.q -proctype rdb -procname rdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -T 180
-start "chainedtp" q torq.q -load code/processes/chainedtp.q -proctype chainedtp -procname chainedtp1 -U appconfig/passwords/accesslist.txt -localtime
+start "segmentedchainedtickerplant" q torq.q -load code/processes/segmentedtickerplannt.q -proctype sctp -procname sctp1 -U appconfig/passwords/accesslist.txt -localtime -parentproctype segmentedtickerplant
 start "hdb1" q torq.q -load %KDBHDB% -proctype hdb -procname hdb1 -U appconfig/passwords/accesslist.txt -localtime -g 1 -w 4000
 start "hdb2" q torq.q -load %KDBHDB% -proctype hdb -procname hdb2 -U appconfig/passwords/accesslist.txt -localtime -g 1 -w 4000
 
@@ -67,4 +67,4 @@ REM launch metrics
 start "metrics" q torq.q -load code/processes/metrics.q -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1
 
 REM to kill it, run this:
-REM q torq.q -load code/processes/kill.q -proctype kill -procname killtick -.servers.CONNECTIONS rdb wdb tickerplant hdb gateway housekeeping monitor discovery sort reporter compression feed -localtime 
+REM q torq.q -load code/processes/kill.q -proctype kill -procname killtick -.servers.CONNECTIONS rdb wdb segmentedtickerplant segmentedchainedtickerplant hdb gateway housekeeping monitor discovery sort reporter compression feed -localtime
