@@ -41,16 +41,20 @@ metrics:{[syms]
   
  }
 
+// Define top-level functions for receiving messages from an STP
+endofperiod:{[currp;nextp;data] .lg.o[`endofperiod;"Received endofperiod. currentperiod, nextperiod and data are ",(string currp),", ", (string nextp),", ", .Q.s1 data]};
+endofday:{[dt;data] .lg.o[`endofday;"Received endofday for ",string dt]};
+
 \d .metrics 
 
 / check for TP connection
 notpconnected:{[]
-	0 = count select from .sub.SUBSCRIPTIONS where proctype in ((),`tickerplant), active}
+	0 = count select from .sub.SUBSCRIPTIONS where proctype in ((),.metrics.tickerplanttype), active}
 
 / get handle for TP & subscribe
 subscribe:{
   / get handle
-  if[count s:.sub.getsubscriptionhandles[`tickerplant;();()!()];
+  if[count s:.sub.getsubscriptionhandles[.metrics.tickerplanttype;();()!()];
   subproc:first s;
   / if got handle successfully, subsribe to trade table
   .lg.o[`subscribe;"subscribing to ", string subproc`procname];
@@ -92,7 +96,7 @@ init:{
 \d .
 
 / get connections to TP, & RDB for recovery
-.servers.CONNECTIONS:`rdb`tickerplant;
+.servers.CONNECTIONS:`rdb,.metrics.tickerplanttype;
 .servers.startup[];
 / run the initialisation function to get subscribed & recover
 .metrics.init[];
