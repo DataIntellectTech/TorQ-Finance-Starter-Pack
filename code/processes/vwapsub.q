@@ -1,6 +1,6 @@
 \d .vwapsub // enter vwapsub namespace
 
-tickerplanttypes:@[value;`tickerplanttypes;`tickerplant];                       // tickerplant types to subscribe to
+tickerplanttypes:@[value;`tickerplanttypes;`segmentedtickerplant];              // tickerplant types to subscribe to
 hdbtypes:@[value;`hdbtypes;`hdb];                                               // hdbtypes to connect to
 
 // datareplay settings
@@ -8,8 +8,7 @@ realtime:@[value;`realtime;0b];                                                 
 replayinterval:@[value;`replayinterval;0D00:10:00.00];                          // interval to run calcvwap at
 replaysts:@[value;`replaysts;2015.01.07D01:00:00.00];                           // start time of data to retreive from hdb
 replayets:@[value;`replayets;2015.01.08D17:00:00.00];                           // end time of data to retrieve from hdb
-requiredprocs:@[value;`requiredprocs;
-              {value(`hdbtypes`tickerplanttypes)realtime}];                     // required processes  
+requiredprocs:value(`hdbtypes`tickerplanttypes)realtime;                        // required processes
 tpcheckcycles:@[value;`tpcheckcycles;0W];                                       // specify the number of times the process will check for requiredprocs
 tpconnsleep:@[value;`tpconnsleep;10];                                           // number of seconds between attempts to connect to the source tickerplant
 

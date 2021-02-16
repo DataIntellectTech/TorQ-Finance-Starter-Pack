@@ -7,7 +7,7 @@ latest:([sym:`u#`symbol$()] time:`timestamp$(); sumssize:`int$(); sumsps:`float$
 / load settings
 windows:@[value;`windows;0D00:01 0D00:05 0D01];
 enableallday:@[value;`enableallday;1b];
-tickerplanttypes:@[value;`tickerplanttypes;`tickerplant]; 
+tickerplanttypes:@[value;`tickerplanttypes;`segmentedtickerplant];
 rdbtypes:@[value;`rdbtypes;`rdb];
 tpconsleep:@[value;`tpconsleep;10]; 
 requiredprocs:rdbtypes,tickerplanttypes; 
@@ -54,13 +54,13 @@ notpconnected:{[]
 
 / get handle for TP & subscribe
 subscribe:{
-   / get handle
-   if[count s:.sub.getsubscriptionhandles[`tickerplant;();()!()];
-     subproc:first s;
-     / if got handle successfully, subsribe to trade table
-     .lg.o[`subscribe;"subscribing to ", string subproc`procname];
-     :.sub.subscribe[`trade;`;0b;0b;subproc]]
- };
+   / exit if no handles found
+   if[0=count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];:()];
+   subproc:first s;
+   / subsribe to trade table
+   .lg.o[`subscribe;"subscribing to ", string subproc`procname];
+   .sub.subscribe[`trade;`;0b;0b;subproc]
+ }
 
 / get subscribed to TP, recover up until now from RDB
 init:{
@@ -90,7 +90,7 @@ init:{
 \d .
 
 / get connections to TP, & RDB for recovery
-.servers.CONNECTIONS:`rdb`tickerplant;
+.servers.CONNECTIONS:`rdb,.metrics.tickerplanttypes;
 .servers.startup[];
 / run the initialisation function to get subscribed & recover
 .metrics.init[];
