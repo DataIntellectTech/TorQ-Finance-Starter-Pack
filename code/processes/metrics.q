@@ -19,7 +19,7 @@ rdbconnsleep:@[value;`rdbconnsleep;10];
 / define upd to keep running sums
 upd:{[t;x]
    / join latest to x, maintaining time col from x, then calc running sums
-   r:ungroup select time,sym,sumssize:(0^sumssize)+sums size,sumsps:(0^sumsps)+sum price*size,sumspricetimediff:(0^sumspricetimediff)+sums price*0^deltas[first lt;time] by sym from x lj delete time from update lt:time from latest;
+   r:ungroup select time,sumssize:(0^sumssize)+sums size,sumsps:(0^sumsps)+sum price*size,sumspricetimediff:(0^sumspricetimediff)+sums price*0^deltas[first lt;time] by sym from x lj delete time from update lt:time from latest;
    / add latest values for each sym from r to latest
    latest,::select by sym from r;
    / add records to sumstab for all records in update message
@@ -45,6 +45,10 @@ metrics:{[syms]
    ]; 
    :t;  
  }
+
+// Define top-level functions for receiving messages from an STP
+endofperiod:{[currp;nextp;data] .lg.o[`endofperiod;"Received endofperiod. currentperiod, nextperiod and data are ",(string currp),", ", (string nextp),", ", .Q.s1 data]};
+endofday:{[dt;data] .lg.o[`endofday;"Received endofday for ",string dt]};
 
 \d .metrics 
 

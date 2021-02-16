@@ -6,5 +6,5 @@ hdbdir:hsym`$getenv[`KDBHDB]		// move wdb database to different location
 tickerplanttypes:sorttypes:()		// sort doesn't need these connections
 
 \d .servers
-CONNECTIONS:`hdb`rdb`gateway`sortslave        // list of connections to make at start up
+CONNECTIONS:`hdb`rdb`gateway`sortworker        // list of connections to make at start up
 

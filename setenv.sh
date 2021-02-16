@@ -1,40 +1,65 @@
+#!/bin/bash
+
 # if running the kdb+tick example, change these to full paths
 # some of the kdb+tick processes will change directory, and these will no longer be valid
 
+# get absolute path to setenv.sh directory
 if [ "-bash" = $0 ]; then
-    dirpath="${BASH_SOURCE[0]}"
+  dirpath="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 else
-    dirpath="$0"
+  dirpath="$(cd "$(dirname "$0")" && pwd)"
 fi
 
-export TORQHOME=$(dirname $dirpath)
+export TORQHOME=${dirpath}
+export TORQAPPHOME=${TORQHOME}
+export TORQDATAHOME=${TORQHOME}
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
-export KDBLOG=${TORQHOME}/logs
+export KDBTESTS=${TORQHOME}/tests
+export KDBLOG=${TORQDATAHOME}/logs
 export KDBHTML=${TORQHOME}/html
 export KDBLIB=${TORQHOME}/lib
-export KDBHDB=${TORQHOME}/hdb/database
-export KDBWDB=${TORQHOME}/wdbhdb
+export KDBHDB=${TORQDATAHOME}/hdb
+export KDBWDB=${TORQDATAHOME}/wdbhdb
+export KDBDQCDB=${TORQDATAHOME}/dqe/dqcdb/database
+export KDBDQEDB=${TORQDATAHOME}/dqe/dqedb/database
+export KDBTPLOG=${TORQDATAHOME}/tplogs
+export KDBTESTS=${TORQHOME}/tests
+export KDBPCAPS=${TORQAPPHOME}/pcaps
+
+# set rlwrap and qcon paths for use in torq.sh qcon flag functions
+export RLWRAP="rlwrap"
+export QCON="qcon"
 
 # set the application specific configuration directory
-export KDBAPPCONFIG=${TORQHOME}/appconfig
-export KDBAPPCODE=${TORQHOME}/code
+export KDBAPPCONFIG=${TORQAPPHOME}/appconfig
+export KDBAPPCODE=${TORQAPPHOME}/code
+
 # set KDBBASEPORT to the default value for a TorQ Installation
 export KDBBASEPORT=6000
+
 # set TORQPROCESSES to the default process csv
 export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
+
+# set DOGSTATSD_PORT to the default value for datadog daemon
+export DOGSTATSD_PORT=8125
+
 # if using the email facility, modify the library path for the email lib depending on OS
 # e.g. linux:
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$KDBLIB/l[32|64]
-# e.g. osx:
+# e.g. macOS:
 # export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m[32|64]
 
-touch $KDBLOG/torqsslcert.txt
+# Please input the API token obtained from IEX here
+export IEX_PUBLIC_TOKEN=""
+
+TORQSSLCERT=${KDBLOG}/torqsslcert.txt
+touch ${TORQSSLCERT}
 if [ -z "${SSL_CA_CERT_FILE}" ]; then
-	mkdir ${TORQHOME}/certs
-	curl -s  https://curl.haxx.se/ca/cacert.pm > ${TORQHOME}/certs/cabundle.pem
-	echo "`date`    The SSL securiity certificate has been downloaded to ${TORQHOME}/certs/cabundle.pem" </dev/null >>$KDBLOG/torqsslcert.txt 
-	export SSL_CA_CERT_FILE=${TORQHOME}/certs/cabundle.pem
+  mkdir -p ${TORQHOME}/certs
+  curl -s  https://curl.haxx.se/ca/cacert.pm > ${TORQHOME}/certs/cabundle.pem
+  echo "`date`    The SSL securiity certificate has been downloaded to ${TORQHOME}/certs/cabundle.pem" </dev/null >>$TORQSSLCERT
+  export SSL_CA_CERT_FILE=${TORQHOME}/certs/cabundle.pem
 else
-	echo "`date`    The SSL security certificate already exists. If https requests fail it may be because of inappropriate certification." </dev/null >>$KDBLOG/torqsslcert.txt 
+  echo "`date`    The SSL security certificate already exists. If https requests fail it may be because of inappropriate certification." </dev/null >>$TORQSSLCERT
 fi

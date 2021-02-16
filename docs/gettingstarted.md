@@ -4,7 +4,7 @@ Getting Started
 Requirements
 ------------
 
-The TorQ Finance Starter Pack will run on Windows, Linux or OSX. It
+The TorQ Finance Starter Pack will run on Windows, Linux or macOS. It
 contains a small initial database of 130MB. As the system runs, data is
 fed in and written out to disk. We recommend that it is installed with
 at least 2GB of free disk space, on a system with at least 4GB of RAM.
@@ -21,15 +21,12 @@ Installation and Configuration
 
 1.  Download and install kdb+ from [Kx Systems](http://kx.com)
 
-2.  Download the main TorQ codebase from
-    [here](https://github.com/AquaQAnalytics/TorQ/archive/master.zip)
+2.  Download the install script in the directory where you want the TorQ to be installed using:
 
-3.  Download the TorQ Finance Starter Pack from
-    [here](https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/archive/master.zip)[
-
-4.  Unzip the TorQ package
-
-5.  Unzip the Demo Pack over the top of the main TorQ package
+    `wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/master/installlatest.sh`
+    
+3.  bash installlatest.sh
+    
 
 ### Configuration
 
@@ -49,8 +46,8 @@ If you wish to generate emails from the system you will additionally
 have to:
 
 1.  Modify DEMOEMAILRECEIVER environment variable at the top of
-    start\_torq\_demo.sh, start\_torq\_demo\_osx.sh or
-    start\_torq\_demo.bat
+    start\_torq\_demo\_mac.sh or start\_torq\_demo.bat. Linux users will 
+    need to add DEMOEMAILRECEIVER to setenv.sh
 
 2.  Add the email server details in config/settings/default.q. You will
     need to specify the email server URL, username and password. An
@@ -84,24 +81,23 @@ connection timeouts not being executed correctly. During testing, we
 obsverved this behaviour on two different windows installations though
 could not narrow it down to a specific hardware/windows/kdb+ version
 issue. Most versions of windows ran correctly every time (as did all
-versions of Linux/OSX).
+versions of Linux/macOS).
 
-### Linux and OSX
+### Linux and macOS
 
-Linux users should use start\_torq\_demo.sh to start the system, and
-stop\_torq\_demo.sh to stop it. OSX users should use
-start\_torq\_demo\_osx.sh to start the system, and stop\_torq\_demo.sh
-to stop it. The only difference between the respective start scripts is
-how the library path environment variable is set. The processes will
+To start and stop the system, Linux users should use torq.sh with the appropriate 
+flags (start all, and stop all). macOS users should use
+start\_torq\_demo\_mac.sh to start the system, and stop\_torq\_demo\_mac.sh
+to stop it. The processes will
 start in the background but can be seen using a ps command, such as
 
     aquaq> ps -ef | grep 'torq\|tickerplant' 
     aquaq    4810 16777  0 15:56 pts/34   00:00:00 grep torq\|tickerplant
     aquaq   25465     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/discovery.q -stackid 6000 -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime
-    aquaq   25466     1  0 13:05 pts/34   00:00:29 q tickerplant.q database hdb -stackid 6000 -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime
-    aquaq   25478     1  0 13:05 pts/34   00:00:17 q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1  -U config/passwords/accesslist.txt -localtime -g 1 -T 30
-    aquaq   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb/database -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
-    aquaq   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb/database -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
+    aquaq   25466     1  0 13:05 pts/34   00:00:29 q tickerplant.q database tplogs -stackid 6000 -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime
+    aquaq   25478     1  0 13:05 pts/34   00:00:17 q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1  -U config/passwords/accesslist.txt -localtime -g 1 -T 180
+    aquaq   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
+    aquaq   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
     aquaq   25481     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/gateway.q -stackid 6000 -proctype gateway -procname gateway1 -U config/passwords/accesslist.txt -localtime -g 1 -w 4000
     aquaq   25482     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/monitor.q -stackid 6000 -proctype monitor -procname monitor1 -localtime
     aquaq   25483     1  0 13:05 pts/34   00:00:07 q torq.q -load code/processes/reporter.q -stackid 6000 -proctype reporter -procname reporter1 -U config/passwords/accesslist.txt -localtime
@@ -183,7 +179,7 @@ remotely). Check these log files for errors.
 The easiest way to debug a process is to run it in the foreground. By
 default, TorQ will redirect standard out and standard error to log files
 on disk. To debug a process, start it on the command line (either the
-command prompt on Windows, or a terminal session on Linux or OSX) using
+command prompt on Windows, or a terminal session on Linux or macOS) using
 the start up line from the appropriate launch script. Supply the -debug
 command line parameter to stop it redirecting output to log files on
 disk.
@@ -194,7 +190,7 @@ stop at the error, -trap will cause it to trap it and continue loading.
 An example is below. This query should be run from within the directory
 you have extracted TorQ and the TorQ Finance Starter Pack to.
 
-    q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 30 -debug -stop
+    q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 180 -debug -stop
 
 File Structure
 --------------
@@ -239,18 +235,32 @@ The file structure can be seen below.
     |   |   |-- accesslist.txt  <- list of user:pass who can connect to proccesses
     |   |   `-- feed.txt        <- password file used by feed for connections
     |   |-- process.csv     <- definition of type/name of each process
-    |   `-- reporter.csv        <- modified config for reporter
+    |   |-- reporter.csv        <- modified config for reporter
+    |   |-- dqcconfig.csv       <- modified config for dqc
+    |   `-- dqedetail.csv       <- csv explaining function in the dqc
+    |   |-- dqengineconfig.csv       <- modified config for dqe
     |-- hdb             <- example hdb data
     |   `-- database
     |       |-- 2015.01.07
     |       |-- 2015.01.08
     |       `-- sym
+    |-- dqe
+    |   `-- dqcdb       <- example dqc data
+    |       |-- database
+                |-- 2020.03.16
+                `-- sym
+    |   `-- dqedb       <- example dqe data
+    |       |-- database
+                |-- 2020.03.16
+                `-- sym
+    |   |-- 2015.01.07
+    |   |-- 2015.01.08
+    |   `-- sym
     |-- setenv.sh           <- set environment variables
     |-- start_torq_demo.bat     <- start and stop scripts
-    |-- start_torq_demo.sh
-    |-- start_torq_demo_osx.sh
+    |-- start_torq_demo_mac.sh
     |-- stop_torq_demo.bat
-    `-- stop_torq_demo.sh
+    `-- stop_torq_demo_mac.sh
 
 The Demo Pack consists of:
 
@@ -270,4 +280,3 @@ Make It Your Own
 The system is production ready. To customize it for a specific data set,
 modify the schema file and replace the feed process with a feed of data
 from a live system.
-

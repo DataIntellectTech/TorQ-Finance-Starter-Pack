@@ -18,6 +18,8 @@ p:33 27 84 12 20 72 36 51 42 29 / price
 m:" ABHILNORYZ" / mode
 c:" 89ABCEGJKLNOPRTWZ" / cond
 e:"NONNONONNN" / ex
+src:`BARX`GETGO`SUN`DB
+side:`buy`sell
 
 / init.q
 
@@ -29,15 +31,35 @@ randomize:{value "\\S ",string "i"$0.8*.z.p%1000000000}
 rnd:{0.01*floor 0.5+x*100}
 vol:{10+`int$x?90}
 
-/ randomize[]
-\S 235721
+randomize[]
 
-/ =========================================================
+/ =========================================================================================
+/ generate weights to stop even distribution of counts and sizes
+weight:0.1*1+neg[cnt]?2*cnt
+
+/ assign multipliers to skew size columns
+volmap:s!neg[cnt]?weight
+bidmap:s!neg[cnt]?weight
+askmap:s!neg[cnt]?weight
+
+/ returns list where count of each item is given by random permutation of integer weights
+skewitems:{[weights;items]raze weights#'neg[count items]?items}
+
+/ skew sym counts with weighted list of indices
+weightedsyms:skewitems[`long$weight*10;til cnt]
+
+/ assign skewed side and src lists to determine probabilities of appearing
+sideweight:cnt?{x,cnt-x}'[1+til cnt-1]
+sidemap:s!skewitems[;side] each sideweight
+srcweight:1+til count src
+srcmap:s!skewitems[srcweight;] each cnt#enlist src
+
+/ =========================================================================================
 / generate a batch of prices
 / qx index, qb/qa margins, qp price, qn position
 batch:{
  d:gen x;
- qx::x?cnt;
+ qx::x?weightedsyms;
  qb::rnd x?1.0;
  qa::rnd x?1.0;
  n:where each qx=/:til cnt;
@@ -54,16 +76,16 @@ batch len
 maxn:15 / max trades per tick
 qpt:5   / avg quotes per trade
 
-/ =========================================================
+/ =========================================================================================
 t:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;qn+:x;
- (s i;qp n;`int$x?99;1=x?20;x?c;e i)}
+ (s i;qp n;`int$volmap[s i]*x?99;1=x?20;x?c;e i;raze 1?'sidemap[s i])}
 
 q:{
  if[not (qn+x)<count qx;batch len];
  i:qx n:qn+til x;p:qp n;qn+:x;
- (s i;p-qb n;p+qa n;`long$vol x;`long$vol x;x?m;e i)}
+ (s i;p-qb n;p+qa n;`long$bidmap[s i]*vol x;`long$askmap[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
 
 feed:{h$[rand 2;
  (".u.upd";`trade;t 1+rand maxn);
@@ -81,7 +103,7 @@ init:{
 
 /- use the discovery service to find the tickerplant to publish data to
 .servers.startup[]
-h:.servers.gethandlebytype[`tickerplant;`any]
+h:.servers.gethandlebytype[`segmentedtickerplant;`any]
 
 / init 0
 .timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];

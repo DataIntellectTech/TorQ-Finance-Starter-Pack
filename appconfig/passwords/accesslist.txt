@@ -12,7 +12,13 @@ sort:pass
 tickerplant:pass
 wdb:pass
 chainedtp:pass
-sortslave:pass
+sortworker:pass
 metrics:pass
 vwapsub:pass
+dqc:pass
+dqcdb:pass
+dqe:pass
+dqedb:pass
+segmentedtickerplant:pass
+filealerter:pass
 admin:admin
