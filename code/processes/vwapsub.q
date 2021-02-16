@@ -66,7 +66,7 @@ subscribe:{[]
   // Block process until all required processes are connected
   .servers.startupdepcycles[requiredprocs;tpconnsleep;tpcheckcycles]; 
 
-  if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];;
+  if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];
     .lg.o[`subscribe;"found available tickerplant, attempting to subscribe"];
     .sub.subscribe[`trade;`;0b;0b;first s];
     ];

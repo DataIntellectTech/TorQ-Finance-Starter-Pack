@@ -52,10 +52,6 @@ endofday:{[dt;data] .lg.o[`endofday;"Received endofday for ",string dt]};
 
 \d .metrics 
 
-/ check for TP connection
-notpconnected:{[]
-	0 = count select from .sub.SUBSCRIPTIONS where proctype in tickerplanttypes,active}
-
 / get handle for TP & subscribe
 subscribe:{
    / exit if no handles found
@@ -76,7 +72,7 @@ init:{
   / check if updates have already been sent from TP, if so recover from RDB
   if[0<r[`icounts]`trade;
    / get handle for RDB
-   h:exec first w from s:.sub.getsubscriptionhandles[`rdb;();()!()];
+   h:exec first w from s:.sub.getsubscriptionhandles[rdbtypes;();()!()];
    .lg.o[`recovery;"recovering ",(a:string r[`icounts]`trade)," records from trade table on ",string first s`procname];
    / query data from before subscription from RDB
    t:h"select time,sym,size,price from trade where i<",a;
@@ -94,7 +90,7 @@ init:{
 \d .
 
 / get connections to TP, & RDB for recovery
-.servers.CONNECTIONS:`rdb,.metrics.tickerplanttypes;
+.servers.CONNECTIONS:.metrics.rdbtypes,.metrics.tickerplanttypes;
 .servers.startup[];
 / run the initialisation function to get subscribed & recover
 .metrics.init[];
