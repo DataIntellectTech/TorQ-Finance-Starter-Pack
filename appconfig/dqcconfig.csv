@@ -17,3 +17,6 @@ dfilechk,`comp`vars!(0b;`trade),`hdb1,repeat,09:00:00.000000000,0Wn,0D00:01:00
 refdatacheck,`comp`vars!(0b;(`trade;`quote;`sym;`sym)),`rdb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
 symfilegrowth,(`comp`vars!(0b;(2;5;0b))),`dqe1,single,09:05:00.000000000,0N,0N
 tablecomp,`comp`compallow`compproc`vars!(1b;0;`hdb1;`quote),`hdb2,repeat,09:00:00.000000000,0Wn,0D00:02:00
+advancedsymdtd,`comp`vars!(0b;(`advancedres;`bycount;`sym)),`dqedb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
+advancedperdtd,`comp`vars!(0b;(`advancedres;`bycount;`sym.ex;25)),`dqedb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
+medianfunc,`comp`vars!(0b;(`advancedres;`bycount;`sym;5;25)),`dqedb1,repeat,09:00:00.000000000,0Wn,0D00:05:00
