@@ -7,6 +7,12 @@ latest:([sym:`u#`symbol$()] time:`timestamp$(); sumssize:`int$(); sumsps:`float$
 / load settings
 windows:@[value;`windows;0D00:01 0D00:05 0D01];
 enableallday:@[value;`enableallday;1b];
+tickerplanttypes:@[value;`tickerplanttypes;`segmentedtickerplant];
+rdbtypes:@[value;`rdbtypes;`rdb];
+tpconsleep:@[value;`tpconsleep;10]; 
+requiredprocs:rdbtypes,tickerplanttypes; 
+tpcheckcycles:@[value;`tpcheckcycles;0W]; 
+rdbconnsleep:@[value;`rdbconnsleep;10];
 
 \d .
 
@@ -34,11 +40,10 @@ metrics:{[syms]
 
    / add allday window
    if[.metrics.enableallday;
-    if[not all syms in key .metrics.start;.metrics.start::exec first time by sym from sumstab];
-    t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms];
-
-   t
-  
+     if[not all syms in key .metrics.start;.metrics.start::exec first time by sym from sumstab];
+     t:`sym`timediff xasc t,select sym,timediff:0Nn,vwap:sumsps%sumssize,twap:sumspricetimediff%.z.p - .metrics.start[sym] from latest where sym in syms
+   ]; 
+   :t;  
  }
 
 // Define top-level functions for receiving messages from an STP
@@ -47,41 +52,30 @@ endofday:{[dt;data] .lg.o[`endofday;"Received endofday for ",string dt]};
 
 \d .metrics 
 
-/ check for TP connection
-notpconnected:{[]
-	0 = count select from .sub.SUBSCRIPTIONS where proctype in ((),.metrics.tickerplanttype), active}
-
 / get handle for TP & subscribe
 subscribe:{
-  / get handle
-  if[count s:.sub.getsubscriptionhandles[.metrics.tickerplanttype;();()!()];
-  subproc:first s;
-  / if got handle successfully, subsribe to trade table
-  .lg.o[`subscribe;"subscribing to ", string subproc`procname];
-  :.sub.subscribe[`trade;`;0b;0b;subproc]]};
+   / exit if no handles found
+   if[0=count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];:()];
+   subproc:first s;
+   / subsribe to trade table
+   .lg.o[`subscribe;"subscribing to ", string subproc`procname];
+   .sub.subscribe[`trade;`;0b;0b;subproc]
+ }
 
 / get subscribed to TP, recover up until now from RDB
 init:{
   r:subscribe[];
-
-  / make sure connection to TP was successful, or else wait
-  while[notpconnected[];
-   / wait 10 seconds
-   .os.sleep[10];
-   / try again to connect to discovery
-   .servers.startup[];
-   / try again to subscribe to TP
-   r:subscribe[]];
-
+ 
+  // Block process until all required processes are connected
+  .servers.startupdepcycles[requiredprocs;tpconsleep;tpcheckcycles]; 
+  r:subscribe[]; 
   / check if updates have already been sent from TP, if so recover from RDB
-  if[r[`icounts][`trade] > 0;
-   / make sure connection is made to RDB
-   while[not count s:.sub.getsubscriptionhandles[`rdb;();()!()];.os.sleep[10]];
+  if[0<r[`icounts]`trade;
    / get handle for RDB
-   h:exec first w from s;
-   .lg.o[`recovery;"recovering ",(string r[`icounts][`trade])," records from trade table on ",string first s`procname];
+   h:exec first w from s:.sub.getsubscriptionhandles[rdbtypes;();()!()];
+   .lg.o[`recovery;"recovering ",(a:string r[`icounts]`trade)," records from trade table on ",string first s`procname];
    / query data from before subscription from RDB
-   t:h"select time,sym,size,price from trade where i<",string r[`icounts][`trade];
+   t:h"select time,sym,size,price from trade where i<",a;
    .lg.o[`recovery;"recovered ",(string count t)," records"];
    / insert data recovered from RDB into relevant tables
    t:select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
@@ -96,7 +90,7 @@ init:{
 \d .
 
 / get connections to TP, & RDB for recovery
-.servers.CONNECTIONS:`rdb,.metrics.tickerplanttype;
+.servers.CONNECTIONS:.metrics.rdbtypes,.metrics.tickerplanttypes;
 .servers.startup[];
 / run the initialisation function to get subscribed & recover
 .metrics.init[];

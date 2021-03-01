@@ -1,18 +1,19 @@
 \d .vwapsub // enter vwapsub namespace
 
-tickerplanttypes:@[value;`tickerplanttypes;`segmentedtickerplant]; // tickerplant types to subscribe to
-hdbtypes:@[value;`hdbtypes;`hdb];                         // hdbtypes to connect to
+tickerplanttypes:@[value;`tickerplanttypes;`segmentedtickerplant];              // tickerplant types to subscribe to
+hdbtypes:@[value;`hdbtypes;`hdb];                                               // hdbtypes to connect to
 
 // datareplay settings
-realtime:@[value;`realtime;0b];                           // use realtime feed or datareplay. default is 0b (datareplay)
-replayinterval:@[value;`replayinterval;0D00:10:00.00];    // interval to run calcvwap at
-replaysts:@[value;`replaysts;2015.01.07D01:00:00.00];     // start time of data to retreive from hdb
-replayets:@[value;`replayets;2015.01.08D17:00:00.00];     // end time of data to retrieve from hdb
-
+realtime:@[value;`realtime;0b];                                                 // use realtime feed or datareplay. default is 0b (datareplay)
+replayinterval:@[value;`replayinterval;0D00:10:00.00];                          // interval to run calcvwap at
+replaysts:@[value;`replaysts;2015.01.07D01:00:00.00];                           // start time of data to retreive from hdb
+replayets:@[value;`replayets;2015.01.08D17:00:00.00];                           // end time of data to retrieve from hdb
+requiredprocs:value(`hdbtypes`tickerplanttypes)realtime;                        // required processes
+tpcheckcycles:@[value;`tpcheckcycles;0W];                                       // specify the number of times the process will check for requiredprocs
+tpconnsleep:@[value;`tpconnsleep;10];                                           // number of seconds between attempts to connect to the source tickerplant
 
 // Add hdb and tickerplant to connections list for TorQ
 .servers.CONNECTIONS:tickerplanttypes,hdbtypes;
-
 
 // upd function gets sum of price*size and sum of size by sym
 // and adds it to the running total inside the vwap table
@@ -34,12 +35,8 @@ datareplay:{[]
   // Turn off timer
   system"t 0";
 
-  // If we havent found the hdb, retry discovery
-  while[0= count select from .servers.SERVERS where proctype in .vwapsub.hdbtypes;
-       .lg.o[`init;"Connection to hdb not found, retrying discovery"];
-       .os.sleep[10];
-       .servers.startup[];
-       ];
+  // Block process until all required processes are connected
+  .servers.startupdepcycles[requiredprocs;tpconnsleep;tpcheckcycles];
 
   // Retrieve handle to hdb from TorQ serverlist
   h:first exec w from .servers.SERVERS where proctype in .vwapsub.hdbtypes;
@@ -66,14 +63,10 @@ logvwap:{`vwaptimes insert `time`vwap!(x;.vwapsub.calcvwap[])};
 
 // subscribe to tickerplant types
 subscribe:{[]
-  // If we havent found the tickerplant, retry discovery
-  while[0= count select from .servers.SERVERS where proctype in .vwapsub.tickerplanttypes;
-       .lg.o[`init;"Connection to hdb or tickerplant not found, retrying discovery"];
-       .os.sleep[10];
-       .servers.startup[];
-       ];
+  // Block process until all required processes are connected
+  .servers.startupdepcycles[requiredprocs;tpconnsleep;tpcheckcycles]; 
 
-  if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];;
+  if[count s:.sub.getsubscriptionhandles[tickerplanttypes;();()!()];
     .lg.o[`subscribe;"found available tickerplant, attempting to subscribe"];
     .sub.subscribe[`trade;`;0b;0b;first s];
     ];
@@ -81,7 +74,6 @@ subscribe:{[]
   }
 
 \d .
-
 
 vwap:([sym:`$()]spts:`float$();ssize:`int$());
 vwaptimes:([]time:`timestamp$();vwap:());
