@@ -52,6 +52,10 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
 3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
 ## Release Notes
+- **1.11.0, Mar 2021**
+  * Make dummy feed more random
+  * Use waiting connections in subscribers
+  * Bug fixes
 - **1.10.0, Dec 2020**
   * Updated documentation
   * Segmented Tickerplant added
