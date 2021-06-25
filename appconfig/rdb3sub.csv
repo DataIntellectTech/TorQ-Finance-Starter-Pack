@@ -1,3 +1,3 @@
-tabname,filts,columns
-trade,"lower[sym] within `n`z`",
-quote,"lower[sym] within `n`z`",
+tabname,filters,columns
+trade,"lower[sym] within `n`z`","time,sym,price,size,stop,cond,ex,side"
+quote,"lower[sym] within `n`z`","time,sym,bid,ask,bsize,asize,mode,ex,src"
