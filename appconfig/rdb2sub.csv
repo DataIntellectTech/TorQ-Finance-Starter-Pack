@@ -1,0 +1,3 @@
+tabname,filts,columns
+trade,"lower[sym] within `g`m`",
+quote,"lower[sym] within `g`m`",

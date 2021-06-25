@@ -12,8 +12,8 @@ replaylog:1b
 
 hdbtypes:()			//connection to HDB not needed
 
-subfiltered:0b
-subcsv:hsym first .proc.getconfigfile["rdbsub.csv"]
+subfiltered:1b
+subcsv:hsym first .proc.getconfigfile[string `rdbsub.csv`rdb2sub.csv`rdb3sub.csv `rdb1`rdb2`rdb3?.proc.procname]
 
 \d .servers
 
