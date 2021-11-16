@@ -13,7 +13,10 @@ replaylog:1b
 hdbtypes:()			//connection to HDB not needed
 
 subfiltered:0b
-subcsv:hsym first .proc.getconfigfile["rdbsub.csv"]
+// path to rdbsub{i}.csv
+subcsv:hsym first `.proc.getconfigfile["rdbsub/rdbsub",(procnum:3_string .proc`procname),".csv"]
+// save the subcsv file onto disk
+subcsv 0: csv 0: flip`tabname`filters`columns!(`trade`quote;2#`$"sym in .ds.stripe[sym;",(string -1+value procnum),"]";`)
 
 \d .servers
 
