@@ -10,7 +10,7 @@ tickerplanttypes:`segmentedtickerplant
 gatewatypes:`none
 replaylog:1b
 
-hdbtypes:()			            //connection to HDB not needed
+hdbtypes:()                     //connection to HDB not needed
 
 subfiltered:0b
 // path to rdbsub{i}.csv
