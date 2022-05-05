@@ -1,8 +1,8 @@
 \d .fa
 
-tickerplanttype:`tickerplant					// Type of tickerplant to connect to
+tickerplanttype:`segmentedtickerplant					// Type of tickerplant to connect to
 
 \d .servers
 
-CONNECTIONS:`tickerplant
+CONNECTIONS:.fa.tickerplanttype
 
