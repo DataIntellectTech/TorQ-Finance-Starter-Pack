@@ -1,0 +1,20 @@
+{
+    "1": [
+        {
+            "subscriptiondefault": "all" ,
+            "trade": "sym >= `GOOG" ,
+            "quote": "sym >= `GOOG"
+
+        }
+    ],
+
+    "2": [
+        {
+            "subscriptiondefault": "ignore" ,
+            "trade": "sym < `GOOG" ,
+            "quote": "sym < `GOOG"
+
+        }
+    ]
+
+}
