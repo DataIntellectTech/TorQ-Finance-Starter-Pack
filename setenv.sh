@@ -26,6 +26,7 @@ export KDBDQEDB=${TORQDATAHOME}/dqe/dqedb/database
 export KDBTPLOG=${TORQDATAHOME}/tplogs
 export KDBTESTS=${TORQHOME}/tests
 export KDBPCAPS=${TORQAPPHOME}/pcaps
+export KDBTAIL=${TORQDATAHOME}/taildir
 
 # set rlwrap and qcon paths for use in torq.sh qcon flag functions
 export RLWRAP="rlwrap"
