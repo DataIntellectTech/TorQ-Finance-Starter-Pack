@@ -1,6 +1,6 @@
 tablename,keycol
 packets,
 quote,sym
-quote_iex,
+quote_iex,sym
 trade,sym
-trade_iex,
+trade_iex,sym
