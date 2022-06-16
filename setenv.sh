@@ -10,9 +10,10 @@ else
   dirpath="$(cd "$(dirname "$0")" && pwd)"
 fi
 
-export TORQHOME=${dirpath}
-export TORQAPPHOME=${TORQHOME}
-export TORQDATAHOME=${TORQHOME}
+export THOME=${dirpath%/*}
+export TORQHOME=${THOME}/TorQ
+export TORQAPPHOME=${THOME}/TorQ-Finance-Starter-Pack
+export TORQDATAHOME=${dirpath}/data
 export KDBCONFIG=${TORQHOME}/config
 export KDBCODE=${TORQHOME}/code
 export KDBTESTS=${TORQHOME}/tests
@@ -31,6 +32,8 @@ export KDBTAIL=${TORQDATAHOME}/taildir
 # set rlwrap and qcon paths for use in torq.sh qcon flag functions
 export RLWRAP="rlwrap"
 export QCON="qcon"
+export QCMD="taskset -c 0,1 /usr/bin/rlwrap q"
+export QCMDOVERRIDE=true                                                  # override qcmd in processes.csv with QCMD defined here
 
 # set the application specific configuration directory
 export KDBAPPCONFIG=${TORQAPPHOME}/appconfig
@@ -39,8 +42,8 @@ export KDBAPPCODE=${TORQAPPHOME}/code
 # set KDBBASEPORT to the default value for a TorQ Installation
 export KDBBASEPORT=6000
 
-# set TORQPROCESSES to the default process csv
-export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
+# set TORQPROCESSES to the default cloud process csv
+export TORQPROCESSES=${KDBAPPCONFIG}/cloudprocess.csv
 
 # set DOGSTATSD_PORT to the default value for datadog daemon
 export DOGSTATSD_PORT=8125
