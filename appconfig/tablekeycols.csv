@@ -1,5 +1,5 @@
 tablename,keycol
-packets,
+packets,sym
 quote,sym
 quote_iex,sym
 trade,sym
