@@ -34,6 +34,7 @@ export RLWRAP="rlwrap"
 export QCON="qcon"
 export QCMD="taskset -c 0,1 /usr/bin/rlwrap q"
 export QCMDOVERRIDE=true                                                  # override qcmd in processes.csv with QCMD defined here
+# override should be removed before release
 
 # set the application specific configuration directory
 export KDBAPPCONFIG=${TORQAPPHOME}/appconfig
@@ -42,8 +43,8 @@ export KDBAPPCODE=${TORQAPPHOME}/code
 # set KDBBASEPORT to the default value for a TorQ Installation
 export KDBBASEPORT=6000
 
-# set TORQPROCESSES to the default cloud process csv
-export TORQPROCESSES=${KDBAPPCONFIG}/cloudprocess.csv
+# set TORQPROCESSES to the default process csv
+export TORQPROCESSES=${KDBAPPCONFIG}/torqv5process.csv
 
 # set DOGSTATSD_PORT to the default value for datadog daemon
 export DOGSTATSD_PORT=8125
