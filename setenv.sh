@@ -29,6 +29,9 @@ export KDBTESTS=${TORQHOME}/tests
 export KDBPCAPS=${TORQAPPHOME}/pcaps
 export KDBTAIL=${TORQDATAHOME}/taildir
 
+# make directories required in TORQDATAHOME/
+mkdir -p ${KDBLOG} ${KDBDQCDB} ${KDBDQEDB} ${KDBHDB} ${KDBWDB} ${KDBTPLOGS}
+
 # set rlwrap and qcon paths for use in torq.sh qcon flag functions
 export RLWRAP="rlwrap"
 export QCON="qcon"
