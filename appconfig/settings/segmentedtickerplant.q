@@ -19,3 +19,7 @@ loadprocesscode:1b;
 
 datatimezone:`$"GMT";
 rolltimezone:`$"GMT";
+
+\d .ds
+
+torqv5mode:1b;                  // if true torqv5, if false vanilla torq
