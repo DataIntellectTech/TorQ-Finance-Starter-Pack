@@ -1,4 +1,4 @@
-// Bespoke WDB config : Finance Starter Pack
+// Bespoke Tailer config : Finance Starter Pack
 
 \d .wdb
 savedir:hsym `$getenv[`KDBWDB]		// location to save wdb data
