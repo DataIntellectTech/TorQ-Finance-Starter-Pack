@@ -22,5 +22,4 @@ dqedb:pass
 segmentedtickerplant:pass
 filealerter:pass
 tailer:pass
-torquser:pass
 admin:admin
