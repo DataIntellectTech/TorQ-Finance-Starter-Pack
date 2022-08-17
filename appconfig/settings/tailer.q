@@ -3,7 +3,7 @@
 \d .wdb
 savedir:hsym `$getenv[`KDBWDB]		// location to save wdb data
 hdbdir:hsym`$getenv[`KDBHDB]            // move wdb database to different location
-sortworkertypes:()			// WDB doesn't need to connect to sortworkers
+sortworkertypes:()			// tailer doesn't need to connect to sortworkers
 
 
 \d .servers
