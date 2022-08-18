@@ -7,4 +7,4 @@ sortworkertypes:()			// WDB doesn't need to connect to sortworkers
 
 
 \d .servers
-CONNECTIONS:`segmentedtickerplant`sort`gateway`rdb`hdb
+CONNECTIONS:`segmentedtickerplant`sort`gateway`rdb`hdb`tailer_seg1`tailer_seg2`tr_seg1`tr_seg2
