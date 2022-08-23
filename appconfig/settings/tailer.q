@@ -4,7 +4,7 @@
 savedir:hsym `$getenv[`KDBWDB]		// location to save wdb data
 hdbdir:hsym`$getenv[`KDBHDB]            // move wdb database to different location
 sortworkertypes:()			// WDB doesn't need to connect to sortworkers
-owthresh:1000				// table savedown row size threshold
+rowthresh:1000				// table savedown row size threshold
 period:0D00:00:30			// how often to check table sizes against threshold
 
 \d .servers
