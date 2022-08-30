@@ -2,8 +2,8 @@
     "1": [
         {
             "subscriptiondefault": "all" ,
-            "trade": ".ds.stripe[sym;0]" ,
-            "quote": ".ds.stripe[sym;0]"
+            "trade": ".ds.stripe[sym]" ,
+            "quote": ".ds.stripe[sym]"
 
         }
     ],
@@ -11,8 +11,8 @@
     "2": [
         {
             "subscriptiondefault": "ignore" ,
-            "trade": ".ds.stripe[sym;1]" ,
-            "quote": ".ds.stripe[sym;1]"
+            "trade": ".ds.stripe[sym]" ,
+            "quote": ".ds.stripe[sym]"
 
         }
     ]
