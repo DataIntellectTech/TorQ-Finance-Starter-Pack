@@ -1,20 +1,28 @@
 {
-    "1": [
-        {
-            "subscriptiondefault": "all" ,
-            "trade": ".ds.stripe[sym;0]" ,
+    "1": [{
+            "subscriptiondefault": "all",
+            "trade": ".ds.stripe[sym;0]",
             "quote": ".ds.stripe[sym;0]"
-
+        },
+        {
+            "RDBtypes": "rdb_seg1",
+            "tailers": "tailer1",
+            "tailreaders": "tr1"
         }
     ],
 
-    "2": [
-        {
-            "subscriptiondefault": "ignore" ,
-            "trade": ".ds.stripe[sym;1]" ,
-            "quote": ".ds.stripe[sym;1]"
+ 
 
+    "2": [{
+            "subscriptiondefault": "ignore",
+            "trade": ".ds.stripe[sym;1]",
+            "quote": ".ds.stripe[sym;1]"
+        },
+        {
+            "RDBtypes": "rdb_seg2",
+	    "tailers": "tailer2 ",
+            "tailreaders": "tr2"
         }
-    ]
+    ] 
 
 }
