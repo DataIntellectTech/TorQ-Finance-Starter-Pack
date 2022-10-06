@@ -5,6 +5,11 @@
             "trade": ".ds.stripe[sym;0]" ,
             "quote": ".ds.stripe[sym;0]"
 
+        },
+		{
+            "RDBtypes": "rdb_seg1",
+            "tailers": "tailer_seg1",
+            "tailreaders": "tr_seg1"
         }
     ],
 
@@ -14,6 +19,11 @@
             "trade": ".ds.stripe[sym;1]" ,
             "quote": ".ds.stripe[sym;1]"
 
+        },
+		{
+            "RDBtypes": "rdb_seg2",
+	        "tailers": "tailer_seg2",
+            "tailreaders": "tr_seg2"
         }
     ]
 
