@@ -22,7 +22,7 @@
         },
 		{
             "RDBtypes": "rdb_seg2",
-	        "tailers": "tailer_seg2",
+	    "tailers": "tailer_seg2",
             "tailreaders": "tr_seg2"
         }
     ]
