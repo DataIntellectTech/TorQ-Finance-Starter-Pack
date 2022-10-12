@@ -7,7 +7,7 @@
 
         },
 		{
-            "RDBtypes": "rdb_seg1",
+            "rdbtypes": "rdb_seg1",
             "tailers": "tailer_seg1",
             "tailreaders": "tr_seg1"
         }
@@ -21,7 +21,7 @@
 
         },
 		{
-            "RDBtypes": "rdb_seg2",
+            "rdbtypes": "rdb_seg2",
 	    "tailers": "tailer_seg2",
             "tailreaders": "tr_seg2"
         }
