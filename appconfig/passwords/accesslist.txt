@@ -22,5 +22,6 @@ dqedb:pass
 segmentedtickerplant:pass
 filealerter:pass
 tailer:pass
+tailreader:pass
 tailsort:pass
 admin:admin
