@@ -26,6 +26,6 @@ localhost,{KDBBASEPORT}+23,dqedb,dqedb1,${TORQAPPHOME}/appconfig/passwords/acces
 localhost,{KDBBASEPORT}+24,rdb,rdb2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,180,,${KDBCODE}/processes/rdb.q,1,-segid 2 -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv,q
 localhost,{KDBBASEPORT}+26,tailer_seg1,tailer1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailer.q,1,-segid 1 -parentproctype tailer,q
 localhost,{KDBBASEPORT}+27,tailer_seg2,tailer2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailer.q,1,-segid 2 -parentproctype tailer,q
-localhost,{KDBBASEPORT}+28,tr_seg1,tr1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailreader.q,1,-segid 1 -parentproctype tailreader,q
-localhost,{KDBBASEPORT}+29,tr_seg2,tr2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailreader.q,1,-segid 2 -parentproctype tailreader,q
+localhost,{KDBBASEPORT}+28,tr_seg1,tr1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailreader.q,1,-segid 1 -parentproctype tailreader -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv,q
+localhost,{KDBBASEPORT}+29,tr_seg2,tr2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailreader.q,1,-segid 2 -parentproctype tailreader -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv,q
 localhost,{KDBBASEPORT}+30,tailsort,tailsort1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailsort.q,1,,q
