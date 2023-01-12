@@ -23,6 +23,7 @@ segmentedtickerplant:pass
 filealerter:pass
 tailreader:pass
 tailer:pass
+centraltailsort:pass
 tailsort:pass
 tailsortworker:pass
 admin:admin
