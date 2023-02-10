@@ -25,5 +25,5 @@ tailreader:pass
 tailer:pass
 centraltailsort:pass
 tailsort:pass
-tailsortworker:pass
+centraltailsort:pass
 admin:admin
