@@ -24,4 +24,5 @@ filealerter:pass
 tailreader:pass
 tailer:pass
 tailsort:pass
+centraltailsort:pass
 admin:admin
