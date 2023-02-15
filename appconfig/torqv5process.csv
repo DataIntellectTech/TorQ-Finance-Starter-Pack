@@ -1,7 +1,7 @@
 host,port,proctype,procname,U,localtime,g,T,w,load,startwithall,extras,qcmd
 localhost,{KDBBASEPORT}+1,discovery,discovery1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/discovery.q,1,,q
 localhost,{KDBBASEPORT},segmentedtickerplant,stp1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBCODE}/processes/segmentedtickerplant.q,1,-schemafile ${TORQAPPHOME}/database.q -tplogdir ${KDBTPLOG} -.ds.torqv5mode 1,q
-localhost,{KDBBASEPORT}+2,rdb,rdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,180,,${KDBCODE}/processes/rdb.q,1,-segid 1 -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv -parentproctype rdb,q
+localhost,{KDBBASEPORT}+2,rdb_seg1,rdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,180,,${KDBCODE}/processes/rdb.q,1,-segid 1 -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv -parentproctype rdb,q
 localhost,{KDBBASEPORT}+3,hdb,hdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBHDB},1,-dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv,q
 localhost,{KDBBASEPORT}+4,hdb,hdb2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBHDB},1,-dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv,q
 localhost,{KDBBASEPORT}+5,wdb,wdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/wdb.q,0,,q
@@ -23,13 +23,13 @@ localhost,{KDBBASEPORT}+20,dqc,dqc1,${TORQAPPHOME}/appconfig/passwords/accesslis
 localhost,{KDBBASEPORT}+21,dqcdb,dqcdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBDQCDB},1,,q
 localhost,{KDBBASEPORT}+22,dqe,dqe1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/dqe.q,1,-parentproctype dqcommon,q
 localhost,{KDBBASEPORT}+23,dqedb,dqedb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBDQEDB},1,,q
-localhost,{KDBBASEPORT}+24,rdb,rdb2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,180,,${KDBCODE}/processes/rdb.q,1,-segid 2 -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv -parentproctype rdb,q
+localhost,{KDBBASEPORT}+24,rdb_seg2,rdb2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,180,,${KDBCODE}/processes/rdb.q,1,-segid 2 -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv -parentproctype rdb,q
 localhost,{KDBBASEPORT}+25,tailer_seg1,tailer1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailer.q,1,-segid 1 -parentproctype tailer -rdbtype rdb_seg1 -tailreadertype tr_seg1,q
 localhost,{KDBBASEPORT}+26,tailer_seg2,tailer2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailer.q,1,-segid 2 -parentproctype tailer -rdbtype rdb_seg2 -tailreadertype tr_seg2,q
 localhost,{KDBBASEPORT}+27,tr_seg1,tr1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailreader.q,1,-segid 1 -parentproctype tailreader -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv -tailertype tailer_seg1,q
 localhost,{KDBBASEPORT}+28,tr_seg2,tr2,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/tailreader.q,1,-segid 2 -parentproctype tailreader -dataaccess ${KDBCONFIG}/dataaccess/tableproperties.csv -tailertype tailer_seg2,q
 localhost,{KDBBASEPORT}+29,centraltailsort,centraltailsort1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/centraltailsort.q,1,-parentproctype wdb,q
-localhost,{KDBBASEPORT}+30,tailsort_seg1,tailsort1_1,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 1 -parentproctype tailsort -tailreadertype tr_seg1,q
-localhost,{KDBBASEPORT}+31,tailsort_seg1,tailsort1_2,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 1 -parentproctype tailsort -tailreadertype tr_seg1,q
-localhost,{KDBBASEPORT}+32,tailsort_seg2,tailsort2_1,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 2 -parentproctype tailsort -tailreadertype tr_seg2,q
-localhost,{KDBBASEPORT}+33,tailsort_seg2,tailsort2_2,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 2 -parentproctype tailsort -tailreadertype tr_seg2,q
+localhost,{KDBBASEPORT}+30,tailsort_seg1,tailsort1_1,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 1 -parentproctype tailsort -tailreadertype tr_seg1 -rdbtype rdb_seg1,q
+localhost,{KDBBASEPORT}+31,tailsort_seg1,tailsort1_2,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 1 -parentproctype tailsort -tailreadertype tr_seg1 -rdbtype rdb_seg1,q
+localhost,{KDBBASEPORT}+32,tailsort_seg2,tailsort2_1,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 2 -parentproctype tailsort -tailreadertype tr_seg2 -rdbtype rdb_seg2,q
+localhost,{KDBBASEPORT}+33,tailsort_seg2,tailsort2_2,,1,1,,,${KDBCODE}/processes/tailsort.q,1,-segid 2 -parentproctype tailsort -tailreadertype tr_seg2 -rdbtype rdb_seg2,q
