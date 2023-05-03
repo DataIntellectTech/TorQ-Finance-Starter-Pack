@@ -6,7 +6,7 @@ pages:
     - Architecture: architecture.md
     - Have a Play: play.md
     - IEX: iex.md
-copyright: 'Copyright &copy 2016 AquaQ Analytics Limited.  Kx &reg and kdb+ are registered trademarks of Kx Systems Inc.'
+copyright: 'Copyright &copy 2016 Data Intellect Limited.  Kx &reg and kdb+ are registered trademarks of Kx Systems Inc.'
 
 theme: 'material'
 repo_name: 'GitHub'
@@ -18,7 +18,7 @@ extra:
       accent: 'green'
    author:
       github: 'AquaQAnalytics'
-      twitter: 'AquaQAnalytics'
+      twitter: 'data_intellect'
 
 google_analytics:
    - 'UA-51911331-4'
