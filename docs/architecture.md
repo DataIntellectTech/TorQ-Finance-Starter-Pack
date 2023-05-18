@@ -6,7 +6,7 @@ within the Finance Starter Pack. For more information on TorQ
 implementation details you can refer to the [TorQ
 Manual](https://aquaqanalytics.github.io/TorQ/),
 review the code which comprises the system or contact us at
-<info@aquaq.co.uk>.
+<info@dataintellect.com>.
 
 Processes
 ---------
