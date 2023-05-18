@@ -57,7 +57,7 @@ have to:
         \d .email
         enabled:1b
         url:`$"smtp://smtp.email.net:80"        // url of email server
-        user:`$"testaccount@dataintellect"      // user account to use to send emails
+        user:`$"testaccount@dataintellect.com"  // user account to use to send emails
         password:`$"testkdb"                    // password for user account
 
 Note that on Windows there may be pop up warnings about missing
