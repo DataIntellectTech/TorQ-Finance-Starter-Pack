@@ -1,25 +1,50 @@
 site_name: Finance Starter Pack
-site_favicon: graphics/favicon.ico
-pages:
+nav:
     - Home: index.md
     - Getting Started: gettingstarted.md
     - Architecture: architecture.md
     - Have a Play: play.md
     - IEX: iex.md
-copyright: 'Copyright &copy 2016 Data Intellect Limited.  Kx &reg and kdb+ are registered trademarks of Kx Systems Inc.'
 
-theme: 'material'
 repo_name: 'GitHub'
 repo_url: 'https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack'
-extra:
-   logo: 'graphics/TorQ-logo.png'
-   palette:
-      primary: 'indigo'
-      accent: 'green'
-   author:
-      github: 'AquaQAnalytics'
-      twitter: 'data_intellect'
 
-google_analytics:
-   - 'UA-51911331-4'
-   - 'auto'
+theme:
+  favicon: graphics/favicon.ico
+  name: material
+  logo: graphics/DataIntellect-header-logo.jpg
+  features:
+    - search.suggest
+    - search.highlight
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: black
+      accent: grey
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: black
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+repo_name: GitHub
+repo_url: https://github.com/AquaQAnalytics/TorQ
+
+extra:
+   social:
+      - icon: fontawesome/brands/github-alt
+        link: https://github.com/AquaQAnalytics
+      - icon: fontawesome/brands/twitter
+        link: https://twitter.com/data_intellect
+      - icon: fontawesome/brands/linkedin
+        link: https://www.linkedin.com/company/data-intellect-challenge-accepted
+   analytics:
+      provider: google
+      property: UA-51911331-4
+plugins:
+  - search
+

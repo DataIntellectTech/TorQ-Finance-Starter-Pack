@@ -1,10 +1,5 @@
 TorQ Demo Pack
 ==============
-<div style="width:640px; height:360px; margin: 0 auto;">
-<iframe src="https://player.vimeo.com/video/184552498" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-</div>
-
-</br>
 
 The purpose of the TorQ Demo Pack is to set up an example TorQ
 installation and to show how applications can be built and deployed on
@@ -29,6 +24,6 @@ time.
 Further information about each feature can be found in the [TorQ
 Manual](https://aquaqanalytics.github.io/TorQ/).
 
-*email:* <support@aquaq.co.uk>
+*email:* <support@dataintellect.com>
 
-*web:* [www.aquaq.co.uk](http://www.aquaq.co.uk)
+*web:* [www.dataintellect.com](http://www.dataintellect.com)
