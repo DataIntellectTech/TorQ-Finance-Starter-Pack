@@ -57,7 +57,7 @@ have to:
         \d .email
         enabled:1b
         url:`$"smtp://smtp.email.net:80"        // url of email server
-        user:`$"testaccount@aquaq.co.uk"        // user account to use to send emails
+        user:`$"testaccount@dataintellect.com"  // user account to use to send emails
         password:`$"testkdb"                    // password for user account
 
 Note that on Windows there may be pop up warnings about missing
@@ -91,20 +91,20 @@ start\_torq\_demo\_mac.sh to start the system, and stop\_torq\_demo\_mac.sh
 to stop it. The processes will
 start in the background but can be seen using a ps command, such as
 
-    aquaq> ps -ef | grep 'torq\|tickerplant' 
-    aquaq    4810 16777  0 15:56 pts/34   00:00:00 grep torq\|tickerplant
-    aquaq   25465     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/discovery.q -stackid 6000 -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime
-    aquaq   25466     1  0 13:05 pts/34   00:00:29 q tickerplant.q database tplogs -stackid 6000 -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime
-    aquaq   25478     1  0 13:05 pts/34   00:00:17 q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1  -U config/passwords/accesslist.txt -localtime -g 1 -T 180
-    aquaq   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
-    aquaq   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
-    aquaq   25481     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/gateway.q -stackid 6000 -proctype gateway -procname gateway1 -U config/passwords/accesslist.txt -localtime -g 1 -w 4000
-    aquaq   25482     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/monitor.q -stackid 6000 -proctype monitor -procname monitor1 -localtime
-    aquaq   25483     1  0 13:05 pts/34   00:00:07 q torq.q -load code/processes/reporter.q -stackid 6000 -proctype reporter -procname reporter1 -U config/passwords/accesslist.txt -localtime
-    aquaq   25484     1  0 13:05 pts/34   00:00:04 q torq.q -load code/processes/housekeeping.q -stackid 6000 -proctype housekeeping -procname housekeeping1 -U config/passwords/accesslist.txt -localtime
-    aquaq   25485     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/wdb.q -stackid 6000 -proctype sort -procname sort1 -U config/passwords/accesslist.txt -localtime -g 1
-    aquaq   25486     1  0 13:05 pts/34   00:00:13 q torq.q -load code/processes/wdb.q -stackid 6000 -proctype wdb -procname wdb1  -U config/passwords/accesslist.txt -localtime -g 1
-    aquaq   25547     1  0 13:05 pts/34   00:00:13 q torq.q -load tick/feed.q -stackid 6000 -proctype feed -procname feed1 -localtime
+    dataintellect> ps -ef | grep 'torq\|tickerplant' 
+    dataintellect    4810 16777  0 15:56 pts/34   00:00:00 grep torq\|tickerplant
+    dataintellect   25465     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/discovery.q -stackid 6000 -proctype discovery -procname discovery1 -U config/passwords/accesslist.txt -localtime
+    dataintellect   25466     1  0 13:05 pts/34   00:00:29 q tickerplant.q database tplogs -stackid 6000 -proctype tickerplant -procname tickerplant1 -U config/passwords/accesslist.txt -localtime
+    dataintellect   25478     1  0 13:05 pts/34   00:00:17 q torq.q -load code/processes/rdb.q -stackid 6000 -proctype rdb -procname rdb1  -U config/passwords/accesslist.txt -localtime -g 1 -T 180
+    dataintellect   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
+    dataintellect   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
+    dataintellect   25481     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/gateway.q -stackid 6000 -proctype gateway -procname gateway1 -U config/passwords/accesslist.txt -localtime -g 1 -w 4000
+    dataintellect   25482     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/monitor.q -stackid 6000 -proctype monitor -procname monitor1 -localtime
+    dataintellect   25483     1  0 13:05 pts/34   00:00:07 q torq.q -load code/processes/reporter.q -stackid 6000 -proctype reporter -procname reporter1 -U config/passwords/accesslist.txt -localtime
+    dataintellect   25484     1  0 13:05 pts/34   00:00:04 q torq.q -load code/processes/housekeeping.q -stackid 6000 -proctype housekeeping -procname housekeeping1 -U config/passwords/accesslist.txt -localtime
+    dataintellect   25485     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/wdb.q -stackid 6000 -proctype sort -procname sort1 -U config/passwords/accesslist.txt -localtime -g 1
+    dataintellect   25486     1  0 13:05 pts/34   00:00:13 q torq.q -load code/processes/wdb.q -stackid 6000 -proctype wdb -procname wdb1  -U config/passwords/accesslist.txt -localtime -g 1
+    dataintellect   25547     1  0 13:05 pts/34   00:00:13 q torq.q -load tick/feed.q -stackid 6000 -proctype feed -procname feed1 -localtime
 
 ### Check If the System Is Running
 
@@ -126,7 +126,7 @@ hostname, so please try both. To see exactly what it is being returned
 as, open a new q session on the same machine and run:
 
     q)ss[html;"KDBCONNECT"] _ html:`::6009:admin:admin "monitorui[]"
-    "KDBCONNECT.init(\"server.aquaq.co.uk\",6009);\n</script>\n    </body>\n</html>\n"
+    "KDBCONNECT.init(\"server.dataintellect.com\",6009);\n</script>\n    </body>\n</html>\n"
 
 ### Connecting To A Running Process
 
@@ -150,7 +150,7 @@ function (from any process). This takes a single parameter of the email
 address to send a test email to. It returns the size of the email sent
 in bytes upon success, or -1 for failure.
 
-    aquaq$ qcon :6002:admin:admin
+    dataintellect$ qcon :6002:admin:admin
     :6002>.email.test[`$"testemail@gmail.com"]                                                                                                                                                        
     16831i
 
@@ -197,7 +197,6 @@ File Structure
 
 The file structure can be seen below.
 
-    |-- AquaQTorQFinanceStarterPack.pdf
     |-- LICENSE
     |-- README.md
     |-- appconfig
