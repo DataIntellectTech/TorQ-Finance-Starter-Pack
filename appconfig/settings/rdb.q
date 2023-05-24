@@ -6,7 +6,7 @@ reloadenabled:1b                    // if true, the RDB will not save when .u.en
                                     // will clear it's data using reload function (called by the WDB)
 
 connectonstart:1b                   // rdb connects and subscribes to tickerplant on startup
-tickerplanttypes:`segmentedtickerplant
+tickerplanttypes:`tickerplant
 gatewatypes:`none
 replaylog:1b
 
