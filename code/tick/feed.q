@@ -102,8 +102,8 @@ init:{
  feedm each `timestamp$o+asc len?d;}
 
 /- use the discovery service to find the tickerplant to publish data to
-.servers.startupdepcycles[`tickerplant;10;0W];
-h:.servers.gethandlebytype[`tickerplant;`any]
+.servers.startupdepcycles[`segmentedtickerplant;10;0W];
+h:.servers.gethandlebytype[`segmentedtickerplant;`any]
 
 / init 0
 .timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];
