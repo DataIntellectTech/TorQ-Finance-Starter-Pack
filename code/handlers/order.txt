@@ -1,0 +1,9 @@
+dotz.q
+ldap.q
+writeaccess.q
+controlaccess.q
+permissions.q
+trackclients.q
+logusage.q
+apidetails.q
+zpsignore.q

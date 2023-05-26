@@ -1,0 +1,429 @@
+// Script to replay tickerplant log files
+
+.merge.mergebybytelimit:@[value;`.merge.mergebybytelimit;0b];           // merge limit configuration - default is 0b row count limit, 1b is bytesize limit
+
+\d .replay
+
+// Variables
+firstmessage:@[value;`firstmessage;0]                                   // the first message to execute
+segmentedmode:@[value;`segmentedmode;1b]                                // if using segmented tickerplant, then set to true, otherwise set false for old tickerplant
+autoreplay:@[value;`autoreplay;1b]                                      // replay tplogs automatically set to 1b to be backward compatible.
+lastmessage:@[value;`lastmessage;0W]                                    // the last message to replay
+messagechunks:@[value;`messagechunks;0W]                                // the number of messages to replay at once
+schemafile:@[value;`schemafile;`]                                       // the schema file to load data in to
+tablelist:@[value;`tablelist;enlist `all]                               // the tables to replay into (to allow subsets of tp logs to be replayed).  `all means all
+hdbdir:@[value;`hdbdir;`]                                               // the hdb directory to write to	
+tplogfile:@[value;`tplogfile;`]                                         // the tp log file to replay.  Only this or tplogdir should be used (not both)
+tplogdir:@[value;`tplogdir;`]                                           // the tp log directory to read the log files from.  Only this or tplogfile should be used (not both)
+partitiontype:@[value;`partitiontype;`date]                             // the partitioning of the database.  Can be date, month or year (int would have to be handled bespokely)
+emptytables:@[value;`emptytables;1b]                                    // whether to overwrite any tables at start up
+sortafterreplay:@[value;`sortafterreplay;1b]                            // whether to re-sort the data and apply attributes at the end of the replay.  Sort order is determined by the sortcsv (:config/sort.csv)
+basicmode:@[value;`basicmode;0b]                                        // do a basic replay, which replays everything in, then saves it down with .Q.hdpf[`::;d;p;`sym]
+exitwhencomplete:@[value;`exitwhencomplete;1b]                          // exit when the replay is complete
+checklogfiles:@[value;`checklogfiles;0b]                                // check if the log file is corrupt, if it is then write a new "good" file and replay it instead
+gc:@[value;`gc;1b]                                                      // garbage collect at appropriate points (after each table save and after the full log replay)
+upd:@[value;`upd;{{[t;x] insert[t;x]}}]                                 // default upd function used for replaying data
+clean:@[value;`clean;1b]                                                // clean existing folders on start up. Needed if a replay     screws up and we are replaying by chunk or multiple tp logs
+sortcsv:@[value;`sortcsv;hsym first .proc.getconfigfile["sort.csv"]]    // location of  sort csv file
+compression:@[value;`compression;()];                                   // specify the compress level, empty list if no required
+partandmerge:@[value;`partandmerge;0b];                                 // setting to do a replay where the data is partitioned and then merged on disk
+tempdir:@[value;`tempdir;`:tempmergedir];                               // location to save data for partandmerge replay
+mergenumrows:@[value;`mergenumrows;10000000];                           // default number of rows for merge process
+mergenumtab:@[value;`mergenumtab;`quote`trade!10000 50000];             // specify number of rows per table for merge process
+mergenumbytes:@[value;`mergenumbytes;500000000];                        // default number of bytes for merge process
+mergemethod:@[value;`mergemethod;`part];                                // the partbyattr writdown mode can merge data from tenmporary storage to the hdb in three ways:
+                                                                        // 1. part                      -       the entire partition is merged to the hdb 
+                                                                        // 2. col                       -       each column in the temporary partitions are merged individually 
+                                                                        // 3. hybrid                    -       partitions merged by column or entire partittion based on byte limit       
+
+/ - settings for the common save code (see code/common/save.q)
+.save.savedownmanipulation:@[value;`savedownmanipulation;()!()]         // a dict of table!function used to manipuate tables at EOD save
+.save.postreplay:@[value;`postreplay;{{[d;p] }}]                        // post replay function, invoked after all the tables have been written down for a given log file
+
+// set up the usage information
+.proc.extrausage:"Log Replay:\n 
+ This process is used to replay tickerplant log files.
+ There are multiple options which can be set either in the config files or via the standard command line switches e.g. -.replay.firstmessage 20
+ \n
+ It can be used to replay full files and partial files, either in chunks or all at once.  Specific tables can be selected.
+ It can either overwrite existing tables, or append to them. It can create empty tables to start with. 
+ Different tables can be sorted and started differently. Tables can be manipulated when saved.  
+ A postreplay hook allows extra actions to be taken once the tables are saved down.
+ \n 
+ [-.replay.schemafile x]\t\t\tThe schema file to load.  Must not be null 
+ [-.replay.hdbdir x]\t\t\t\tThe hdb directory to write data to.  Must not be null
+ [-.replay.tplogfile x]\t\t\t\tThe tickerplant log file to replay. Either this or tplogdir must be set
+ [-.replay.tplogdir x]\t\t\t\tA directory containing tickerplant log files to replay.  All the files in the directory will be replayed.
+ [-.replay.tablelist x]\t\t\t\tThe list of tables to replay. `all for all tables
+ [-.replay.firstmessage n]\t\t\tThe first message number to replay. Default is 0
+ [-.replay.lastmessage n]\t\t\tThe last message number to replay. Default is 0W
+ [-.replay.messagechunks n]\t\t\tThe size of message chunks to replay. If set to a negative number, the replay progress will be tracked but tables will not be saved until the end. Default is 0W
+ [-.replay.partitiontype [date|month|year]] \tMethod used to partition the database - can be date, month or year. Default is date
+ [-.replay.sortafterreplay [0|1]]\t\tSort the data and apply attributes on disk after the replay. Default is 1
+ [-.replay.emptytables [0|1]]\t\t\tCreate empty versions of the tables in the partitions when the replay starts.  This will effectively delete any data which is already there. Default is 1
+ [-.replay.basicmode [0|1]]\t\t\tDo a basic replay, which reads the table into memory then saves down with .Q.hdpf.  Is probably faster for basic replays (in-memory sort rather than on-disk). Default is 0
+ [-.replay.exitwhencomplete [0|1]]\t\tProcess exits when complete. Default is 1
+ [-.replay.checklogfiles [0|1]\t\t\tCheck log files for corruption, if corrupt then write a good log and replay this.  Default is 0
+ [-.replay.partandmerge [0|1]\t\t\tDo a replay where the data is partitioned to a specified temp directory and then merged on disk. Default is 0
+ [-.replay.compression x]\t\t\tSet the compression settings for .z.zd. Default is empty list (no compression)
+ [-.replay.tempdir x]\t\t\tThe directory to save data to before moving it to the hdb. Default is the same as the hdb
+ [-.replay.autoreplay [0|1]\t\tStarts replay of logs at end of script or defers start of log replay. Helpful if loading via a wrapper 
+ [-.replay.clean  [0|1]\t\t Defines if the replay should zap any existing folder at the start of replay
+ \n
+ There are some other functions/variables which can be modified to change the behaviour of the replay, but shouldn't be done from the config file
+ Instead, load the script in a wrapper script which sets up the definition
+ \n
+ savedownmanipulation\t\ta dictionary of tablename!function which can be used to manipulate a table before it is saved. Default is empty
+ upd[tablename;data]\t\tthe function used to replay data into the tables.  Default is insert
+ postreplay[d;p]\t\t\tFunction invoked when each logfile is completely replayed.  Default is set to nothing
+ \n
+ The behaviour upon encountering errors can be modified using the standard flags. With no flags set, the process will exit when it hits an error. 
+ To trap an error and carry on, use the -trap flag
+ To stop at error and not exit, use the -stop flag
+ "
+// check for a usage flag
+if[`.replay.usage in key .proc.params; -1 .proc.getusage[]; exit 0];
+
+// Check if some variables are null
+// some must be set
+.err.exitifnull each `.replay.schemafile`.replay.hdbdir, $[all null (tplogdir;tplogfile); `.replay.tplogfile; ()];
+if[basicmode and (messagechunks within (0;-1 + 0W));
+ .err.ex[`replayinit; "if using basic mode, messagechunks must not be used (it should be set to 0W). basicmode will use .Q.hdpf to overwrite tables at the end of the replay";1]];
+if[not partitiontype in `date`month`year; .err.ex[`replayinit;"partitiontype must be one of `date`month`year";1]];
+if[messagechunks=0;.err.ex[`replayinit;"messagechunks value cannot be 0";2]];
+if[segmentedmode and ((0<>firstmessage) or 0W<>lastmessage);.err.ex[`replayinit;"firstmessage must be 0 and lastmessage must be 0W while in segmented mode"];1]
+
+trackonly:messagechunks < 0 
+if[trackonly;.lg.o[`replayinit;"messagechunks value is negative - log replay progress will be tracked"]];
+messagechunks:abs messagechunks;
+
+if[partandmerge and hdbdir = tempdir;.err.ex[`replayinit;"if using partandmerge replay, tempdir must be set to a different directory than the hdb";1]];
+if[partandmerge and sortafterreplay;(sortafterreplay:0b; .lg.o[`replayinit;"Setting sortafterreplay to 0b"])];
+
+// load the schema 
+\d . 
+.lg.o[`replayinit;"loading schema file ",string .replay.schemafile]
+@[system;"l ",string .replay.schemafile;{.err.ex[`replayinit;"failed to load replay file ",(string x)," - ",y;2]}[.replay.schemafile]]
+\d .replay
+
+.lg.o[`replayinit;"hdb directory is set to ",string hdbdir:hsym hdbdir];
+
+// the path to the table to save
+pathtotable:{[h;p;t] `$(string .Q.par[h;partitiontype$p;t]),"/"}
+
+// create empty tables - we need to make sure we only create them once
+emptytabs:`symbol$()
+createemptytable:{[h;p;t;td]
+ $[partandmerge;dest:td;dest:h];
+ if[(not (path:pathtotable[dest;p;t]) in .replay.emptytabs) and .replay.emptytables;
+  .lg.o[`replay;"creating empty table ",(string t)," at ",string path];
+  .replay.emptytabs,:path;
+  savetabdatatrapped[h;p;t;0#value t;0b;td]]}
+
+savetabdata:{[h;p;t;data;UPSERT;td]
+ $[partandmerge;path:pathtotable[td;p;t];path:pathtotable[h;p;t]];
+ if[not partandmerge;.lg.o[`replay;"saving table ",(string t)," to ",string path]];
+ .replay.pathlist[t],:path;
+ $[partandmerge;savetablesbypart[td;p;t;h];$[UPSERT;upsert;set] . (path;.Q.en[h;0!.save.manipulate[t;data]])]
+  }
+
+savetabdatatrapped:{[h;p;t;data;UPSERT;td] .[savetabdata;(h;p;t;data;UPSERT;td);{.lg.e[`replay;"failed to save table : ",x]}]}
+
+// this function should be invoked for saving tables
+savetab:{[td;h;p;t]
+ if[not partandmerge;createemptytable[h;p;t;td]];
+ if[count value t;
+  .lg.o[`replay;"saving ",(string t)," which has row count ",string count value t];
+  savetabdatatrapped[h;p;t;value t;1b;td];
+  delete from t;
+  if[gc;.gc.run[]]]}
+
+// function to apply the sorting and attributes at the end of the replay
+// input is a dictionary of tablename!(list of paths)
+// should be the same as .replay.pathlist
+applysortandattr:{[pathlist]
+	// convert pathlist dictionary into a keys and values then transpose before passing into .sort.sorttab
+	.sort.sorttab each flip (key;value) @\: distinct each pathlist
+	};
+ 
+// Given a list of table names, return the list in order according to the table counts
+// this is used at save down time as it should minimise memory usage to save the smaller tables first, and then garbage collect
+tabsincountorder:{x iasc count each value each x}
+
+// check if the count has been exceeded, and save down if it has
+currentcount:0
+totalcount:0
+checkcount:{[h;p;counter;td]
+ currentcount+::counter;
+ if[.replay.currentcount >= .replay.messagechunks;
+  $[.replay.trackonly;
+    [.replay.totalcount +: .replay.currentcount;
+     .lg.o[`replay;"replayed a chunk of ",(string .replay.messagechunks)," messages.  Total message count so far is ",string .replay.totalcount]];
+    [.lg.o[`replay;"number of messages to replay at once (",(string .replay.messagechunks),") has been exceeded.  Saving down"]; 
+     savetab[td;h;p] each tabsincountorder[.replay.tablestoreplay]; 
+     .lg.o[`replay;"save complete- replaying next chunk of data"]]];
+  .replay.currentcount:0]}
+
+// function used to finish off the replay
+// generally this will be to re-sort the table, and set an attribute
+finishreplay:{[h;p;td]
+ // save down any tables which haven't been saved
+ savetab[td;h;p] each tabsincountorder[.replay.tablestoreplay];
+ // sort data and apply the attributes
+ if[sortafterreplay;applysortandattr[.replay.pathlist]];
+
+ // invoke any user defined post replay function
+ .save.postreplay[h;p];
+ }
+
+// takes in log file directories made with segmented tickerplant
+expandstplogs:{[logdirectories] // always a list
+ {` sv'raze x,/:'key each x}$[`~tplogdir;{enlist first x};]hsym logdirectories
+ };
+
+replaylog:{[logfile]
+ // set the upd function to be the initialupd function
+ .replay.msgcount:.replay.currentcount:.replay.totalcount:0;
+ // check if logfile is corrupt
+ if[checklogfiles; logfile: .tplog.check[logfile;lastmessage]];
+ $[firstmessage>0;
+	[.lg.o[`replay;"skipping first ",(string firstmessage)," messages"];
+         @[`.;`upd;:;.replay.initialupd]];
+	@[`.;`upd;:;.replay.realupd]];
+ .replay.tablecounts:.replay.errorcounts:.replay.pathlist:()!();
+
+ // If not running in segmented mode, reset replay date and clean HDB directory on each loop
+ .replay.zipped:$[logfile like "*.gz";1b;0b];
+ if[not .replay.segmentedmode;
+   // Pull out date from TP log file name - *YYYY.MM.DD (+ .gz if zipped) 
+   .replay.replaydate:"D"$$[.replay.zipped;-3_-13#;-10#] string logfile;
+   if[.replay.clean;.replay.cleanhdb .replay.replaydate]
+  ];
+
+ if[lastmessage<firstmessage; .lg.o[`replay;"lastmessage (",(string lastmessage),") is less than firstmessage (",(string firstmessage),"). Not replaying log file"]; :()];
+ .lg.o[`replay;"replaying data from logfile ",(string logfile)," from message ",(string firstmessage)," to ",(string lastmessage),". Message indices are from 0 and inclusive - so both the first and last message will be replayed"];
+ // when we do the replay, need to move the indexing, otherwise we won't replay the last message correctly
+  .replay.replayinner[lastmessage+lastmessage<0W;logfile];
+  
+ .lg.o[`replay;"replayed data into tables with the following counts: ","; " sv {" = " sv string x}@'flip(key .replay.tablecounts;value .replay.tablecounts)];
+ if[count .replay.errorcounts;
+  .lg.e[`replay;"errors were hit when replaying the following tables: ","; " sv {" = " sv string x}@'flip(key .replay.errorcounts;value .replay.errorcounts)]];
+ // set compression level
+ if[3=count compression;
+   .lg.o[`compression;"setting compression level to (",(";" sv string compression),")"];
+   .z.zd:compression;
+   .lg.o[`compression;".z.zd has been set to (",(";" sv string .z.zd),")"]];
+
+ $[basicmode; 
+  [.lg.o[`replay;"basicmode set to true, saving down tables with .Q.hdpf"];
+   .Q.hdpf[`::;hdbdir;partitiontype$.replay.replaydate;`sym]];
+  // if not in basic mode, then we need to finish off the replay  
+  finishreplay[hdbdir;.replay.replaydate;tempdir]];
+  if[gc;.gc.run[]];
+ }
+
+// If replay date in HDB, delete tables/partition from the HDB so no data is duplicated
+cleanhdb:{[dt]
+  if[not (`$sd:string dt) in key .replay.hdbdir;.lg.o[`cleanhdb;"Date ",sd," not in HDB."];:()];
+  delpaths:.os.pth each .Q.par[.replay.hdbdir;dt;] each $[`all~first .replay.tablelist;enlist `;.replay.tablestoreplay];
+  {.lg.o[`cleanhdb;"Deleting ",x," from HDB."];.os.deldir x} each delpaths;
+ };
+
+// Replay log file, if file is zipped and the kdb+ version is at least 4.0 then replay through named pipe
+replayinner:{[msgnum;logfile]
+  if[not .replay.zipped;-11!(msgnum;logfile);:()];
+  if[not .z.o like "l*";.lg.e[`replaylog;m:"Zipped log files can only be directly replayed on Linux systems"];'m];
+  if[.z.K<4.0;.lg.e[`replaylog;m:"Zipped log files can only be directly replayed on kdb+ 4.0 or higher"];'m];
+
+  .lg.o[`replay;"Replaying logfile ",(f:1_string logfile)," over named pipe"];
+  -11!(msgnum;hsym `$fifo:.replay.readintofifo f);
+  system "rm -f ",fifo;
+  .replay.zipped:0b;
+ };
+
+// Create FIFO and unzip file into it, return FIFO name
+readintofifo:{[filename]
+  fifo:"/tmp/logfifo",string .z.i;
+  fifostr:"mkfifo ",fifo,";gunzip -cd ",filename," > ",fifo," &";
+  @[system;fifostr;{.lg.e[`replay;"Failed to read log into named pipe"]}];
+  fifo
+ };
+
+// upd functions down here
+realupd:{[f;t;x] 
+	// increment the tablecounts
+        tablecounts[t]+::count first x;
+	// run the supplied function in the error trap
+	.[f;(t;x);{[t;x;e] errorcounts[t]+::count first x}[t;x]];
+	}[.replay.upd]
+
+// amend the upd function to filter based on the table list
+if[(not tablelist~enlist `all) and not segmentedmode; realupd:{[f;t;x] if[t in .replay.tablestoreplay; f[t;x]]}[realupd]]
+
+// amend to do chunked saves
+if[messagechunks < 0W; realupd:{[f;t;x] f[t;x]; checkcount[hdbdir;replaydate;1;tempdir]}[realupd]]
+
+initialupd:{[t;x] 
+	 // spin through the first X messages
+	 $[msgcount < (firstmessage - 1);
+	msgcount+::1;
+	// Once we reach the correct message, reset the upd function
+	@[`.;`upd;:;.replay.realupd]]
+	}
+
+// extract user defined row counts
+mergemaxrows:{[tabname] mergenumrows^mergenumtab[tabname]};
+
+// post replay function for merge replay, invoked after all the tables have been written down for a given log file
+postreplaymerge:{[td;p;h]
+ .os.md[.os.pth[string .Q.par[td;p;`]]]; // ensures directory exists before removed
+ mergelimits:(tabsincountorder[.replay.tablestoreplay],())!$[.merge.mergebybytelimit;(count tabsincountorder[.replay.tablestoreplay])#mergenumbytes;({[x] mergenumrows^mergemaxrows[x]}tabsincountorder[.replay.tablestoreplay])],();	
+ // merge the tables from each partition in the tempdir together
+ merge[td;p;;mergelimits;h] each tabsincountorder[.replay.tablestoreplay];
+ .os.deldir .os.pth[string .Q.par[td;p;`]]; // delete the contents of tempdir after merge completion
+ }
+
+// function to upsert to specified directory
+upserttopartition:{[h;dir;tablename;tabdata;pt;expttype;expt]
+ dirpar:.Q.par[dir;pt;`$string first expt];
+ directory:` sv dirpar,tablename,`;
+ // make directories for tables if they don't exist
+ if[count tabpar:tabsincountorder[.replay.tablestoreplay] except key dirpar;
+  .lg.o[`dir;"creating directories under ",1_string dirpar];
+  tabpar:tabpar except `heartbeat`logmsg;
+  .[{[d;h;t](` sv d,t,`) set .Q.en[h;0#value t]};] each dirpar,'h,'tabpar];
+  .lg.o[`save;"saving ",(string tablename)," data to partition ",string directory];
+  .[
+  upsert;
+  (directory;r:update `sym!sym from ?[tabdata;{(x;y;(),z)}[in;;]'[expttype;expt];0b;()]);
+  {[e] .lg.e[`savetablesbypart;"Failed to save table to disk : ",e];'e}];
+  /-key in partsizes are directory to partition, need to drop training slash in directory key
+  .merge.partsizes[first ` vs directory]+:(count r;-22!r);
+  };
+
+savetablesbypart:{[dir;pt;tablename;h]
+ arows: count value tablename;	
+ .lg.o[`rowcheck;"the ",(string tablename)," table consists of ", (string arows), " rows"];		
+ // get additional partition(s) defined by parted attribute in sort.csv		
+ extrapartitiontype:.merge.getextrapartitiontype[tablename];
+	
+ // check each partition type actually is a column in the selected table
+ .merge.checkpartitiontype[tablename;extrapartitiontype];		
+ // enumerate data to be upserted
+ enumdata:update (`. `sym)?sym from .Q.en[h;value tablename];
+ // get list of distinct combiniations for partition directories
+ extrapartitions:(`. `sym)?.merge.getextrapartitions[tablename;extrapartitiontype];
+
+ .lg.o[`save;"enumerated ",(string tablename)," table"];		
+ // upsert data to specific partition directory 
+ upserttopartition[h;dir;tablename;enumdata;pt;extrapartitiontype] each extrapartitions;				
+ // empty the table
+ .lg.o[`delete;"deleting ",(string tablename)," data from in-memory table"];
+ @[`.;tablename;0#];
+ // run a garbage collection (if enabled)
+ if[gc;.gc.run[]];
+ };
+
+
+merge:{[dir;pt;tablename;mergelimits;h]
+ // get int partitions
+ intpars:asc key ` sv dir,`$string pt; // list of enumerated partitions 0 1 2 3...
+ k:key each intdir:.Q.par[hsym dir;pt] each intpars; // list of table names
+ if[0=count raze k inter\: tablename; :()]; 
+ // get list of partition directories containing specified table
+ partdirs:` sv' (intdir,'parts) where not ()~/:parts:k inter\: tablename; // get each of the directories that hold the table
+ // permanent storage destination, where data being merged too
+ dest:.Q.par[h;pt;tablename];
+ // exit function if no subdirectories are found
+ if[0=count partdirs; :()];
+ // if no table data set empty table. If data to merge, merge with correct merge function   
+ $[0 = count partdirs inter exec ptdir from .merge.partsizes;
+   [.lg.w[`merge;"no records for ", string[tablename]];
+    (` sv dest,`) set @[.Q.en[h;value tablename];.merge.getextrapartitiontype[tablename];`p#];
+   ];
+   [$[mergemethod~`part;
+      [dest:` sv .Q.par[h;pt;tablename],`; // provides path to where to move data to	
+       /-get chunks to partitions to merge in batch
+       partchunks:.merge.getpartchunks[partdirs;mergelimits[tablename]];
+       .merge.mergebypart[tablename;dest]'[partchunks];
+      ];
+      mergemethod~`col;
+       [.merge.mergebycol[(tablename;value tablename);dest]'[partdirs];
+       /- merging data by column does not create .d file - set it here after merge
+       .lg.o[`merge;"setting .d file"];
+       (` sv dest,`.d) set cols value tablename;
+       ];
+       .merge.mergehybrid[(tablename;value tablename);dest;partdirs;mergelimits[tablename]]
+       ]
+     ]
+   ];
+ .lg.o[`merge;"deleting ", string[tablename], " from temp storage"]; 
+ .os.deldir each .os.pth each string partdirs;
+ // set the attributes
+ .lg.o[`merge;"setting attributes"];
+ @[dest;;`p#] each .merge.getextrapartitiontype[tablename]; 
+ .lg.o[`merge;"merge complete"];
+ // run a garbage collection (if enabled)
+ if[gc;.gc.run[]];
+ };
+
+// Return log file if it exists and not in segmented mode
+getlogfile:{
+  if[.replay.segmentedmode;.lg.e[`getlogfile;m:"Segmented mode requires tplogdir."];'m];
+  if[()~key hsym f:.replay.tplogfile;.lg.e[`getlogfile;m:"Specified tplogfile ",string[f]," does not exist"];'m];
+  enlist hsym f
+ };
+
+// Return contents of log directory if it exists
+getlogdir:{
+  if[()~key hsym d:.replay.tplogdir;.lg.e[`getlogdir;m:"Specified log directory ",string[d]," does not exist"];'m];
+  if[d like "*.gz";.lg.e[`getlogdir;m:"Zipped log directories not supported."];'m];
+  $[.replay.segmentedmode;.replay.getstplogs[d];.Q.dd[logdir;] each key logdir:hsym d]
+ };
+
+// Use STP meta table and tplogdir to build log names
+getstplogs:{[logdir]
+  // If trying to replay zipped files on Windows, error out
+  winzip:(.z.o like "w*") and z:`stpmeta.gz in key d:hsym logdir;
+  if[winzip;.lg.e[`replaylog;m:"Zipped log files cannot be directly replayed on Windows"];'m];
+
+  // If meta table is zipped, assume all other logs are zipped as well and build log names accordingly
+  if[z;system "gunzip ",1_string .Q.dd[d;`stpmeta.gz]];
+  metatable:@[get;.Q.dd[d;`stpmeta];{.lg.e[`getstpmeta;m:"Log directory must contain valid STP meta table"];'m}];
+  if[z;system "gzip ",1_string .Q.dd[d;`stpmeta]];
+  names:exec distinct logname from metatable where any each tbls in .replay.tablestoreplay;
+  .Q.dd[d;] each $[z;.Q.dd[;`gz];::] each last each ` vs' names
+ };
+
+// Set up log replay list and clean HDB if necessary, kick off replay
+initandrun:{
+  if[all not null .replay[`tplogfile`tplogdir];.lg.e[`getlogs;m:"Can't pass in log file and directory."];'m];
+
+  .lg.o[`initandrun;"Initialising replay settings."];
+  .replay.tablestoreplay:$[`all~first .replay.tablelist;tables[];.replay.tablelist,()];
+  .replay.logstoreplay:$[not null .replay.tplogfile;.replay.getlogfile[];.replay.getlogdir[]];
+  if[not count r:.replay.logstoreplay;.lg.e[`initandrun;m:"No log files found"];'m];
+
+  // If in segmented mode, get replay date and clean HDB once
+  if[.replay.segmentedmode;
+    // Pull out the date from the STP log file name - *_YYYYMMDDhhmmss (+ .gz if zipped)
+    .replay.replaydate:first l:"D"$$[first[r] like "*.gz";-9_-17#;-6_-14#] each string r;
+    if[not 1=count distinct l;.lg.e[`replay;m:"Cannot replay logs from different dates in segmented mode!"];'m];
+    if[.replay.clean;.replay.cleanhdb .replay.replaydate]
+   ];
+
+
+  // Replay all logs and exit
+  .lg.o[`initandrun;"Replaying the following log(s): ",csv sv 1_'string .replay.logstoreplay];
+  .replay.replaylog each .replay.logstoreplay;
+  if[partandmerge;postreplaymerge[tempdir;.replay.replaydate;hdbdir]];  
+  .lg.o[`replay;"replay complete"];
+  if[.replay.exitwhencomplete;exit 0];
+ };
+
+\d .
+
+// Load the sort csv and kick off replay if auto-running
+.sort.getsortcsv[.replay.sortcsv]
+if[.replay.autoreplay;.replay.initandrun[]];
+
