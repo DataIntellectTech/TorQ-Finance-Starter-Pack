@@ -4,7 +4,7 @@ Architecture
 This section will be used to describe the different features included
 within the Finance Starter Pack. For more information on TorQ
 implementation details you can refer to the [TorQ
-Manual](https://aquaqanalytics.github.io/TorQ/),
+Manual](https://dataintellecttech.github.io/TorQ/),
 review the code which comprises the system or contact us at
 <info@dataintellect.com>.
 

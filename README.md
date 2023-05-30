@@ -9,11 +9,11 @@ Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.
 
 2.  Download the install script in the directory where you want the TorQ to be installed using:
 
-    `wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/master/installlatest.sh`
+    `wget https://raw.githubusercontent.com/DataIntellectTech/TorQ-Finance-Starter-Pack/master/installlatest.sh`
     
 3. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo_mac.sh for macOS, and torq.sh in the bin directory with the command line argument start all for Linux.
 
-For more information on how to configure and get started, go to [this site](https://aquaqanalytics.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system.
+For more information on how to configure and get started, go to [this site](https://dataintellecttech.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system.
 
 ## IEX API Information
 

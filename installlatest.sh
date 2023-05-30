@@ -7,9 +7,9 @@ get_latest_release() {
 	curl --silent "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")'
 }
 
-wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ/master/installtorqapp.sh
+wget https://raw.githubusercontent.com/DataIntellectTech/TorQ/master/installtorqapp.sh
 
-torq_latest=`get_latest_release "AquaQAnalytics/TorQ"`
+torq_latest=`get_latest_release "DataIntellectTech/TorQ"`
 
 if [[  $torq_latest == *?.?.? ]] || [[  $torq_latest == *?.??.?? ]] || [[  $torq_latest == *?.?.?? ]] || [[  $torq_latest == *?.??.? ]];
 then
@@ -27,7 +27,7 @@ else
 	exit 1
 fi
 
-wget --content-disposition https://github.com/AquaQAnalytics/TorQ/archive/$torq_latest.tar.gz
+wget --content-disposition https://github.com/DataIntellectTech/TorQ/archive/$torq_latest.tar.gz
 
 echo $torq_latest
 
@@ -40,7 +40,7 @@ fi
 
 echo $torq_latest
 
-torq_fsp_latest=`get_latest_release "AquaQAnalytics/TorQ-Finance-Starter-Pack"`
+torq_fsp_latest=`get_latest_release "DataIntellectTech/TorQ-Finance-Starter-Pack"`
 
 echo "============================================================="
 echo "Latest TorQ-FSP release"
@@ -65,7 +65,7 @@ else
 fi
 
 
-wget --content-disposition https://github.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/archive/$torq_fsp_latest.tar.gz
+wget --content-disposition https://github.com/DataIntellectTech/TorQ-Finance-Starter-Pack/archive/$torq_fsp_latest.tar.gz
 
 echo $torq_fsp_latest
 
