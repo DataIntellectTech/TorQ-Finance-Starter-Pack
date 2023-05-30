@@ -22,7 +22,7 @@ day at midnight. The system will operate 24\*7 and remove old files over
 time.
 
 Further information about each feature can be found in the [TorQ
-Manual](https://aquaqanalytics.github.io/TorQ/).
+Manual](https://dataintellecttech.github.io/TorQ/).
 
 *email:* <support@dataintellect.com>
 

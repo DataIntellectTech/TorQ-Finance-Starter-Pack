@@ -23,7 +23,7 @@ Installation and Configuration
 
 2.  Download the install script in the directory where you want the TorQ to be installed using:
 
-    `wget https://raw.githubusercontent.com/AquaQAnalytics/TorQ-Finance-Starter-Pack/master/installlatest.sh`
+    `wget https://raw.githubusercontent.com/DataIntellectTech/TorQ-Finance-Starter-Pack/master/installlatest.sh`
     
 3.  bash installlatest.sh
     
