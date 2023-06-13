@@ -1,0 +1,1 @@
+.sctp.tickerplantname:`stp_emea; 

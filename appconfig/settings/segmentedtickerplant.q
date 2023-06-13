@@ -4,7 +4,7 @@ createlogs:1b;                  // create a logs
 
 \d .stplg
 
-multilog:`tabperiod;            // [tabperiod|singular|periodic|tabular|custom]
+multilog:`singular;            // [tabperiod|singular|periodic|tabular|custom]
 multilogperiod:0D01;
 errmode:1b;
 batchmode:`defaultbatch;        // [memorybatch|defaultbatch|immediate]

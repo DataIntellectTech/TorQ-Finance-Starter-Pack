@@ -1,6 +1,8 @@
 / generate data for rdb demo
 
-sn:2 cut (
+.feed.tpType:@[value; `.feed.tpType; `segmentedtickerplant];
+.feed.symNameList:@[value; `.feed.symNameList;
+    (
  `AMD;"ADVANCED MICRO DEVICES";
  `AIG;"AMERICAN INTL GROUP INC";
  `AAPL;"APPLE INC COM STK";
@@ -11,6 +13,9 @@ sn:2 cut (
  `INTC;"INTEL CORP";
  `IBM;"INTL BUSINESS MACHINES CORP";
  `MSFT;"MICROSOFT CORP")
+ ];
+
+sn:2 cut .feed.symNameList;
 
 s:first each sn
 n:last each sn
@@ -102,8 +107,8 @@ init:{
  feedm each `timestamp$o+asc len?d;}
 
 /- use the discovery service to find the tickerplant to publish data to
-.servers.startupdepcycles[`segmentedtickerplant;10;0W];
-h:.servers.gethandlebytype[`segmentedtickerplant;`any]
+.servers.startupdepcycles[.feed.tpType;10;0W];
+h:.servers.gethandlebytype[.feed.tpType;`any]
 
 / init 0
 .timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];

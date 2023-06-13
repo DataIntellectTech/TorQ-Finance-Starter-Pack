@@ -10,6 +10,9 @@ else
   dirpath="$(cd "$(dirname "$0")" && pwd)"
 fi
 
+ echo "dirpath is $dirpath"
+ exit
+
 export TORQHOME=${dirpath}
 export TORQAPPHOME=${TORQHOME}
 export TORQDATAHOME=${TORQHOME}
@@ -36,7 +39,9 @@ export KDBAPPCONFIG=${TORQAPPHOME}/appconfig
 export KDBAPPCODE=${TORQAPPHOME}/code
 
 # set KDBBASEPORT to the default value for a TorQ Installation
-export KDBBASEPORT=6000
+export KDBBASEPORT=17000
+export KDBBASEPORT_EMEA=17020
+export KDBBASEPORT_NAM=17040
 
 # set TORQPROCESSES to the default process csv
 export TORQPROCESSES=${KDBAPPCONFIG}/process.csv
