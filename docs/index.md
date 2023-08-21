@@ -24,6 +24,6 @@ time.
 Further information about each feature can be found in the [TorQ
 Manual](https://dataintellecttech.github.io/TorQ/).
 
-*email:* <support@dataintellect.com>
+*email:* <torqsupport@dataintellect.com>
 
 *web:* [www.dataintellect.com](http://www.dataintellect.com)
