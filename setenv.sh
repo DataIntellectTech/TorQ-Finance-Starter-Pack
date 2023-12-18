@@ -30,7 +30,7 @@ export KDBPCAPS=${TORQAPPHOME}/pcaps
 # set rlwrap and qcon paths for use in torq.sh qcon flag functions
 export RLWRAP="rlwrap"
 export QCON="qcon"
-export QCMD ="q" #set qcmd path
+export QCMD="q" #set qcmd path
 
 # set the application specific configuration directory
 export KDBAPPCONFIG=${TORQAPPHOME}/appconfig
