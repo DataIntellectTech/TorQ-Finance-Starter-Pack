@@ -180,6 +180,7 @@ $[.ord.connectonstart;
  [.servers.CONNECTIONS,:.ord.tickerplanttypes;
   .servers.startupdepcycles[.ord.tickerplanttypes;.ord.tpconnsleepintv;.ord.tpcheckcycles];
   .ord.subscribe[];
+  // timer for updates of order function and openQuote table
   .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;0D00:00:01;(`refreshOpenQuote;`);0h;"Openquote maintenance timer";1b];
   .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;0D00:00:01;(`genorder;`);0h;"Random order functions called";1b];
  ];;]
