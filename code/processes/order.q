@@ -22,6 +22,11 @@ tickerplanttypes:@[value;`tickerplanttypes;enlist `segmentedtickerplant];   //li
 replaylog:@[value;`replaylog;1b];                           //replay the tickerplant log file
 schema:@[value;`schema;1b];                                 //retrieve the schema from the tickerplant
 
+subfiltered:@[value;`subfiltered;0b];                       //allows subscription filters to be loaded and applied in the order
+
+
+
+
 startup:{[]
     /-check if the process has connected to discovery process, block the process until a connection is established
     while[0 = count .servers.getservers[`proctype;`discovery;()!();0b;1b];
@@ -40,27 +45,23 @@ subscribe:{[]
 		subinfo:.sub.subscribe[subscribeto;subscribesyms;schema;replaylog;first s];
 		/-setting subtables and tplogdate globals
 		@[`.ord;;:;]'[`subtables`tplogdate;subinfo`subtables`tplogdate];
-        ];}
+        /-apply subscription filters to replayed data
+        if[subfiltered&replaylog;
+			applyfilters[;subscribesyms]each subtables];]
+            ;}
 
+applyfilters:{[t;f]
+	filters:$[all null w:f[t;`filters];();@[parse;"select from t where ",w] 2];
+  columns:last $[all null c:f[t;`columns];();@[parse;"select ",c," from t"]];
+	@[`.;t;:;eval(?;t;filters;0b;columns)];}
 
+feed:{
+    h:.servers.gethandlebytype[tickerplanttypes;`any];
+    h"`orderTable insert ",.Q.s1 value flip orderTable
+ }
 \d .
 
-refreshOpenQuote:{[] `openquote upsert select by sym,ex,src from quote where time=max time}
 
-
-// Initialize connection management
-// START UP
-.servers.startup[]
-.ord.startup[]
-
-$[.ord.connectonstart;
- [.servers.CONNECTIONS,:.ord.tickerplanttypes;
-  .servers.startupdepcycles[.ord.tickerplanttypes;.ord.tpconnsleepintv;.ord.tpcheckcycles];
-  .ord.subscribe[];
-  .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;1000n;(`refreshOpenQuote;`);0h;"Openquote maintenance timer";1b];
- ];;]
-
-upd:.ord.upd
 
 
 // Define the schema for the order table 
@@ -146,6 +147,59 @@ generateRandomOrders: {[numOrders;time]
         Quantity: quantities
     );
     // Append the new orders to the existing order table
-    orderTable,: newOrders}
+    `orderTable upsert newOrders}
+
+transactions:([] 
+  orderID:`$();               // Order ID
+  orderType:`$();           // Order type (market, limit, etc.)
+  orderQty:`float$();             // Original order quantity
+  cumQty:`float$();               // Cumulative filled quantity
+  lastFillQty:`float$();          // Last fill quantity
+  lastPrice:`float$();            // Last execution price
+  lastMkt:`$();            // Last market where filled
+  avgPrice:`float$();             // Average execution price
+  sendTime:`timestamp$();         // When order was sent
+  side:`symbol$();               // Buy or sell
+  symbol:`symbol$();             // Instrument symbol
+  exchange:`symbol$();           // Exchange identifier
+  executionType:`symbol$();      // Execution type (FOK, IOC, etc.)
+  orderStatus:`symbol$())         // Order status (filled, partial, etc.)
 
 
+refreshOpenQuote:{[] `openquote upsert select by sym,ex,src from quote where time=max time}
+genorder_amount:10
+genorder_minute:10
+genorder:{[] generateRandomOrders[genorder_amount;genorder_minute]}
+
+// Initialize connection management
+// START UP
+.servers.startup[]
+.ord.startup[]
+
+$[.ord.connectonstart;  
+ [.servers.CONNECTIONS,:.ord.tickerplanttypes;
+  .servers.startupdepcycles[.ord.tickerplanttypes;.ord.tpconnsleepintv;.ord.tpcheckcycles];
+  .ord.subscribe[];
+  .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;0D00:00:01;(`refreshOpenQuote;`);0h;"Openquote maintenance timer";1b];
+  .timer.rep[`timestamp$.proc.cd[]+00:00;0Wp;0D00:00:01;(`genorder;`);0h;"Random order functions called";1b];
+ ];;]
+
+upd:.ord.upd
+h:.servers.gethandlebytype[`segmentedtickerplant;`any]
+//.timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"]; 
+//.sub.subscribe[`quote;`;1b;0b;first s]
+// issue:
+/ cannot get quote table; replay issue, save down eod
+/ .sub.subscribe[`trthquote;`A`B;0b;0b] each .sub.getsubscriptionhandles[`tickerplant;();()!()]
+/ 
+/ 
+
+ /-set the upd function in the top level namespace
+upd:.ord.upd
+
+//data replay
+// random order generator 
+// open quote table
+// Realistic Limit Dimensions Table
+// execution generator
+/ timer function
