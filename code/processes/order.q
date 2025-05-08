@@ -100,8 +100,9 @@ generateRandomOrders: {[numOrders;time]
     unixTimes: "j"$(.z.p - 1970.01.01D00:00:00.000) % 1000000; // Current Unix time in milliseconds
     unixTimes: unixTimes + til numOrders; // Add a counter to ensure uniqueness
 
-    // Randomly choose between "market" and "limit"
-    orderTypes: `Market`Limit numOrders?2;
+    // Randomly choose between "market" and "limit", with configurable randomness of "market"
+    p_marketorder: 0.8;
+    orderTypes: { $[p_marketorder > rand 1.0; `Market; `Limit] } each til numOrders;
 
     // Randomly choose between "buy" and "sell"
     side: `Buy`Sell numOrders?2;
@@ -198,9 +199,3 @@ h:.servers.gethandlebytype[`segmentedtickerplant;`any]
  /-set the upd function in the top level namespace
 upd:.ord.upd
 
-//data replay
-// random order generator 
-// open quote table
-// Realistic Limit Dimensions Table
-// execution generator
-/ timer function
