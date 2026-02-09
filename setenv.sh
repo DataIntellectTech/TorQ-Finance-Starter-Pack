@@ -51,9 +51,6 @@ export DOGSTATSD_PORT=8125
 # e.g. macOS:
 # export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$KDBLIB/m[32|64]
 
-# Please input the API token obtained from IEX here
-export IEX_PUBLIC_TOKEN=""
-
 TORQSSLCERT=${KDBLOG}/torqsslcert.txt
 touch ${TORQSSLCERT}
 if [ -z "${SSL_CA_CERT_FILE}" ]; then
