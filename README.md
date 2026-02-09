@@ -13,6 +13,23 @@ Assuming that the community edition of [KDB-X](https://code.kx.com/kdb-x/get_sta
 
 For more information on how to configure and get started, go to [this site](https://dataintellecttech.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system.
 
+## Community License Limits
+
+Due to connection limits enforced in the KDB-X [community edition license](https://code.kx.com/kdb-x/releases/release-notes-latest.html#2-qlim-resource-limits), by default the following processes have been turned off in this pack:
+
+- reporter
+- monitor
+- file alerter
+- data quality
+
+If the fully-licensed KDB-X is installed, the demo may be run with all processes included.
+
+### Fully-Licensed Setup
+
+1. Stop all processes
+2. In the `appconfig/` directory, replace `process.csv` contents with `processfull.csv`
+3. Restart all processes
+
 ## Updating the Documentation with Mkdocs
 
 To make changes to the documentation website you must simply use this command while in the branch you have made the changes on:
