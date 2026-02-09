@@ -99,8 +99,6 @@ start in the background but can be seen using a ps command, such as
     dataintellect   25479     1  0 13:05 pts/34   00:00:04 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
     dataintellect   25480     1  0 13:05 pts/34   00:00:05 q torq.q -load hdb -stackid 6000 -proctype hdb -procname hdb1 -U config/passwords/accesslist.txt -localtime -g 1 -T 60 -w 4000
     dataintellect   25481     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/gateway.q -stackid 6000 -proctype gateway -procname gateway1 -U config/passwords/accesslist.txt -localtime -g 1 -w 4000
-    dataintellect   25482     1  0 13:05 pts/34   00:00:06 q torq.q -load code/processes/monitor.q -stackid 6000 -proctype monitor -procname monitor1 -localtime
-    dataintellect   25483     1  0 13:05 pts/34   00:00:07 q torq.q -load code/processes/reporter.q -stackid 6000 -proctype reporter -procname reporter1 -U config/passwords/accesslist.txt -localtime
     dataintellect   25484     1  0 13:05 pts/34   00:00:04 q torq.q -load code/processes/housekeeping.q -stackid 6000 -proctype housekeeping -procname housekeeping1 -U config/passwords/accesslist.txt -localtime
     dataintellect   25485     1  0 13:05 pts/34   00:00:05 q torq.q -load code/processes/wdb.q -stackid 6000 -proctype sort -procname sort1 -U config/passwords/accesslist.txt -localtime -g 1
     dataintellect   25486     1  0 13:05 pts/34   00:00:13 q torq.q -load code/processes/wdb.q -stackid 6000 -proctype wdb -procname wdb1  -U config/passwords/accesslist.txt -localtime -g 1
