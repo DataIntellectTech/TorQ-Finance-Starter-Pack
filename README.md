@@ -3,15 +3,13 @@ An example production ready market data capture system, using randomly generated
 
 ## Set Up
 
-Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.php) is already set up and available from the command prompt as q, then:
+Assuming that the community edition of [KDB-X](https://code.kx.com/kdb-x/get_started/kdb-x-install.html) is already set up and available from the command prompt as q, then:
 
-1.  Download and install kdb+ from [Kx Systems](http://kx.com)
-
-2.  Download the install script in the directory where you want the TorQ to be installed using:
+1.  Download the install script in the directory where you want the TorQ to be installed using:
 
     `wget https://raw.githubusercontent.com/DataIntellectTech/TorQ-Finance-Starter-Pack/master/installlatest.sh`
     
-3. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo_mac.sh for macOS, and torq.sh in the bin directory with the command line argument start all for Linux.
+2. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo_mac.sh for macOS, and torq.sh in the bin directory with the command line argument start all for Linux.
 
 For more information on how to configure and get started, go to [this site](https://dataintellecttech.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system.
 
