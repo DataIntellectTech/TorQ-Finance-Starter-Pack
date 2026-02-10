@@ -22,12 +22,12 @@ Due to connection limits enforced in the KDB-X [community edition license](https
 - file alerter
 - data quality
 
-If the fully-licensed KDB-X is installed, the demo may be run with all processes included.
+If the fully-licensed KDB-X is installed, the demo may be run with all processes included (see below).
 
 ### Fully-Licensed Setup
 
 1. Stop all processes
-2. In the `appconfig/` directory, replace `process.csv` contents with `processfull.csv`
+2. In the `TorQApp/latest/appconfig/` directory, replace `process.csv` contents with `processfull.csv`
 3. Restart all processes
 
 ## Updating the Documentation with Mkdocs
