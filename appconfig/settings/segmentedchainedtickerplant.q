@@ -34,4 +34,4 @@ enabled:1b;                     // enable timer
 enabled:1b                      // switch on subscribercutoff
 
 \d .servers
-CONNECTIONSFROMDISCOVERY:0b
+CONNECTIONSFROMDISCOVERY:DISCOVERYCONNECT
