@@ -9,26 +9,28 @@ Assuming that the community edition of [KDB-X](https://code.kx.com/kdb-x/get_sta
 
     `wget https://raw.githubusercontent.com/DataIntellectTech/TorQ-Finance-Starter-Pack/master/installlatest.sh`
     
-2. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo_mac.sh for macOS, and torq.sh in the bin directory with the command line argument start all for Linux.
+2. Run the appropriate starts script: `start_torq_demo.bat` for Windows, `start_torq_demo_mac.sh` for macOS, and `torq.sh` in the bin directory with the command line argument `start all` for Linux.
 
 For more information on how to configure and get started, go to [this site](https://dataintellecttech.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system.
 
 ## Community License Limits
 
-Due to connection limits enforced in the KDB-X [community edition license](https://code.kx.com/kdb-x/releases/release-notes-latest.html#2-qlim-resource-limits), by default the following processes have been turned off in this pack:
+Due to connection limits in the KDB-X [community edition license](https://code.kx.com/kdb-x/releases/release-notes-latest.html#2-qlim-resource-limits), by default the following processes have been turned off in this pack:
 
 - reporter
 - monitor
 - file alerter
 - data quality
 
-If the fully-licensed KDB-X is installed, the demo may be run with all processes included (see below).
+If fully-licensed KDB-X (or kdb+) is installed, the demo may be run with these processes included (see below).
 
-### Fully-Licensed Setup
+### Fully-Licensed Process Start
 
-1. Stop all processes
-2. In the `TorQApp/latest/appconfig/` directory, replace `process.csv` contents with `processfull.csv`
-3. Restart all processes
+1. Start core processes using one of the start scripts mentioned above (`start_torq_demo_mac.sh` etc.)
+2. Start extra processes using the appropriate script:
+   - `start_torq_demo_extra.bat`
+   - `start_torq_demo_mac_extra.sh`
+   - run `torq.sh` with the following argument: `start monitor1 reporter1 filealerter1 dqc1 dqcdb1 dqe1 dqedb1`
 
 ## Updating the Documentation with Mkdocs
 

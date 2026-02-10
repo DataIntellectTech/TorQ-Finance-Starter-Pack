@@ -56,6 +56,3 @@ start "sortworker2" q torq.q -load code/processes/wdb.q -proctype sortworker -pr
 
 REM launch metrics
 start "metrics" q torq.q -load code/processes/metrics.q -proctype metrics -procname metrics1 -U appconfig/passwords/accesslist.txt -localtime -g 1
-
-REM to kill it, run this:
-REM q torq.q -load code/processes/kill.q -proctype kill -procname killtick -.servers.CONNECTIONS rdb wdb segmentedtickerplant segmentedchainedtickerplant hdb gateway housekeeping discovery sort compression feed sortworker metrics -localtime
