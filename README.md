@@ -32,6 +32,8 @@ If fully-licensed KDB-X (or kdb+) is installed, the demo may be run with these p
    - `start_torq_demo_mac_extra.sh`
    - run `torq.sh` with the following argument: `start monitor1 reporter1 filealerter1 dqc1 dqcdb1 dqe1 dqedb1`
 
+Alternatively on Linux, the `startwithall` flag may be set to 1 for the extra processes in `process.csv`. These will then become included in the `torq.sh` start/stop all commands.
+
 ## Updating the Documentation with Mkdocs
 
 To make changes to the documentation website you must simply use this command while in the branch you have made the changes on:
