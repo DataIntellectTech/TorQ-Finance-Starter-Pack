@@ -4,7 +4,6 @@ nav:
     - Getting Started: gettingstarted.md
     - Architecture: architecture.md
     - Have a Play: play.md
-    - IEX: iex.md
 
 repo_name: 'GitHub'
 repo_url: 'https://github.com/DataIntellectTech/TorQ-Finance-Starter-Pack'

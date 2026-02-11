@@ -1,31 +1,38 @@
 # TorQ-Finance-Starter-Pack
-An example production ready market data capture system, using randomly generated financial data along with market data pulled from the IEX. The IEX feed was inspired by [Himanshu Gupta](http://www.enlistq.com/qkdb-api-getting-market-financial-data-iex/).
+An example production ready market data capture system, using randomly generated financial data.
 
 ## Set Up
 
-Assuming that the [free 32 bit version of kdb+](http://kx.com/software-download.php) is already set up and available from the command prompt as q, then:
+Assuming that the community edition of [KDB-X](https://code.kx.com/kdb-x/get_started/kdb-x-install.html) is already set up and available from the command prompt as q, then:
 
-1.  Download and install kdb+ from [Kx Systems](http://kx.com)
-
-2.  Download the install script in the directory where you want the TorQ to be installed using:
+1.  Download the install script in the directory where you want the TorQ to be installed using:
 
     `wget https://raw.githubusercontent.com/DataIntellectTech/TorQ-Finance-Starter-Pack/master/installlatest.sh`
     
-3. Run the appropriate starts script: start_torq_demo.bat for Windows, start_torq_demo_mac.sh for macOS, and torq.sh in the bin directory with the command line argument start all for Linux.
+2. Run the appropriate starts script: `start_torq_demo.bat` for Windows, `start_torq_demo_mac.sh` for macOS, and `torq.sh` in the bin directory with the command line argument `start all` for Linux.
 
 For more information on how to configure and get started, go to [this site](https://dataintellecttech.github.io/TorQ-Finance-Starter-Pack/).  You will need to make some modifications if you wish to send emails from the system.
 
-## IEX API Information
+## Community License Limits
 
-The [IEX API](https://intercom.help/iexcloud/en) provides free data. It has recently changed and now requires an API Token to access the datafeed. To utilize the IEX feed provided by this Starter Pack, follow the instruction below.
+Due to connection limits in the KDB-X [community edition license](https://code.kx.com/kdb-x/releases/release-notes-latest.html#2-qlim-resource-limits), by default the following processes have been turned off in this pack:
 
-To obtain a token, you must first create an [IEX Cloud Account](https://iexcloud.io/cloud-login#/register). Your token will be stored on [this page](https://iexcloud.io/console/token). Click on API Tokens to find your token.
+- reporter
+- monitor
+- file alerter
+- data quality
 
-Input your token to the IEX_PUBLIC_TOKEN variable in the file setenv.sh. Your token is now available to use as an enviroment variable.
+If fully-licensed KDB-X (or kdb+) is installed, the demo may be run with these processes included (see below).
 
-Any changes to the API will be reflected in this TorQ pack.
+### Fully-Licensed Process Start
 
-[IEX Cloud Services Agreement](https://iexcloud.io/terms/https://iexcloud.io/terms/)
+1. Start core processes using one of the start scripts mentioned above (`start_torq_demo_mac.sh` etc.)
+2. Start extra processes using the appropriate script:
+   - `start_torq_demo_extra.bat`
+   - `start_torq_demo_mac_extra.sh`
+   - run `torq.sh` with the following argument: `start monitor1 reporter1 filealerter1 dqc1 dqcdb1 dqe1 dqedb1`
+
+Alternatively on Linux, the `startwithall` flag may be set to 1 for the extra processes in `process.csv`. These will then become included in the `torq.sh` start/stop all commands.
 
 ## Updating the Documentation with Mkdocs
 
@@ -42,14 +49,6 @@ Then:
 `mkdocs serve -a YourIp:Port`
 
 Head to the address it gives you to check if your changes have worked. More information about using mkdocs can be found [here](http://www.mkdocs.org/)
-
-## SSL Certificate
-
-The web request that goes to the API provided by IEX goes through HTTPS. If the relevant security certificates are not installed then the data requests will fail. The setup is similar for Windows and Linux systems. To install the SSL ceritificates:
-
-1. Install OpenSSL from [SLProWeb](https://slproweb.com/products/Win32OpenSSL.html). This should be installed as default on most Linux distributions.
-2. Download the [certificate file](https://curl.haxx.se/ca/cacert.pem).
-3. The environment path must then be set in command prompt via ``setx SSL_CA_CERT_FILE C:\path\to\cacert.pem`` for Windows, and using ``export SSL_CA_CERT_FILE=path/to/cacert.pem`` for Linux.
 
 ## Release Notes
 - **1.11.0, Mar 2021**
@@ -105,7 +104,3 @@ The web request that goes to the API provided by IEX goes through HTTPS. If the 
   * Added compatibility with $KDBAPPCONFIG in TorQ 2.2.0 Release
 - **1.0.1, July 2015**:
   * Added Chained Tickerplant process
-
-## License Info
-
-Data provided for free by [IEX](https://iextrading.com/developer/)

@@ -35,14 +35,6 @@ q torq.q -load ${KDBHDB} ${KDBSTACKID} -proctype hdb -procname hdb2 -U appconfig
 echo 'Starting gw...'
 q torq.q -load code/processes/gateway.q ${KDBSTACKID} -proctype gateway -procname gateway1 -U appconfig/passwords/accesslist.txt -.servers.CONNECTIONS hdb rdb -localtime -g 1 -w 4000 </dev/null >$KDBLOG/torqgw.txt 2>&1 &
 
-# launch the monitor
-echo 'Starting monitor...'
-q torq.q -load code/processes/monitor.q ${KDBSTACKID} -proctype monitor -procname monitor1 -localtime </dev/null >$KDBLOG/torqmonitor.txt 2>&1 &
-
-# launch the reporter
-echo 'Starting reporter...'
-q torq.q -load code/processes/reporter.q ${KDBSTACKID} -proctype reporter -procname reporter1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqreporter.txt 2>&1 &
-
 # launch housekeeping
 echo 'Starting housekeeping proc...'
 q torq.q -load code/processes/housekeeping.q ${KDBSTACKID} -proctype housekeeping -procname housekeeping1 -U appconfig/passwords/accesslist.txt -localtime </dev/null >$KDBLOG/torqhousekeeping.txt 2>&1 &
