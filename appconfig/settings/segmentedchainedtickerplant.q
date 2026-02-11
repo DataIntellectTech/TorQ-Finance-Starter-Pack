@@ -34,4 +34,4 @@ enabled:1b;                     // enable timer
 enabled:1b                      // switch on subscribercutoff
 
 \d .servers
-CONNECTIONSFROMDISCOVERY:DISCOVERYCONNECT
+CONNECTIONSFROMDISCOVERY:$[`lim in key`.Q;$[0W=.Q.lim[][`conns];1b;0b];1b] // check for limit on process connections (relevant for KDB-X community edition)
