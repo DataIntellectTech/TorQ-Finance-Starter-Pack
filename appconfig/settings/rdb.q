@@ -7,7 +7,7 @@ reloadenabled:1b                    // if true, the RDB will not save when .u.en
 
 connectonstart:1b                   // rdb connects and subscribes to tickerplant on startup
 tickerplanttypes:`segmentedtickerplant
-gatewatypes:`none
+gatewaytypes:`none
 replaylog:1b
 
 hdbtypes:()                         //connection to HDB not needed
