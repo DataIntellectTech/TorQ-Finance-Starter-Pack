@@ -15,7 +15,3 @@ hdbtypes:()                         //connection to HDB not needed
 subfiltered:0b
 // path to rdbsub{i}.csv
 subcsv:hsym first `.proc.getconfigfile["rdbsub/rdbsub",(3_string .proc`procname),".csv"]
-
-\d .servers
-
-CONNECTIONS:enlist `gateway         // if connectonstart false, include tickerplant in tickerplanttypes, not in CONNECTIONS
