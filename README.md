@@ -17,22 +17,27 @@ For more information on how to configure and get started, go to [this site](http
 
 Due to connection limits in the KDB-X [community edition license](https://code.kx.com/kdb-x/releases/release-notes-latest.html#2-qlim-resource-limits), by default the following processes have been turned off in this pack:
 
-- reporter
-- monitor
-- file alerter
-- data quality
+- reporter1 – used to run periodic reports on specific processes
+- monitor1 – monitors the health of the other processes in the system
+- filealerter1 – periodically scans a set of directories for user-specified files
+- dqc1 – runs checks on other TorQ processes to check the quality of data in the system
+- dqcdb1 – database process for dqc1
+- dqe1 – receives daily statistics of other TorQ processes
+- dqedb1 – database process for dqe1
 
 If fully-licensed KDB-X (or kdb+) is installed, the demo may be run with these processes included (see below).
 
 ### Fully-Licensed Process Start
+
+On Linux, the `startwithall` flag may be set to 1 for the extra processes in `process.csv`. These will then become included in the `torq.sh` start/stop all commands.
+
+For other operating systems:
 
 1. Start core processes using one of the start scripts mentioned above (`start_torq_demo_mac.sh` etc.)
 2. Start extra processes using the appropriate script:
    - `start_torq_demo_extra.bat`
    - `start_torq_demo_mac_extra.sh`
    - run `torq.sh` with the following argument: `start monitor1 reporter1 filealerter1 dqc1 dqcdb1 dqe1 dqedb1`
-
-Alternatively on Linux, the `startwithall` flag may be set to 1 for the extra processes in `process.csv`. These will then become included in the `torq.sh` start/stop all commands.
 
 ## Updating the Documentation with Mkdocs
 
