@@ -33,6 +33,9 @@ vol:{10+`int$x?90}
 
 randomize[]
 
+.feed.tradeid:0j
+.feed.quoteid:0j
+
 / =========================================================================================
 / generate weights to stop even distribution of counts and sizes
 weight:0.1*1+neg[cnt]?2*cnt
@@ -87,13 +90,33 @@ q:{
  i:qx n:qn+til x;p:qp n;qn+:x;
  (s i;p-qb n;p+qa n;`long$bidmap[s i]*vol x;`long$askmap[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
 
-feed:{h$[rand 2;
- (".u.upd";`trade;t 1+rand maxn);
- (".u.upd";`quote;q 1+rand qpt*maxn)];}
+feed:{
+  $[rand 2;
+    [rows:t 1+rand maxn;
+     n:count first rows;
+     ids:.feed.tradeid+1+til n;
+     .feed.tradeid+:n;
+     h(".u.upd";`trade;rows,enlist ids)];
+    [rows:q 1+rand qpt*maxn;
+     n:count first rows;
+     ids:.feed.quoteid+1+til n;
+     .feed.quoteid+:n;
+     h(".u.upd";`quote;rows,enlist ids)]
+   ];}
 
-feedm:{h$[rand 2;
- (".u.upd";`trade;(enlist a#x),t a:1+rand maxn);
- (".u.upd";`quote;(enlist a#x),q a:1+rand qpt*maxn)];}
+feedm:{
+  $[rand 2;
+    [a:1+rand maxn;
+     rows:t a;
+     ids:.feed.tradeid+1+til a;
+     .feed.tradeid+:a;
+     h(".u.upd";`trade;(enlist a#x),rows,enlist ids)];
+    [a:1+rand qpt*maxn;
+     rows:q a;
+     ids:.feed.quoteid+1+til a;
+     .feed.quoteid+:a;
+     h(".u.upd";`quote;(enlist a#x),rows,enlist ids)]
+   ];}
 
 init:{
  o:"p"$9e5*floor (.z.P-3600000)%9e5;
@@ -107,3 +130,6 @@ h:.servers.gethandlebytype[`segmentedtickerplant;`any]
 
 / init 0
 .timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];
+
+\l code/tick/feed_anomalies.q
+.feed.anom.setup[]
