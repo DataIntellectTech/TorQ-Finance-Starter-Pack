@@ -22,3 +22,4 @@ localhost,{KDBBASEPORT}+20,dqc,dqc1,${TORQAPPHOME}/appconfig/passwords/accesslis
 localhost,{KDBBASEPORT}+21,dqcdb,dqcdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBDQCDB},0,,q
 localhost,{KDBBASEPORT}+22,dqe,dqe1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/dqe.q,0,-parentproctype dqcommon,q
 localhost,{KDBBASEPORT}+23,dqedb,dqedb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBDQEDB},0,,q
+localhost,{KDBBASEPORT}+25,surveillance,surveillance1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,0,,,${KDBAPPCODE}/processes/surveillance.q,1,,q
