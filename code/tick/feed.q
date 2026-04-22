@@ -75,6 +75,7 @@ batch len
 
 maxn:15 / max trades per tick
 qpt:5   / avg quotes per trade
+.feed.tradeid:0j
 
 / =========================================================================================
 t:{
@@ -88,11 +89,11 @@ q:{
  (s i;p-qb n;p+qa n;`long$bidmap[s i]*vol x;`long$askmap[s i]*vol x;x?m;e i;raze 1?'srcmap[s i])}
 
 feed:{h$[rand 2;
- (".u.upd";`trade;t 1+rand maxn);
+ [r:t n:1+rand maxn;ids:.feed.tradeid+1+til n;.feed.tradeid+:n;(".u.upd";`trade;r,enlist ids)];
  (".u.upd";`quote;q 1+rand qpt*maxn)];}
 
 feedm:{h$[rand 2;
- (".u.upd";`trade;(enlist a#x),t a:1+rand maxn);
+ [a:1+rand maxn;r:(enlist a#x),t a;ids:.feed.tradeid+1+til a;.feed.tradeid+:a;(".u.upd";`trade;r,enlist ids)];
  (".u.upd";`quote;(enlist a#x),q a:1+rand qpt*maxn)];}
 
 init:{
@@ -107,3 +108,6 @@ h:.servers.gethandlebytype[`segmentedtickerplant;`any]
 
 / init 0
 .timer.repeat[.proc.cp[];0Wp;0D00:00:00.200;(`feed;`);"Publish Feed"];
+
+system "l ",getenv[`KDBAPPCODE],"/tick/feed_anomalies.q"
+.feed.anom.setup[]

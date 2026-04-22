@@ -1,17 +1,24 @@
 # Surveillance Process — Implementation Prompts
 
-Six prompts to implement the surveiller process described in `surveillance-spec.md`.
-Run them in order — each prompt assumes the previous one is already applied.
+Four prompts to implement the surveiller process described in `surveillance-spec.md`, structured around the torq-developer skill's two-stage workflow:
+
+- **Stage 1 — Plumbing** (Prompts 1–2): schemas, process registration, credentials, and a scaffold that starts cleanly and opens every declared handle. No detection logic.
+- **Stage 1 Verification Gate**: must pass before any Stage 2 work begins.
+- **Stage 2 — Feature logic** (Prompts 3–4): real detection, alert publishing, and feed anomaly injection.
+
+Run the prompts in order. Do not collapse stages — layering detection code onto broken plumbing produces bugs that look like logic errors but aren't.
 
 ---
 
-## Prompt 1 — Schema & Infrastructure
+## Stage 1 — Plumbing
 
-**Task:** Make the infrastructure changes required before any surveillance code can run.
+### Prompt 1 — Schema, Process Registration, Credentials
+
+**Task:** Make the infrastructure changes required before any surveillance code can run. No q logic yet.
 
 **Files to modify:**
 
-`database.q` — add `tradeid:\`long$()` as the last column of `trade`; add `quoteid:\`long$()` as the last column of `quote`; append a new `alert` table with exactly this schema (column order must match):
+`database.q` — add `tradeid:`long$()` as the last column of `trade`; append the `alert` table with exactly this schema (column order must match — the tickerplant does positional inserts):
 ```q
 alert:([]
   time:`timestamp$();
@@ -26,190 +33,181 @@ alert:([]
   notes:()
   )
 ```
-`notes` is a generic list — each row holds a string (character vector). Follow Rule S7 — the table must be unkeyed (type 98h). Follow Rule S2 — `sym` carries `` `g# ``. `database.q` is the segmented tickerplant's `-schemafile`, so defining the table here also makes it available on every downstream subscriber (Rule S4).
+`notes` is a generic list — each row holds a string. Follow Rule S7 (unkeyed, type 98h) and Rule S2 (`sym` carries `` `g# ``). `database.q` is the segmented tickerplant's `-schemafile`, so defining the table here also makes the schema available on every downstream subscriber (Rule S4).
 
 `appconfig/process.csv` — add one row for `surveiller1`: port `{KDBBASEPORT}+25`, proctype `surveiller`, load `${KDBAPPCODE}/processes/surveiller.q`, `startwithall` 1, `U` pointing to the shared access list.
+
+`appconfig/passwords/accesslist.txt` — append `surveiller:pass` so the STP and RDB accept inbound connections from surveiller.
 
 **Files to create:**
 
 `appconfig/passwords/surveiller.txt` — single line: `surveiller:pass`. Required for outbound auth when surveiller opens handles (Rule M6).
 
-`appconfig/passwords/accesslist.txt` — append `surveiller:pass` so the STP and RDB accept inbound connections from surveiller (checklist item 17 — both sides must be in place).
+**Constraints:**
+- Do not rename or reorder any existing columns in `trade`.
+- Missing either credential side silently produces `'access` at connection time — both must be in place (checklist item 17).
 
-**Constraints:** Do not rename or reorder any existing columns in `trade` or `quote`.
+**If `appconfig/sort.csv` exists:** add a row for `alert` with sort columns `sym`,`time` so WDB-side sorting handles it like every other subscribed table. Optional — omit if the file is not present in the deployment.
 
 ---
 
-## Prompt 2 — Config File & Main Process Scaffold
+### Prompt 2 — Config File & Scaffold with Stub Detect
 
-**Task:** Create the config file and the main entry point. No detection logic yet — just wiring.
+**Task:** Create the config file and a surveiller scaffold that starts, opens handles, and fires a stubbed detect timer. No real detection logic — that lives in Prompt 3.
 
 **Files to create:**
 
-`appconfig/settings/surveiller.q`
-— All variables inside `\d .surv` / `\d .` block. Every variable uses the TorQ guard pattern: `cfg.vol.lookback:@[value;\`cfg.vol.lookback;0D00:05]`. Define:
-```
-cfg.rdbtypes:`rdb
-cfg.vol.lookback      0D00:05
-cfg.vol.multiplier    3.0
-cfg.vol.interval      0D00:00:10
-cfg.pxdev.lookback    0D00:05
-cfg.pxdev.threshold   0.02
-cfg.pxdev.interval    0D00:00:10
-cfg.qs.lookback       0D00:00:05
-cfg.qs.countthreshold 50
-cfg.qs.minpricemove   0.5
-cfg.qs.interval       0D00:00:05
+`appconfig/settings/surveiller.q` — all variables inside `\d .surv` / `\d .`, each using the guard pattern (Rule C1). Because the guard resolves to the current namespace, setting a bare variable outside `\d .surv` would silently root-scope (Rule C5):
+```q
+\d .surv
+cfg.rdbtypes:@[value;`cfg.rdbtypes;`rdb]
+cfg.pxdev.lookback:@[value;`cfg.pxdev.lookback;0D00:05]
+cfg.pxdev.threshold:@[value;`cfg.pxdev.threshold;0.02]
+cfg.pxdev.interval:@[value;`cfg.pxdev.interval;0D00:00:10]
+\d .
 ```
 
-`code/processes/surveiller.q` — the `-load` entry point. The three detection files live in `code/surveiller/` (created in prompts 3–5) and are auto-loaded by TorQ for any process of proctype `surveiller` before this file runs, so **do not** use `\l` to load them. Namespace `\d .surv` / `\d .`. Must:
-1. Define `.surv.tph:{first exec w from .servers.getservers[\`proctype;\`segmentedtickerplant;()!();1b;0b]}` — FSP uses the segmented tickerplant, not a plain tickerplant.
-2. Define `.surv.rdbh:{first exec w from .servers.getservers[\`proctype;.surv.cfg.rdbtypes;()!();1b;0b]}`. If the result is null, the detection functions will log and return — no need to signal here.
-3. Define `.surv.alert` — the publishing utility. Signature: `{[rows] h:.surv.tph[]; if[null h; .lg.w[\`surv;"no tickerplant handle"]; :()]; h(\`.u.upd;\`alert;value flip rows); .lg.o[\`surv;"published ",(string count rows)," alert(s)"]}`.
-4. Register three timers using `.timer.repeat` calling `.surv.vol.detect`, `.surv.pxdev.detect`, `.surv.qs.detect` at the configured intervals. Wrap each callback: `{@[.surv.vol.detect;();{.lg.e[\`surv;x]}]}` so a detection error does not remove the timer from the schedule (Rule T3).
-5. After returning to root namespace, set `.servers.CONNECTIONS:distinct .servers.CONNECTIONS,\`segmentedtickerplant\`rdb`.
-6. Call `.servers.startup[]` at the end of the file — TorQ does not do this automatically (Rule M1).
-7. Use `.lg.o` for all log messages (Rule L1). Document public helpers with `.api.add` (Rule A1).
+`code/processes/surveiller.q` — the `-load` entry point. Namespace `\d .surv` / `\d .`.
+
+`code/surveiller/` is auto-loaded by TorQ for proctype `surveiller` before the `-load` file runs, so the detection file created in Prompt 3 picks up automatically — **do not** `\l` it here. In Prompt 3 that file will define the real `.surv.pxdev.detect`, overriding the stub defined below.
+
+Inside the file:
+
+1. `tph` — tickerplant handle resolver. FSP uses the segmented tickerplant:
+   ```q
+   tph:{first exec w from .servers.getservers[`proctype;`segmentedtickerplant;()!();1b;0b]}
+   ```
+2. `rdbh` — RDB handle resolver:
+   ```q
+   rdbh:{first exec w from .servers.getservers[`proctype;.surv.cfg.rdbtypes;()!();1b;0b]}
+   ```
+3. `alert` — publish helper:
+   ```q
+   alert:{[rows]
+     h:.surv.tph[];
+     if[null h; .lg.w[`surv;"no tickerplant handle"]; :()];
+     h(`.u.upd;`alert;value flip rows);
+     .lg.o[`surv;"published ",(string count rows)," alert(s)"]}
+   ```
+4. `pxdev.detect` — **Stage 1 stub only**. Prompt 3 replaces it:
+   ```q
+   pxdev.detect:{.lg.o[`surv;"pxdev.detect stub"]}
+   ```
+5. Timer (Rule T3 — wrap so a failure does not remove the timer from the schedule):
+   ```q
+   .timer.repeat[.proc.cp[];0Wp;.surv.cfg.pxdev.interval;
+     ({@[.surv.pxdev.detect;();{.lg.e[`surv;x]}]};`);
+     "Price deviation detection"];
+   ```
+6. After returning to root namespace (Rule M1 — both lines required; `.servers.startup[]` is not called automatically by TorQ):
+   ```q
+   .servers.CONNECTIONS:distinct .servers.CONNECTIONS,`segmentedtickerplant`rdb;
+   .servers.startup[];
+   ```
+7. Use `.lg.o`/`.lg.w`/`.lg.e` for all log messages (Rule L1). Document public helpers (`.surv.alert`, `.surv.pxdev.detect`) with `.api.add` (Rule A1).
 
 ---
 
-## Prompt 3 — Volume Spike Detection
+## Stage 1 Verification Gate
 
-**Task:** Implement `.surv.vol.detect[]` in `code/surveiller/volumespike.q`.
+Restart the STP and RDB (so they pick up the updated `database.q`), then start surveiller1. Confirm **every** item below before proceeding to Stage 2:
 
-This directory is auto-loaded by TorQ for any process of proctype `surveiller`, so no explicit `\l` is needed on the caller side.
+- [ ] `./torq.sh start surveiller1` succeeds; PID persists
+- [ ] `err_surveiller1_*.log` contains no `ERR` lines after startup
+- [ ] `out_surveiller1_*.log` shows expected startup messages
+- [ ] In qcon on surveiller1: `select proctype, w from .servers.SERVERS where proctype in .servers.CONNECTIONS` — rows for `segmentedtickerplant` and `rdb` both have non-null `w`
+- [ ] On the STP: `alert in tables[`.]` is `1b`; `last cols `trade` is `` `tradeid ``
+- [ ] Timer fires: surveiller1's `out_` log shows repeated `pxdev.detect stub` messages at the configured interval
 
-**Logic (from spec §3.1):**
-1. Get the RDB handle via `.surv.rdbh[]`. If null, log a warning and return.
-2. Query the RDB for all trades in the last `.surv.cfg.vol.lookback` window: `select time,sym,size,tradeid from trade where time >= .proc.cp[] - .surv.cfg.vol.lookback`.
-3. Compute per-symbol mean and stddev of `size`. If a symbol has only one trade (stddev = 0), skip it — filter for `count >= 2` per sym to avoid noise.
-4. Threshold per symbol = `mean + (.surv.cfg.vol.multiplier * dev)`.
-5. Join thresholds back to trade rows and flag trades where `size > threshold`.
-6. For each flagged trade build one alert row:
-   - `time`: `.proc.cp[]`
-   - `sym`: trade sym
-   - `alerttype`: `` `volumespike ``
-   - `severity`: `` `high ``
-   - `refid`: tradeid
-   - `price`: `0n`
-   - `size`: trade size (cast to long)
-   - `threshold`: computed threshold (float)
-   - `actual`: trade size cast to float
-   - `notes`: string describing the breach, e.g. `"size 45000 exceeds threshold 12480.3 (mean 1200.0, 3.0 stddevs)"`
-7. If any alerts exist, call `.surv.alert[alerts]`.
-
-**Constraints:**
-- All code in `\d .surv.vol` / `\d .` block.
-- `notes` must be a string (character vector) per row — use `enlist` when building a single-row table so the column remains a generic list.
-- Use `.proc.cp[]` not `.z.p` for current time.
-- Document `.surv.vol.detect` with `.api.add`.
+If any check fails, diagnose and fix before writing Stage 2 code. Do not proceed to "see if it still works" — that masks whichever Stage 1 issue is still broken.
 
 ---
 
-## Prompt 4 — Price Deviation Detection
+## Stage 2 — Feature Logic
 
-**Task:** Implement `.surv.pxdev.detect[]` in `code/surveiller/pricedeviation.q`.
+### Prompt 3 — Price Deviation Detection
 
-**Logic (from spec §3.2):**
-1. Get RDB handle. If null, log warning and return.
-2. Query trades in the last `.surv.cfg.pxdev.lookback` window: `select time,sym,price,tradeid from trade where time >= .proc.cp[] - .surv.cfg.pxdev.lookback`.
-3. Query all quotes from RDB: `select time,sym,bid,ask from quote`, then sort with `` `sym`time xasc `` before the join — `aj` requires the right-hand table sorted by sym then time.
-4. Use `aj[\`sym\`time; trades; quotes]` to pair each trade with the prevailing quote at trade time.
-5. Drop rows where `bid` or `ask` is null (trades with no matching quote).
+**Task:** Implement the real `.surv.pxdev.detect[]` in `code/surveiller/pricedeviation.q`. This file is auto-loaded by TorQ for proctype `surveiller` and overrides the Stage 1 stub in `surveiller.q`.
+
+Namespace `\d .surv.pxdev` / `\d .`.
+
+**Logic (from spec §3):**
+1. Get RDB handle via `.surv.rdbh[]`. If null, `.lg.w[\`surv;"no rdb handle"]` and return.
+2. Query trades in the lookback window:
+   ```q
+   select time,sym,price,tradeid from trade where time >= .proc.cp[] - .surv.cfg.pxdev.lookback
+   ```
+3. Query quotes from RDB: `select time,sym,bid,ask from quote`, then `` `sym`time xasc `` before the join — `aj` requires the right-hand table sorted by sym then time.
+4. `aj[\`sym\`time; trades; quotes]` to pair each trade with the prevailing quote.
+5. Drop rows where `bid` or `ask` is null (no matching quote).
 6. Compute `mid:(bid+ask)%2`. Drop rows where `mid=0`.
 7. Compute `dev:abs[price-mid]%mid`.
 8. Filter rows where `dev > .surv.cfg.pxdev.threshold`.
 9. Assign severity (apply in order so higher bands overwrite):
-   - Start with `` `low ``
+   - start `` `low ``
    - `` `medium `` if `dev > 2 * threshold`
    - `` `high `` if `dev > 3 * threshold`
 10. Build one alert row per flagged trade:
+    - `time`: `.proc.cp[]`
+    - `sym`: trade sym
     - `alerttype`: `` `pricedeviation ``
+    - `severity`: computed band
     - `refid`: tradeid
     - `price`: trade price
     - `size`: `0`
     - `threshold`: `.surv.cfg.pxdev.threshold`
-    - `actual`: computed `dev` value
+    - `actual`: computed `dev`
     - `notes`: e.g. `"price 84.5 deviates 8.3% from mid 78.0 (bid 77.5, ask 78.5)"`
 11. Call `.surv.alert[alerts]`.
 
 **Constraints:**
-- Namespace `\d .surv.pxdev` / `\d .`.
-- `notes` is a string per row — use `enlist` for single-row results.
-- Document `.surv.pxdev.detect` with `.api.add`.
+- Use `.proc.cp[]`, not `.z.p`, for current time.
+- `notes` is a string per row — `enlist` for single-row results.
+- Document `.surv.pxdev.detect` with `.api.add` (Rule A1).
+- Rule Q1: for variable negation use `neg x`, not `-x`.
+- Before sending to the TP, verify the columns/types you build match the `alert` schema in `database.q` exactly — the tickerplant does a positional insert (Core Principle 2, checklist item 18).
+
+**After landing this prompt:** trigger the Prompt 4 injection (once that's in place) or wait for natural market data noise, and confirm `select from alert` on the RDB returns rows with the expected shape.
 
 ---
 
-## Prompt 5 — Quote Stuffing Detection
+### Prompt 4 — Feed Modifications & Anomaly Injection
 
-**Task:** Implement `.surv.qs.detect[]` in `code/surveiller/quotestuffing.q`.
+**Task:** Modify the feed to assign trade IDs and inject price-deviation anomalies. Read `code/tick/feed.q` in full before making any changes.
 
-**Logic (from spec §3.3):**
-1. Get RDB handle. If null, log warning and return.
-2. Query quotes in last `.surv.cfg.qs.lookback` window: `select time,sym,bid,ask,quoteid from quote where time >= .proc.cp[] - .surv.cfg.qs.lookback`.
-3. Group by sym. Per symbol compute:
-   - `cnt`: count of quotes
-   - `pricerange`: `(max ask) - (min bid)`
-   - `lastid`: last `quoteid` in the window (for `refid`)
-4. Flag symbols where `cnt > .surv.cfg.qs.countthreshold` **and** `pricerange < .surv.cfg.qs.minpricemove`.
-5. Assign severity:
-   - `` `low `` if `cnt > 1 * countthreshold`
-   - `` `medium `` if `cnt > 2 * countthreshold`
-   - `` `high `` if `cnt > 3 * countthreshold`
-6. Build **one alert row per flagged symbol**:
-   - `alerttype`: `` `quotestuffing ``
-   - `refid`: `lastid`
-   - `price`: `0n`
-   - `size`: `cnt` (cast to long)
-   - `threshold`: `countthreshold` cast to float
-   - `actual`: `cnt` cast to float
-   - `notes`: e.g. `"85 quotes for AAPL in 5s window, price range 0.02 (threshold 50 quotes, min move 0.5)"`
-7. Call `.surv.alert[alerts]`.
-
-**Constraints:**
-- Namespace `\d .surv.qs` / `\d .`.
-- One row per symbol, not per quote.
-- `notes` is a string per row — use `enlist` for single-row results.
-- Document `.surv.qs.detect` with `.api.add`.
-
----
-
-## Prompt 6 — Feed Modifications & Anomaly Injection
-
-**Task:** Modify the feed to assign IDs and inject anomalies. Read `code/tick/feed.q` in full before making any changes.
-
-**Part A — `code/tick/feed.q` changes (minimal):**
-1. Add two running counters after the existing globals: `.feed.tradeid:0j` and `.feed.quoteid:0j`.
-2. In the trade-generation path, before publishing: assign IDs to the batch by computing `ids:.feed.tradeid+1+til count rows`, then set `.feed.tradeid:.feed.tradeid+count rows`, then `update tradeid:ids` on the rows. IDs start at 1 and increase monotonically.
-3. Apply the same pattern for quote rows using `.feed.quoteid`.
-4. At the bottom of `feed.q`, after all existing setup: load the anomaly file with `\l` and call `.feed.anom.setup[]`.
+**Part A — `code/tick/feed.q` (minimal edits):**
+1. Add a running counter alongside existing feed globals: `.feed.tradeid:0j`.
+2. In the trade-generation path, before publishing: compute `ids:.feed.tradeid+1+til count rows`, set `.feed.tradeid:.feed.tradeid+count rows`, then `update tradeid:ids` on the rows. IDs start at 1 and increase monotonically.
+3. At the bottom of `feed.q`, after all existing setup:
+   ```q
+   \l ${KDBAPPCODE}/tick/feed_anomalies.q
+   .feed.anom.setup[];
+   ```
 
 **Part B — `code/tick/feed_anomalies.q` (new file):**
-Namespace `\d .feed.anom` / `\d .`. Three injection functions plus a setup function:
+Namespace `\d .feed.anom` / `\d .`. Two functions:
 
-**`.feed.anom.injectvol[]`** — volume spike (timer: every 45 seconds):
+**`.feed.anom.injectpxdev[]`** — price deviation:
 - Pick `sym:syms[rand count syms]` using the `syms` list from feed.q.
-- Publish one trade row: `size` = `50000j`, `price` = base price for that sym from the prices dict, `stop` = `0b`, `cond` = `" "`, `ex` = `"N"`, `side` = `` `buy ``, `tradeid` = `.feed.tradeid+:1; .feed.tradeid`.
+- Get `baseprice` from the prices dict in feed.q.
+- Build one trade row with column order matching the `trade` schema in `database.q` exactly:
+  - `time:.proc.cp[]`, `sym`, `price:baseprice*1.08` (8% above base — well above the 2% threshold), `size:100i`, `stop:0b`, `cond:" "`, `ex:"N"`, `side:`buy`, `tradeid:.feed.tradeid+:1`
 - Publish via `.u.upd[\`trade; value flip enlist row]`.
-
-**`.feed.anom.injectpxdev[]`** — price deviation (timer: every 45 seconds):
-- Pick a random sym.
-- Get base price from the prices dict in feed.q.
-- Publish one trade row with `price` = `baseprice * 1.08` (8% above base — well above the 2% threshold). Other fields: `size` = `100i`, `stop` = `0b`, `cond` = `" "`, `ex` = `"N"`, `side` = `` `buy ``, `tradeid` = `.feed.tradeid+:1; .feed.tradeid`.
-- Publish via `.u.upd[\`trade; value flip enlist row]`.
-
-**`.feed.anom.injectqs[]`** — quote stuffing (timer: every 30 seconds):
-- Pick a random sym.
-- Get base price. Build a table of 85 rows for that sym: `bid` = `baseprice - 0.01`, `ask` = `baseprice + 0.01` (price movement across the burst < 0.1, meeting the flat-price criterion). `bsize` = `100`, `asize` = `100`, `mode` = `" "`, `ex` = `"N"`, `src` = `` `INJECT ``.
-- Assign `quoteid`s: `ids:.feed.quoteid+1+til 85`, then `.feed.quoteid:.feed.quoteid+85`.
-- Publish all 85 rows in a single `.u.upd[\`quote; value burst]` call.
 
 **`.feed.anom.setup[]`:**
-- Registers all three timers using `.timer.repeat` with start time `.proc.cp[]`, end time `0Wp`, and the configured intervals (hardcode 45s/45s/30s as atoms — these are injection helpers, not user-facing config).
-- Wrap each callback in an error trap (Rule T3).
-- Log `"anomaly injection timers registered"` with `.lg.o[\`feedanom;...]`.
+- Register the timer — 45s is hardcoded as an atom (injection helper, not user-facing config):
+  ```q
+  .timer.repeat[.proc.cp[];0Wp;0D00:00:45;
+    ({@[.feed.anom.injectpxdev;();{.lg.e[`feedanom;x]}]};`);
+    "Price deviation anomaly injection"];
+  ```
+- `.lg.o[`feedanom;"anomaly injection timer registered"]`.
 
 **Constraints:**
-- Do not alter any existing trade or quote generation logic — only add ID assignment in the two publishing paths and the load/setup call at the bottom.
-- The `src` column on injected quotes is `` `INJECT `` so injected rows are distinguishable in the data if needed.
-- Verify the column order of rows passed to `.u.upd` matches the schema in `database.q` exactly — the tickerplant does a positional insert.
+- Do not alter any existing trade generation logic — only add ID assignment in the publishing path and the load/setup call at the bottom of `feed.q`.
+- Verify the column order of rows passed to `.u.upd` matches the `trade` schema in `database.q` exactly — positional insert (Core Principle 2, checklist item 18).
+- Rule T3 error trap on the injection timer callback.
+
+**Verification:**
+- After restart, surveiller1's log shows alerts being published every ~45s.
+- `select from alert` on the RDB returns rows with `alerttype=\`pricedeviation`, `severity` populated, and `refid` matching a real `tradeid` in `trade`.

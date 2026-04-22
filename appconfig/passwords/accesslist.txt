@@ -22,3 +22,4 @@ segmentedtickerplant:pass
 filealerter:pass
 admin:admin
 idb:pass
+surveiller:pass
