@@ -18,6 +18,7 @@ localhost,{KDBBASEPORT}+15,segmentedchainedtickerplant,sctp1,${TORQAPPHOME}/appc
 localhost,{KDBBASEPORT}+16,sortworker,sortworker1,,1,1,,,${KDBCODE}/processes/wdb.q,1,-parentproctype wdb,q
 localhost,{KDBBASEPORT}+17,sortworker,sortworker2,,1,1,,,${KDBCODE}/processes/wdb.q,1,-parentproctype wdb,q
 localhost,{KDBBASEPORT}+18,metrics,metrics1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBAPPCODE}/processes/metrics.q,1,,q
+localhost,{KDBBASEPORT}+19,ohlcclient,ohlcclient1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBAPPCODE}/processes/ohlcclient.q,1,,q
 localhost,{KDBBASEPORT}+20,dqc,dqc1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/dqc.q,0,-parentproctype dqcommon,q
 localhost,{KDBBASEPORT}+21,dqcdb,dqcdb1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,60,4000,${KDBDQCDB},0,,q
 localhost,{KDBBASEPORT}+22,dqe,dqe1,${TORQAPPHOME}/appconfig/passwords/accesslist.txt,1,1,,,${KDBCODE}/processes/dqe.q,0,-parentproctype dqcommon,q
