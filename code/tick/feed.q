@@ -24,9 +24,9 @@ side:`buy`sell
 / init.q
 
 cnt:count s
-pi:acos -1
+piconst:acos -1
 gen:{exp 0.001 * normalrand x}
-normalrand:{(cos 2 * pi * x ? 1f) * sqrt neg 2 * log x ? 1f}
+normalrand:{(cos 2 * piconst * x ? 1f) * sqrt neg 2 * log x ? 1f}
 randomize:{value "\\S ",string "i"$0.8*.z.p%1000000000}
 rnd:{0.01*floor 0.5+x*100}
 vol:{10+`int$x?90}

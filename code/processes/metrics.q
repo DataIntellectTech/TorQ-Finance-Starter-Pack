@@ -1,6 +1,7 @@
 / schemas for tables
-sumstab:([] time:`timestamp$(); sym:`g#`symbol$(); sumssize:`int$(); sumsps:`float$(); sumspricetimediff:`float$());
-latest:([sym:`u#`symbol$()] time:`timestamp$(); sumssize:`int$(); sumsps:`float$(); sumspricetimediff:`float$());
+/ sumssize is a long, as upd makes it (0^ fills with a long): an int column would become a mixed list on kdb+ and a type error on Korze
+sumstab:([] time:`timestamp$(); sym:`g#`symbol$(); sumssize:`long$(); sumsps:`float$(); sumspricetimediff:`float$());
+latest:([sym:`u#`symbol$()] time:`timestamp$(); sumssize:`long$(); sumsps:`float$(); sumspricetimediff:`float$());
 
 \d .metrics
 
@@ -78,7 +79,7 @@ init:{
    t:h"select time,sym,size,price from trade where i<",a;
    .lg.o[`recovery;"recovered ",(string count t)," records"];
    / insert data recovered from RDB into relevant tables
-   t:select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
+   t:select time,sym,sumssize,sumsps,sumspricetimediff from update sumssize:sums `long$size,sumsps:sums price*size,sumspricetimediff:sums price*time-prev time by sym from t;
    @[`.;`sumstab;:;t];
    @[`.;`latest;:;select by sym from t];
    ];
