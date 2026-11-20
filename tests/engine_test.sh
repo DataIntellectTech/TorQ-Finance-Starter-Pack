@@ -1,21 +1,18 @@
 #!/bin/bash
 # Tests for the Finance Starter Pack changes. Run from the Starter Pack directory:
 #   ./engine_test.sh [q binary ...]     (default: q)  - each binary is used for the feed.q test
-# Checks: (1) process.csv takes qcmd from ${QCMD}  (2) setenv.sh defaults QCMD to q and keeps an exported value
+# Checks: (1) process.csv leaves qcmd blank        (2) setenv.sh defaults QCMD to q and keeps an exported value
 #         (3) torq.sh uses the overridden QCMD     (4) feed.q's piconst/normalrand load and run with each q binary
 cd "$(dirname "$0")/.." 2>/dev/null || true
 [ -f appconfig/process.csv ] || { echo "run from (or place under) the Starter Pack directory"; exit 2; }
 pass=0; fail=0
 ok(){ if [ "$1" = 0 ]; then pass=$((pass+1)); echo "PASS  $2"; else fail=$((fail+1)); echo "FAIL  $2"; fi; }
 
-# 1. every process line takes its qcmd from ${QCMD}
+# 1. no process line names a q command: with the qcmd column blank, torq.sh starts each process with $QCMD
 n=$(awk -F, 'NR>1 && NF>1 && $0 !~ /^#/' appconfig/process.csv | wc -l)
-m=$(awk -F, 'NR>1 && NF>1 && $0 !~ /^#/ && $NF=="${QCMD}"' appconfig/process.csv | wc -l)
-[ "$n" -gt 0 ] && [ "$n" = "$m" ]; ok $? "process.csv: qcmd is \${QCMD} on all $n process lines"
-column=$(awk -F, 'NR==2 {print $NF}' appconfig/process.csv)                       # the qcmd of the first process
-if command -v envsubst >/dev/null; then v=$(printf '%s' "$column" | QCMD=/opt/other/q envsubst)   # what torq.sh does with it
-else v=$(QCMD=/opt/other/q bash -c 'eval echo "$1"' _ "$column"); fi                                 # (envsubst missing: the shell)
-[ "$v" = "/opt/other/q" ]; ok $? "process.csv: \${QCMD} expands to the exported value (got $v)"
+m=$(awk -F, 'NR>1 && NF>1 && $0 !~ /^#/ && $NF==""' appconfig/process.csv | wc -l)
+c=$(awk -F, 'NR==1 {print $NF}' appconfig/process.csv)
+[ "$n" -gt 0 ] && [ "$n" = "$m" ] && [ "$c" = qcmd ]; ok $? "process.csv: qcmd is blank on all $n process lines"
 
 # 2. setenv.sh: default q, exported value kept
 qline=$(grep -E '^export QCMD=' setenv.sh | sed 's/[[:space:]]*#.*//')                                         # just that line: sourcing the whole setenv.sh also creates certs/ and downloads a certificate bundle
